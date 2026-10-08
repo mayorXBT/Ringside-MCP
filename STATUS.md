@@ -38,3 +38,15 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 - `ringside-mcp init --owner <address>` creates an agent keypair, policy config, and pairing token with mode 600; `pair`, `kill`, and `status` work locally.
 - Control API binds `127.0.0.1`, requires pairing token for reads, and verifies owner ed25519 signatures on policy/kill writes. Read endpoints for status, balances, activity, and policy are present. Signature tampering tests pass; unauthorized/authorized HTTP status checks returned 401/200.
 - The Next.js dashboard now builds with wallet connect, pairing, overview balances and SOL budget gauges, activity, signed policy editing, kill switch, and an SSE refresh path with five-second polling fallback. Production deployment and live wallet signing remain pending. The approval queue and auditor mode remain pending.
+
+## Swap and escrow: Tier C
+
+- All nine swap/escrow tool schemas are listed by MCP. Calls return `ENGINE_UNAVAILABLE` because no Rust sidecar or devnet program is built. The bridge is deliberately gated until spend policy integration is complete.
+- Rust, Cargo, and Solana CLI are absent in this execution environment; Go is not the required Go toolchain. No devnet deploy or escrow smoke test has been run.
+- `engine/README.md` documents the tier and the insecure test-key limitation.
+
+## Verification and shipping
+
+- Workspace `pnpm check`, `pnpm test`, and `pnpm build` pass, including dashboard production build. MCP lists 22 tools.
+- CI workflow and MIT license are in the repository.
+- M1 funded check, seller end-to-end payment, live dashboard wallet signing, engine, dashboard deployment, videos, and submission remain open.

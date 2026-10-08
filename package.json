@@ -4,8 +4,9 @@
   "packageManager": "pnpm@11.18.0",
   "engines": { "node": ">=24" },
   "scripts": {
-    "check": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp check",
-    "build": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build",
+    "check": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp check && pnpm --filter ringside-dashboard check",
+    "test": "pnpm --filter @ringside/verify build && pnpm --filter @ringside/verify test && pnpm --filter ringside-mcp build && pnpm --filter ringside-mcp test",
+    "build": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build && pnpm --filter ringside-dashboard build",
     "check:examples": "pnpm --dir vendor/zolana-examples/typescript-client check",
     "check:m1": "pnpm --filter ringside-mcp check:m1",
     "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs"

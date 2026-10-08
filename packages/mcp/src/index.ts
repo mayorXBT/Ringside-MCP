@@ -7,6 +7,7 @@ import { loadPolicy, solBudget } from './policy.js';
 import { createPaymentRequest, payPaymentRequest, verifyPayment } from './seller.js';
 import { runCli } from './cli.js';
 import { startControlServer } from './control.js';
+import { registerEngineTools } from './engine-tools.js';
 
 if (process.argv.length > 2) {
   await runCli(process.argv.slice(2));
@@ -32,5 +33,6 @@ server.registerTool('create_payment_request', { description: 'Issue a private pa
 const paymentRequestSchema = z.object({ scheme: z.literal('ringside-private-v1'), network: z.literal('solana-devnet'), pay_to: z.string(), asset: z.string(), amount: z.string(), nonce: z.string(), expires_at: z.string(), resource: z.string() });
 server.registerTool('pay_payment_request', { description: 'Pay a seller request privately and return an X-PAYMENT header', inputSchema: { request: paymentRequestSchema }, annotations: { destructiveHint: true, readOnlyHint: false, openWorldHint: true } }, ({ request }) => output(() => payPaymentRequest(request)));
 server.registerTool('verify_payment', { description: 'Verify an inbound private payment against a stored seller request', inputSchema: { signature: z.string(), nonce: z.string(), expected_payer: z.string().optional(), consume: z.boolean().default(true) }, annotations: { readOnlyHint: false, destructiveHint: false } }, ({ signature, nonce, expected_payer, consume }) => output(() => verifyPayment(signature, nonce, expected_payer, consume)));
+registerEngineTools(server);
 await server.connect(new StdioServerTransport());
 startControlServer();

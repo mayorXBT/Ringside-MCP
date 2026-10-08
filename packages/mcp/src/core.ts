@@ -6,7 +6,8 @@ import { buildDepositTransaction, buildRegistrationTransaction, buildTransferTra
 import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana/transaction';
 import { isWalletRegistered } from '@heliuslabs/zolana/wallet';
 import { resolveRegisteredAddress } from '@heliuslabs/zolana/wallet';
-import { assertSpend, recordSpend } from './policy.js';
+import { assertSpend, loadPolicy, recordSpend } from './policy.js';
+import { engineHealth } from './engine.js';
 import { emitEvent } from './events.js';
 import { getCreateAccountInstruction } from '@solana-program/system';
 import { getInitializeAccount3Instruction, getInitializeMint2Instruction, getMintSize, getMintToInstruction, getTokenSize, TOKEN_PROGRAM_ADDRESS } from '@solana-program/token';
@@ -44,7 +45,9 @@ export async function walletInfo() {
   const { client, identity, signer } = await context();
   const registered = await isWalletRegistered({ rpc: client, owner: signer.address });
   const publicLamports = await client.getBalance(signer.address);
-  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), network: 'devnet' };
+  const policy = loadPolicy();
+  const engine = await engineHealth();
+  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), network: 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only } };
 }
 
 export async function sendTransaction(transaction: Parameters<typeof signTransactionWithSigners>[1]) {
