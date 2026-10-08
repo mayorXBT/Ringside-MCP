@@ -2,13 +2,14 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { engine } from './engine.js';
 import { privateTransfer } from './core.js';
+import { redact } from './log.js';
 
 const amount = z.string().regex(/^(0|[1-9]\d*)(\.\d+)?$/);
 const spend = { destructiveHint: true, readOnlyHint: false, openWorldHint: true } as const;
 const read = { readOnlyHint: true } as const;
 const result = async (method: string, params: Record<string, unknown>) => {
   try { return { content: [{ type: 'text' as const, text: JSON.stringify(await engine.call(method, params)) }] }; }
-  catch (error) { return { isError: true, content: [{ type: 'text' as const, text: error instanceof Error ? error.message : 'ENGINE_UNAVAILABLE' }] }; }
+  catch (error) { return { isError: true, content: [{ type: 'text' as const, text: error instanceof Error ? redact(error.message) : 'ENGINE_UNAVAILABLE' }] }; }
 };
 
 export function registerEngineTools(server: McpServer) {
@@ -27,6 +28,6 @@ export function registerEngineTools(server: McpServer) {
       if (!destination) throw new Error('Beneficiary missing');
       const paid = await privateTransfer(destination, withdrawn.asset, withdrawn.amount);
       return { content: [{ type: 'text' as const, text: JSON.stringify({ withdraw_signature: withdrawn.signature, transfer_signature: paid.signature }) }] };
-    } catch (error) { return { isError: true, content: [{ type: 'text' as const, text: error instanceof Error ? error.message : 'ENGINE_UNAVAILABLE' }] }; }
+    } catch (error) { return { isError: true, content: [{ type: 'text' as const, text: error instanceof Error ? redact(error.message) : 'ENGINE_UNAVAILABLE' }] }; }
   });
 }

@@ -7,6 +7,7 @@ import bs58 from 'bs58';
 import { balances, history, walletInfo } from './core.js';
 import { loadPolicy, ringsideHome, solBudget, validatePolicy } from './policy.js';
 import { emitEvent, eventBus } from './events.js';
+import { redact } from './log.js';
 
 const corsOrigins = () => (process.env.RINGSIDE_DASHBOARD_ORIGINS || 'http://localhost:3000').split(',').map((item) => item.trim());
 const tokenPath = () => join(ringsideHome(), 'pairing-token');
@@ -120,7 +121,7 @@ async function handle(request: IncomingMessage, response: ServerResponse) {
     }
     json(response, 404, { error: 'Not found' });
   } catch (error) {
-    json(response, 500, { error: error instanceof Error ? error.message.replace(/api-key=[^&\s]+/gi, 'api-key=[redacted]') : 'Internal error' });
+    json(response, 500, { error: error instanceof Error ? redact(error.message) : 'Internal error' });
   }
 }
 

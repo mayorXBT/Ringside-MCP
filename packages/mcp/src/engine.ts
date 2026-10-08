@@ -1,5 +1,6 @@
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { createInterface } from 'node:readline';
+import { redact } from './log.js';
 
 type Pending = { resolve: (value: unknown) => void; reject: (error: Error) => void; timer: NodeJS.Timeout };
 class EngineBridge {
@@ -13,7 +14,7 @@ class EngineBridge {
     if (this.child && !this.child.killed) return;
     this.child = spawn(path, ['serve'], { stdio: ['pipe', 'pipe', 'pipe'], env: process.env });
     this.child.stderr.on('data', (chunk: Buffer) => {
-      const safe = chunk.toString('utf8').replace(/api-key=[^&\s]+/gi, 'api-key=[redacted]');
+      const safe = redact(chunk.toString('utf8'));
       process.stderr.write(`[ringside-engine] ${safe}`);
     });
     this.child.once('exit', () => {

@@ -31,6 +31,7 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 
 - `@ringside/verify` creates requests and checks private receipt evidence for amount, asset, payer, expiry, and replay. Its unit test passes.
 - MCP tools `create_payment_request`, `pay_payment_request`, and `verify_payment` are wired to a SQLite nonce/replay store and the seller wallet's decrypted history. `examples/seller-api` serves `/report` with HTTP 402 and checks `X-PAYMENT` on retry.
+- `verify_payment` accepts optional asset and minimum amount checks. The tool and control error paths redact configured API keys; the redaction test passes.
 - End-to-end seller API verification is pending funded keypair access. The named `/workspace/ringside-keys/buyer.json` and `seller.json` paths are absent in this execution environment as of the last check. No private key files are tracked.
 
 ## Local control (implemented, dashboard pending)

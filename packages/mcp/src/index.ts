@@ -8,6 +8,7 @@ import { createPaymentRequest, payPaymentRequest, verifyPayment } from './seller
 import { runCli } from './cli.js';
 import { startControlServer } from './control.js';
 import { registerEngineTools } from './engine-tools.js';
+import { redact } from './log.js';
 
 if (process.argv.length > 2) {
   await runCli(process.argv.slice(2));
@@ -17,7 +18,7 @@ if (process.argv.length > 2) {
 const server = new McpServer({ name: 'ringside-mcp', version: '0.1.0' });
 const output = async (fn: () => Promise<unknown>) => {
   try { return { content: [{ type: 'text' as const, text: JSON.stringify(await fn()) }] }; }
-  catch (error) { return { isError: true, content: [{ type: 'text' as const, text: error instanceof Error ? error.message.replace(/api-key=[^&\s]+/gi, 'api-key=[redacted]') : 'Unknown error' }] }; }
+  catch (error) { return { isError: true, content: [{ type: 'text' as const, text: error instanceof Error ? redact(error.message) : 'Unknown error' }] }; }
 };
 server.registerTool('wallet_info', { description: 'Read the devnet agent identity and public SOL balance', annotations: { readOnlyHint: true } }, () => output(walletInfo));
 server.registerTool('register_private_wallet', { description: 'Register this agent for private payments', annotations: { destructiveHint: true, readOnlyHint: false, openWorldHint: true } }, () => output(registerWallet));
@@ -32,7 +33,7 @@ server.registerTool('deposit_with_interface_setup', { description: 'Create an SP
 server.registerTool('create_payment_request', { description: 'Issue a private payment request for a seller resource', inputSchema: { asset: z.string(), amount: z.string(), resource: z.string(), ttl_seconds: z.number().int().min(1).max(3600).default(300) }, annotations: { readOnlyHint: false, destructiveHint: false } }, ({ asset, amount, resource, ttl_seconds }) => output(() => createPaymentRequest(asset, amount, resource, ttl_seconds)));
 const paymentRequestSchema = z.object({ scheme: z.literal('ringside-private-v1'), network: z.literal('solana-devnet'), pay_to: z.string(), asset: z.string(), amount: z.string(), nonce: z.string(), expires_at: z.string(), resource: z.string() });
 server.registerTool('pay_payment_request', { description: 'Pay a seller request privately and return an X-PAYMENT header', inputSchema: { request: paymentRequestSchema }, annotations: { destructiveHint: true, readOnlyHint: false, openWorldHint: true } }, ({ request }) => output(() => payPaymentRequest(request)));
-server.registerTool('verify_payment', { description: 'Verify an inbound private payment against a stored seller request', inputSchema: { signature: z.string(), nonce: z.string(), expected_payer: z.string().optional(), consume: z.boolean().default(true) }, annotations: { readOnlyHint: false, destructiveHint: false } }, ({ signature, nonce, expected_payer, consume }) => output(() => verifyPayment(signature, nonce, expected_payer, consume)));
+server.registerTool('verify_payment', { description: 'Verify an inbound private payment against a stored seller request', inputSchema: { signature: z.string(), nonce: z.string(), asset: z.string().optional(), min_amount: z.string().optional(), expected_payer: z.string().optional(), consume: z.boolean().default(true) }, annotations: { readOnlyHint: false, destructiveHint: false } }, ({ signature, nonce, asset, min_amount, expected_payer, consume }) => output(() => verifyPayment(signature, nonce, expected_payer, consume, asset, min_amount)));
 registerEngineTools(server);
 await server.connect(new StdioServerTransport());
 startControlServer();
