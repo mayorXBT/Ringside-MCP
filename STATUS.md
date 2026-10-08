@@ -26,3 +26,9 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 - Policy reads local `config.json`, enforces kill switch, read-only mode, asset and recipient allowlists, per-transaction, session, and UTC day caps, and records confirmed spends in SQLite. Its enforcement test passes.
 - Neither transfer nor withdrawal has a funded devnet end-to-end result yet. Sponsor registration and owner-signed policy writes are still pending.
 - `create_test_token` and `deposit_with_interface_setup` are now compiled as MCP tools. They still need funded devnet execution; the policy test and TypeScript checks pass.
+
+## Seller flow (in progress)
+
+- `@ringside/verify` creates requests and checks private receipt evidence for amount, asset, payer, expiry, and replay. Its unit test passes.
+- MCP tools `create_payment_request`, `pay_payment_request`, and `verify_payment` are wired to a SQLite nonce/replay store and the seller wallet's decrypted history. `examples/seller-api` serves `/report` with HTTP 402 and checks `X-PAYMENT` on retry.
+- End-to-end seller API verification is pending funded keypair access. The named `/workspace/ringside-keys/buyer.json` and `seller.json` paths are absent in this execution environment as of the last check. No private key files are tracked.
