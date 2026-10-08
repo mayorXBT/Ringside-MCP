@@ -11,7 +11,7 @@
 
 PRD exit: MCP lists tools; registration, deposit, and balance work on devnet. The five upstream examples require a funded sponsor wallet. No wallet was present in this environment at the start of the build. Record transaction signatures and endpoint findings here when the funded run succeeds.
 
-- MCP currently lists `wallet_info`, `register_private_wallet`, `deposit` (SOL), `sync_balance`, and `read_history`. TypeScript build passes.
+- MCP currently lists `wallet_info`, `register_private_wallet`, `deposit` (SOL or SPL), `sync_balance`, and `read_history`. TypeScript build passes.
 - `wallet_info`, `sync_balance`, and `read_history` ran against devnet using the isolated M1 wallet. The two upstream read-only examples also ran without modification.
 - Endpoint check: Helius devnet RPC works; the example CloudFront indexer sync works; the CloudFront prover health endpoint returns `ok`. Pointing all services at the single Helius URL fails for both sync and prover health, so separate defaults are required today.
 - Funding check: the M1 wallet is `4a1bZaWDgDcThDNV5JPMXeqgVfFaPe5ju9WzQQWU4nB7` (key stored locally at ignored `.local/m1-agent.json`, mode 600). Helius `requestAirdrop` returned HTTP 500 for 0.1 and 1 SOL; public devnet RPC returned `Internal error`; Alchemy demo RPC returned HTTP 429. Registration simulation fails with zero balance. Funded registration and deposit remain unverified.
@@ -24,7 +24,7 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 - `private_transfer` uses recipient registration resolution and rejects an unregistered recipient before constructing a transaction. This guard was checked live against a devnet address.
 - `withdraw` is implemented through the SDK helper. Both spend paths sync before proving and serialize spends within the MCP process.
 - Policy reads local `config.json`, enforces kill switch, read-only mode, asset and recipient allowlists, per-transaction, session, and UTC day caps, and records confirmed spends in SQLite. Its enforcement test passes.
-- Neither transfer nor withdrawal has a funded devnet end-to-end result yet. Sponsor registration and owner-signed policy writes are still pending.
+- Neither transfer nor withdrawal has a funded devnet end-to-end result yet. Sponsor registration is still pending; owner-signed policy write verification is implemented and tested locally.
 - `create_test_token` and `deposit_with_interface_setup` are now compiled as MCP tools. They still need funded devnet execution; the policy test and TypeScript checks pass.
 
 ## Seller flow (in progress)
@@ -48,5 +48,5 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 ## Verification and shipping
 
 - Workspace `pnpm check`, `pnpm test`, and `pnpm build` pass, including dashboard production build. MCP lists 22 tools.
-- CI workflow and MIT license are in the repository.
+- CI workflow and MIT license are in the repository. The first GitHub Actions run completed successfully. Local control HTTP tests cover missing token, wrong signer, valid signed write, and nonce replay.
 - M1 funded check, seller end-to-end payment, live dashboard wallet signing, engine, dashboard deployment, videos, and submission remain open.

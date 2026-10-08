@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { address, appendTransactionMessageInstructions, assertIsTransactionWithBlockhashLifetime, createTransactionMessage, generateKeyPairSigner, getSignatureFromTransaction, pipe, sendTransactionWithoutConfirmingFactory, setTransactionMessageConfig, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, signTransactionMessageWithSigners, signTransactionWithSigners, type Instruction } from '@solana/kit';
-import { buildDepositTransaction, buildRegistrationTransaction, buildTransferTransaction, buildWithdrawalTransaction, createZolanaClient, fetchAssetMetadata, initializePoseidon, LocalKeys, parseAmount, ShieldedKeypair, SigningKey, syncWallet, Wallet, SOL_MINT, type Bytes32, type ZolanaClientConfig } from '@heliuslabs/zolana';
+import { buildDepositTransaction, buildRegistrationTransaction, buildTransferTransaction, buildWithdrawalTransaction, createZolanaClient, fetchAssetMetadata, formatAmount, initializePoseidon, LocalKeys, parseAmount, ShieldedKeypair, SigningKey, syncWallet, Wallet, SOL_MINT, type Bytes32, type ZolanaClientConfig } from '@heliuslabs/zolana';
 import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana/transaction';
 import { isWalletRegistered } from '@heliuslabs/zolana/wallet';
 import { resolveRegisteredAddress } from '@heliuslabs/zolana/wallet';
@@ -86,20 +86,21 @@ export async function registerWallet() {
 }
 
 export async function depositSol(amount: string) {
-  return serializeSpend(() => depositSolLocked(amount));
+  return deposit('SOL', amount);
 }
 
-async function depositSolLocked(amount: string) {
-  if (!/^(0|[1-9]\d*)(\.\d{1,9})?$/.test(amount) || Number(amount) <= 0) throw new Error('amount must be positive SOL with at most 9 decimal places');
-  const [whole, fraction = ''] = amount.split('.');
-  const lamports = BigInt(whole) * 1_000_000_000n + BigInt(fraction.padEnd(9, '0'));
-  assertSpend('deposit', 'SOL', lamports, 9);
-  const { client, identity, signer } = await context();
-  const transaction = await buildDepositTransaction({ client, feePayer: signer.address, depositor: signer.address, recipient: identity.shieldedAddress(), asset: SOL_MINT, amount: lamports });
-  const sent = await sendTransaction(transaction);
-  recordSpend('deposit', 'SOL', lamports, undefined, sent.signature);
-  emitEvent('spend.confirmed', { tool: 'deposit', asset: 'SOL', amount_base_units: lamports.toString(), signature: sent.signature });
-  return { amount, amount_base_units: lamports.toString(), ...sent };
+export async function deposit(asset: string, amount: string, sourceTokenAccount?: string, tokenProgram?: string) {
+  return serializeSpend(async () => {
+    const { client, identity, signer } = await context();
+    const { mint, decimals, base } = await assetAmount(client, asset, amount);
+    if (asset !== 'SOL' && !sourceTokenAccount) throw new Error('source_token_account is required for SPL deposits');
+    assertSpend('deposit', asset, base, decimals);
+    const transaction = await buildDepositTransaction({ client, feePayer: signer.address, depositor: signer.address, recipient: identity.shieldedAddress(), asset: mint, amount: base, splTokenAccount: sourceTokenAccount ? address(sourceTokenAccount) : undefined, splTokenProgram: tokenProgram ? address(tokenProgram) : undefined });
+    const sent = await sendTransaction(transaction);
+    recordSpend('deposit', asset, base, undefined, sent.signature);
+    emitEvent('spend.confirmed', { tool: 'deposit', asset, amount_base_units: base.toString(), signature: sent.signature });
+    return { asset, amount, amount_base_units: base.toString(), ...sent };
+  });
 }
 
 export async function syncPrivate() {
@@ -111,12 +112,20 @@ export async function syncPrivate() {
 
 export async function balances() {
   const wallet = await syncPrivate();
-  return { balances: wallet.balances().map((b) => ({ asset: b.mint === SOL_MINT ? 'SOL' : b.mint, amount_base_units: b.amount.toString(), amount: b.mint === SOL_MINT ? (Number(b.amount) / 1e9).toString() : b.amount.toString(), utxos: b.utxos.length })) };
+  const client = await createZolanaClient(clientConfig());
+  return { balances: await Promise.all(wallet.balances().map(async (b) => {
+    const decimals = b.mint === SOL_MINT ? 9 : (await fetchAssetMetadata(client, b.mint)).decimals;
+    return { asset: b.mint === SOL_MINT ? 'SOL' : b.mint, amount_base_units: b.amount.toString(), amount: formatAmount(b.amount, decimals), utxos: b.utxos.length };
+  })) };
 }
 
 export async function history(limit: number) {
   const wallet = await syncPrivate();
-  return { transactions: wallet.privateTransactions().slice(-limit).map((t) => ({ signature: t.id.signature, slot: t.id.slot.toString(), kind: t.kind, direction: t.direction, status: t.status, asset: t.asset === SOL_MINT ? 'SOL' : t.asset, amount_base_units: t.amount.toString() })) };
+  const client = await createZolanaClient(clientConfig());
+  return { transactions: await Promise.all(wallet.privateTransactions().slice(-limit).map(async (t) => {
+    const decimals = t.asset === SOL_MINT ? 9 : (await fetchAssetMetadata(client, t.asset)).decimals;
+    return { signature: t.id.signature, slot: t.id.slot.toString(), kind: t.kind, direction: t.direction, status: t.status, asset: t.asset === SOL_MINT ? 'SOL' : t.asset, amount: formatAmount(t.amount, decimals), amount_base_units: t.amount.toString() };
+  })) };
 }
 
 let spendQueue: Promise<void> = Promise.resolve();
