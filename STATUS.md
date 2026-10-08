@@ -24,4 +24,5 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 - `private_transfer` uses recipient registration resolution and rejects an unregistered recipient before constructing a transaction. This guard was checked live against a devnet address.
 - `withdraw` is implemented through the SDK helper. Both spend paths sync before proving and serialize spends within the MCP process.
 - Policy reads local `config.json`, enforces kill switch, read-only mode, asset and recipient allowlists, per-transaction, session, and UTC day caps, and records confirmed spends in SQLite. Its enforcement test passes.
-- Neither transfer nor withdrawal has a funded devnet end-to-end result yet. SPL interface setup, test token creation, sponsor registration, and owner-signed policy writes are still pending.
+- Neither transfer nor withdrawal has a funded devnet end-to-end result yet. Sponsor registration and owner-signed policy writes are still pending.
+- `create_test_token` and `deposit_with_interface_setup` are now compiled as MCP tools. They still need funded devnet execution; the policy test and TypeScript checks pass.
