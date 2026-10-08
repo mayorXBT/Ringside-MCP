@@ -18,3 +18,10 @@ PRD exit: MCP lists tools; registration, deposit, and balance work on devnet. Th
 - The formal M1 check reached its funding gate and stopped at 0 SOL on Oct 8. Once funded, run `RINGSIDE_KEYPAIR=/workspace/Ringside-MCP/.local/m1-agent.json pnpm check:m1` with `HELIUS_API_KEY` set. This registers the wallet and deposits 0.01 devnet SOL.
 
 The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstream currently exposes commit `3d39626853fea338efc802896024cabda39ed4ab` and examples pinned to `0.4.0-alpha`. Keep this compatibility difference visible during the port.
+
+## Milestone 2: transfers and policy (in progress)
+
+- `private_transfer` uses recipient registration resolution and rejects an unregistered recipient before constructing a transaction. This guard was checked live against a devnet address.
+- `withdraw` is implemented through the SDK helper. Both spend paths sync before proving and serialize spends within the MCP process.
+- Policy reads local `config.json`, enforces kill switch, read-only mode, asset and recipient allowlists, per-transaction, session, and UTC day caps, and records confirmed spends in SQLite. Its enforcement test passes.
+- Neither transfer nor withdrawal has a funded devnet end-to-end result yet. SPL interface setup, test token creation, sponsor registration, and owner-signed policy writes are still pending.

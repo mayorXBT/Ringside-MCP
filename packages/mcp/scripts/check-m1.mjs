@@ -1,4 +1,6 @@
-import { balances, depositSol, history, registerWallet, walletInfo } from '../dist/core.js';
+import { resolve } from 'node:path';
+process.env.RINGSIDE_HOME ||= resolve(import.meta.dirname, '../../../.local/m1-home');
+const { balances, depositSol, history, registerWallet, walletInfo } = await import('../dist/core.js');
 
 const info = await walletInfo();
 console.log('wallet', info.solana_address, 'registered', info.registered, 'public SOL', info.public_sol_balance);
