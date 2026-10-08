@@ -71,3 +71,18 @@ export function recordSpend(tool: string, asset: string, amount: bigint, recipie
   try { db.prepare('INSERT INTO spends (id, ts, session, tool, asset, amount_base, recipient, signature) VALUES (?, ?, ?, ?, ?, ?, ?, ?)').run(randomUUID(), Date.now(), session, tool, asset, amount.toString(), recipient || null, signature); }
   finally { db.close(); }
 }
+
+export function solBudget() {
+  const policy = loadPolicy();
+  const caps = policy.assets.SOL;
+  if (!caps) return null;
+  const db = ledger();
+  try {
+    const day = new Date().setUTCHours(0, 0, 0, 0);
+    const rows = db.prepare('SELECT ts, session, amount_base FROM spends WHERE asset = ?').all('SOL') as { ts: number; session: string; amount_base: string }[];
+    const spentDay = rows.filter((row) => row.ts >= day).reduce((sum, row) => sum + BigInt(row.amount_base), 0n);
+    const spentSession = rows.filter((row) => row.session === session).reduce((sum, row) => sum + BigInt(row.amount_base), 0n);
+    const format = (amount: bigint) => (Number(amount) / 1e9).toString();
+    return { asset: 'SOL', spent_today: format(spentDay), spent_session: format(spentSession), max_per_day: caps.max_per_day, max_per_session: caps.max_per_session };
+  } finally { db.close(); }
+}

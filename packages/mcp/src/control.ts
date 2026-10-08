@@ -5,7 +5,8 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import bs58 from 'bs58';
 import { balances, history, walletInfo } from './core.js';
-import { loadPolicy, ringsideHome, validatePolicy } from './policy.js';
+import { loadPolicy, ringsideHome, solBudget, validatePolicy } from './policy.js';
+import { emitEvent, eventBus } from './events.js';
 
 const corsOrigins = () => (process.env.RINGSIDE_DASHBOARD_ORIGINS || 'http://localhost:3000').split(',').map((item) => item.trim());
 const tokenPath = () => join(ringsideHome(), 'pairing-token');
@@ -78,10 +79,22 @@ async function handle(request: IncomingMessage, response: ServerResponse) {
   if (!authorizedRead(request)) { json(response, 401, { error: 'Pairing token required' }); return; }
   const path = new URL(request.url || '/', 'http://127.0.0.1').pathname;
   try {
-    if (request.method === 'GET' && path === '/v1/status') { json(response, 200, { ...await walletInfo(), policy: loadPolicy() }); return; }
+    if (request.method === 'GET' && path === '/v1/status') {
+      const config = existsSync(configPath()) ? JSON.parse(readFileSync(configPath(), 'utf8')) as { owner_pubkey?: string; policy_version?: number } : {};
+      json(response, 200, { ...await walletInfo(), owner_pubkey: config.owner_pubkey, policy_version: config.policy_version, policy: loadPolicy(), budget: solBudget() }); return;
+    }
     if (request.method === 'GET' && path === '/v1/balances') { json(response, 200, await balances()); return; }
     if (request.method === 'GET' && path === '/v1/activity') { json(response, 200, await history(50)); return; }
-    if (request.method === 'GET' && path === '/v1/policy') { json(response, 200, { policy: loadPolicy() }); return; }
+    if (request.method === 'GET' && path === '/v1/events') {
+      response.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'keep-alive' });
+      response.write(': connected\n\n');
+      const onEvent = (event: unknown) => response.write(`data: ${JSON.stringify(event)}\n\n`);
+      eventBus.on('event', onEvent);
+      const heartbeat = setInterval(() => response.write(': heartbeat\n\n'), 15_000);
+      response.on('close', () => { clearInterval(heartbeat); eventBus.off('event', onEvent); });
+      return;
+    }
+    if (request.method === 'GET' && path === '/v1/policy') { json(response, 200, { policy: loadPolicy(), budget: solBudget() }); return; }
     if (request.method === 'POST' && (path === '/v1/policy' || path === '/v1/kill')) {
       if (!existsSync(configPath())) { json(response, 409, { error: 'Run init with an owner wallet first' }); return; }
       const config = JSON.parse(readFileSync(configPath(), 'utf8')) as { owner_pubkey: string; policy: unknown; policy_version: number };
@@ -101,6 +114,7 @@ async function handle(request: IncomingMessage, response: ServerResponse) {
       const temp = `${configPath()}.tmp`;
       writeFileSync(temp, JSON.stringify(config, null, 2), { mode: 0o600 });
       renameSync(temp, configPath());
+      emitEvent(path === '/v1/kill' ? 'policy.kill' : 'policy.updated', { policy_version: config.policy_version });
       json(response, 200, { policy_version: config.policy_version, policy: config.policy });
       return;
     }

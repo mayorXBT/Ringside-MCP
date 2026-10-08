@@ -8,4 +8,6 @@ Run `HELIUS_API_KEY=... pnpm check:devnet` for a read-only RPC check. After fund
 
 For a fresh dedicated wallet, run `node packages/mcp/dist/index.js init --owner <your-wallet-address>`, then fund the printed agent address with devnet SOL. `node packages/mcp/dist/index.js pair` prints the local dashboard pairing token; `kill` and `kill off` toggle the local emergency stop. Set `HELIUS_API_KEY` before starting the MCP server. The control API listens on `127.0.0.1:7420` and requires the pairing token; policy writes also require the owner's wallet signature.
 
+The owner dashboard runs locally with `pnpm --dir apps/dashboard dev` after `pnpm install`. Open `http://localhost:3000`, paste the pairing token, then connect the configured Phantom owner wallet. Set `RINGSIDE_DASHBOARD_ORIGINS` on the MCP server to include a hosted dashboard origin before using it remotely.
+
 Devnet only. Default Rings transfers hide asset and amount while sender and recipient remain public. Deposits and withdrawals reveal their details on-chain.

@@ -7,6 +7,7 @@ import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana/transaction
 import { isWalletRegistered } from '@heliuslabs/zolana/wallet';
 import { resolveRegisteredAddress } from '@heliuslabs/zolana/wallet';
 import { assertSpend, recordSpend } from './policy.js';
+import { emitEvent } from './events.js';
 import { getCreateAccountInstruction } from '@solana-program/system';
 import { getInitializeAccount3Instruction, getInitializeMint2Instruction, getMintSize, getMintToInstruction, getTokenSize, TOKEN_PROGRAM_ADDRESS } from '@solana-program/token';
 import { getSplAssetVaultAddress } from '@heliuslabs/zolana/addresses';
@@ -94,6 +95,7 @@ async function depositSolLocked(amount: string) {
   const transaction = await buildDepositTransaction({ client, feePayer: signer.address, depositor: signer.address, recipient: identity.shieldedAddress(), asset: SOL_MINT, amount: lamports });
   const sent = await sendTransaction(transaction);
   recordSpend('deposit', 'SOL', lamports, undefined, sent.signature);
+  emitEvent('spend.confirmed', { tool: 'deposit', asset: 'SOL', amount_base_units: lamports.toString(), signature: sent.signature });
   return { amount, amount_base_units: lamports.toString(), ...sent };
 }
 
@@ -145,6 +147,7 @@ export async function privateTransfer(recipient: string, asset: string, amount: 
       const transaction = await buildTransferTransaction({ client, wallet, keys, feePayer: signer.address, recipient: resolved.address, asset: mint, amount: base });
       const sent = await sendTransaction(transaction);
       recordSpend('private_transfer', asset, base, recipient, sent.signature);
+      emitEvent('spend.confirmed', { tool: 'private_transfer', asset, amount_base_units: base.toString(), recipient, signature: sent.signature });
       return { amount, amount_base_units: base.toString(), recipient, ...sent };
     } finally { keys.destroy(); }
   });
@@ -163,6 +166,7 @@ export async function withdraw(asset: string, amount: string, recipient?: string
       const transaction = await buildWithdrawalTransaction({ client, wallet, keys, feePayer: signer.address, recipient: destination, asset: mint, amount: base });
       const sent = await sendTransaction(transaction);
       recordSpend('withdraw', asset, base, destination, sent.signature);
+      emitEvent('spend.confirmed', { tool: 'withdraw', asset, amount_base_units: base.toString(), recipient: destination, signature: sent.signature });
       return { amount, amount_base_units: base.toString(), recipient: destination, ...sent };
     } finally { keys.destroy(); }
   });
@@ -205,6 +209,7 @@ export async function depositWithInterfaceSetup(mintText: string, amount: string
     instructions.push(await depositInstruction({ tree: client.tree, depositor: signer, deposits: [{ asset: DepositAsset.spl({ mint, sourceTokenAccount: sourceToken, tokenProgram: TOKEN_PROGRAM_ADDRESS }), viewTag: shielded.confidentialViewTag(), recipientOwnerHash: shielded.ownerHash(), amount: base }] }));
     const sent = await sendInstructions(instructions);
     recordSpend('deposit_with_interface_setup', mintText, base, undefined, sent.signature);
+    emitEvent('spend.confirmed', { tool: 'deposit_with_interface_setup', asset: mintText, amount_base_units: base.toString(), signature: sent.signature });
     return { mint: mintText, amount, amount_base_units: base.toString(), interface_created: !exists, ...sent };
   });
 }

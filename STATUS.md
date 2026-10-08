@@ -37,4 +37,4 @@ The PRD references Zolana examples commit `3069d79` and SDK `0.3.1-alpha`. Upstr
 
 - `ringside-mcp init --owner <address>` creates an agent keypair, policy config, and pairing token with mode 600; `pair`, `kill`, and `status` work locally.
 - Control API binds `127.0.0.1`, requires pairing token for reads, and verifies owner ed25519 signatures on policy/kill writes. Read endpoints for status, balances, activity, and policy are present. Signature tampering tests pass; unauthorized/authorized HTTP status checks returned 401/200.
-- The dashboard UI, SSE feed, live signed-policy browser flow, approval queue, and auditor mode remain pending.
+- The Next.js dashboard now builds with wallet connect, pairing, overview balances and SOL budget gauges, activity, signed policy editing, kill switch, and an SSE refresh path with five-second polling fallback. Production deployment and live wallet signing remain pending. The approval queue and auditor mode remain pending.
