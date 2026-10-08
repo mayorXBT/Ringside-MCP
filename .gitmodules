@@ -1,0 +1,3 @@
+[submodule "vendor/zolana-examples"]
+	path = vendor/zolana-examples
+	url = https://github.com/helius-labs/zolana-examples.git

@@ -1,0 +1,10 @@
+{
+  "name": "ringside-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.18.0",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "check": "pnpm --dir vendor/zolana-examples/typescript-client check",
+    "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs"
+  }
+}
