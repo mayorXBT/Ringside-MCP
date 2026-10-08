@@ -28,6 +28,8 @@ export function loadPolicy() {
   return schema.parse(raw).policy;
 }
 
+export function validatePolicy(value: unknown) { return schema.shape.policy.parse(value); }
+
 function ledger() {
   mkdirSync(ringsideHome(), { recursive: true, mode: 0o700 });
   const db = new DatabaseSync(join(ringsideHome(), 'ledger.sqlite'));

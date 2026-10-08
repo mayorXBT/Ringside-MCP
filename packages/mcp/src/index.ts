@@ -5,6 +5,13 @@ import { z } from 'zod';
 import { balances, createTestToken, depositSol, depositWithInterfaceSetup, history, privateTransfer, registerWallet, walletInfo, withdraw } from './core.js';
 import { loadPolicy } from './policy.js';
 import { createPaymentRequest, payPaymentRequest, verifyPayment } from './seller.js';
+import { runCli } from './cli.js';
+import { startControlServer } from './control.js';
+
+if (process.argv.length > 2) {
+  await runCli(process.argv.slice(2));
+  process.exit(0);
+}
 
 const server = new McpServer({ name: 'ringside-mcp', version: '0.1.0' });
 const output = async (fn: () => Promise<unknown>) => {
@@ -26,3 +33,4 @@ const paymentRequestSchema = z.object({ scheme: z.literal('ringside-private-v1')
 server.registerTool('pay_payment_request', { description: 'Pay a seller request privately and return an X-PAYMENT header', inputSchema: { request: paymentRequestSchema }, annotations: { destructiveHint: true, readOnlyHint: false, openWorldHint: true } }, ({ request }) => output(() => payPaymentRequest(request)));
 server.registerTool('verify_payment', { description: 'Verify an inbound private payment against a stored seller request', inputSchema: { signature: z.string(), nonce: z.string(), expected_payer: z.string().optional(), consume: z.boolean().default(true) }, annotations: { readOnlyHint: false, destructiveHint: false } }, ({ signature, nonce, expected_payer, consume }) => output(() => verifyPayment(signature, nonce, expected_payer, consume)));
 await server.connect(new StdioServerTransport());
+startControlServer();
