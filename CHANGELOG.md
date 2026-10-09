@@ -2,6 +2,8 @@
 
 ## 2026-10-09
 
+- Added `DESIGN.md` and redesigned the public dashboard into a landing page plus `/app` owner, activity, policy, and auditor routes. Added first-run pairing, a connection drawer, signed review dialogs, structured policy editing, accurate privacy/preview copy, responsive navigation, and illustrative screenshots.
+
 - Disabled Vercel project SSO protection for the dashboard; the public production and preview URLs return HTTP 200 without authentication.
 - Built upstream swap and escrow SBF programs, loaded them on Zolana localnet, and passed upstream make/take and lock/withdraw fixture tests. Kept the Ringside engine at Tier C pending user-key orchestration and spend-policy integration; recorded a transient Photon migration failure and the successful fresh retry.
 

@@ -2,9 +2,9 @@
 
 Private agent payments on Solana Rings, with owner spending controls and seller verification. The MCP server runs on the agent's machine, keeps its keypair local, and works with Claude Desktop, Claude Code, Cursor, and other MCP clients. Solana **devnet is the target**; a complete SOL payment and seller flow has also passed on Zolana localnet while Helius devnet proof services are failing.
 
-![Ringside owner dashboard before pairing](docs/dashboard.png)
+![Ringside landing page](docs/landing.png)
 
-![Localnet private activity after a payment](docs/dashboard-live.png)
+![Ringside dashboard design with illustrative localnet data](docs/dashboard-redesign-preview.png)
 
 [PRD](PRD.md) · [Build status](STATUS.md) · [Reproducible demo steps](scripts/demo.md) · [Security model](docs/security.md)
 
@@ -56,7 +56,7 @@ The core SOL deposit → private transfer → seller balance sync → withdrawal
 
 ## Owner dashboard
 
-[Open the public dashboard](https://ringside-dashboard.vercel.app/), or run `pnpm --dir apps/dashboard dev`. Pair with the token printed by `RINGSIDE_HOME=/path/to/buyer-home node packages/mcp/dist/index.js pair`. The dashboard reads the local agent at `127.0.0.1:7420`, displays private balances and history, and lets the configured owner wallet sign policy, kill-switch, deposit, and withdrawal actions. The `/audit` route is a read-only fallback using the local control API. Browser-side viewing-key decryption remains unverified. A hosted page may need Chrome for HTTPS-to-localhost access; include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` on the MCP process.
+[Open the public dashboard](https://ringside-dashboard.vercel.app/), or run `pnpm --dir apps/dashboard dev`. Pair with the token printed by `RINGSIDE_HOME=/path/to/buyer-home node packages/mcp/dist/index.js pair`. The dashboard reads the local agent at `127.0.0.1:7420`, displays private balances and history, and lets the configured owner wallet sign policy, kill-switch, deposit, and withdrawal actions. The dashboard lives at `/app`, with a public landing page at `/`. The `/app/audit` route (also reachable from `/audit`) is a read-only fallback using the local control API. Browser-side viewing-key decryption remains unverified. A hosted page may need Chrome for HTTPS-to-localhost access; include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` on the MCP process.
 
 ## Privacy and safety
 

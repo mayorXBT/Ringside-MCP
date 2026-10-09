@@ -2,6 +2,13 @@
 
 Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Design update (Oct 9)
+
+- Added the attached `DESIGN.md` as the design source and rebuilt the public Next.js experience: marketing landing at `/`, owner overview at `/app`, activity at `/app/activity`, structured policy editor at `/app/policy`, and read-only auditor view at `/app/audit` with `/audit` redirect. The old paired dashboard remains backed by the same local control API and byte-identical owner-signature envelope.
+- New UI uses the specified near-black/periwinkle/cyan tokens, Geist and Instrument Serif, Tailwind 4, Radix dialogs, responsive sidebar/bottom navigation, first-run pairing, connection drawer, private balance hero, privacy explanations, activity detail, signed kill/fund review, and structured policy diff review. The footer and tool showcase label swap/escrow Preview and devnet transfers blocked upstream.
+- Desktop/mobile browser smoke checks showed no page errors or horizontal overflow; a mocked localnet control API verified the populated overview, activity, and policy routes. Screenshots in `docs/` show the landing page and illustrative populated data; the illustration is not fresh live-chain evidence. The dashboard production build and TypeScript check pass.
+- **Open after redesign:** hosted redeployment, real Phantom signature check, accessible audit of dialogs/forms, and live devnet transfer when Helius proof services recover. Activity API has slots but no timestamps, so the UI displays slot instead of invented relative dates. The separate auditor token is a pairing credential for the local control API; a true browser viewing key is still unavailable.
+
 ## What is built
 
 - **Workspace and source:** Node 24 / pnpm 11 monorepo, MIT license, README quickstart, architecture and security notes, GitHub Actions CI. `vendor/zolana-examples` is a git submodule at `3d39626853fea338efc802896024cabda39ed4ab`. The upstream TypeScript examples pass their format and type checks.
