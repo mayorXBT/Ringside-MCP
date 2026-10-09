@@ -22,6 +22,11 @@ Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The
 - Simplified the dashboard chrome to the network banner plus one visible badge, aligned the wordmark ring, dimmed and disabled unpaired navigation, made the desktop owner wallet button primary while disconnected, and added a guided copy action to onboarding. Auditor onboarding no longer repeats the connection heading or VIEW ONLY label; connection troubleshooting is collapsed.
 - Visual review at 390px and 1440px found no horizontal overflow. The generated landing screenshot was refreshed. The illustrative hero remains clearly labeled as an example; live devnet transfer status is unchanged. `pnpm check`, `pnpm test`, and `pnpm build` passed. Commit `cea4156` is on `main`; production deployment `dpl_Fj6jrsmm9VUcLT6scpTT1gVcZ6tT` reached READY at `https://ringside-dashboard.vercel.app/`. Anonymous HTTP checks returned 200 for `/`, `/app`, and `/app/audit`; the landing HTML contains the masked explorer chip and compact install button.
 
+## 0x-inspired redesign in progress (Oct 9)
+
+- Studied 0x.org homepage and `/products/swap` directly at 1280px and 390px. The reference uses a light cool canvas, centered headline, two audience cards with white/black contrast, pill navigation, and restrained proof panels.
+- Hero and navigation rebuilt with Ringside copy and honest stats. The visual direction follows 0x structure, not its product claims. Desktop/mobile captures show no horizontal overflow. Product screenshot, lower sections, app shell, and final deployment are next.
+
 ## What is built
 
 - **Workspace and source:** Node 24 / pnpm 11 monorepo, MIT license, README quickstart, architecture and security notes, GitHub Actions CI. `vendor/zolana-examples` is a git submodule at `3d39626853fea338efc802896024cabda39ed4ab`. The upstream TypeScript examples pass their format and type checks.
