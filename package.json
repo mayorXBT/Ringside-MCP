@@ -9,6 +9,8 @@
     "build": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build && pnpm --filter ringside-dashboard build",
     "check:examples": "pnpm --dir vendor/zolana-examples/typescript-client check",
     "check:m1": "pnpm --filter ringside-mcp check:m1",
+    "check:live-transfer": "pnpm --filter ringside-mcp check:live-transfer",
+    "check:seller": "node --use-env-proxy scripts/check-seller-flow.mjs",
     "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs"
   }
 }

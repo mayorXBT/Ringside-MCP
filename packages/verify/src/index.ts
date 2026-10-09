@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 
 export interface PaymentRequest {
   scheme: 'ringside-private-v1';
-  network: 'solana-devnet';
+  network: 'solana-devnet' | 'solana-localnet';
   pay_to: string;
   asset: string;
   amount: string;
@@ -21,17 +21,17 @@ export interface PaymentEvidence {
   slot: bigint;
 }
 
-export function createPaymentRequest(input: { pay_to: string; asset: string; amount: string; resource: string; ttl_seconds?: number }, now = Date.now()): PaymentRequest {
+export function createPaymentRequest(input: { pay_to: string; asset: string; amount: string; resource: string; ttl_seconds?: number; network?: PaymentRequest['network'] }, now = Date.now()): PaymentRequest {
   const ttl = input.ttl_seconds ?? 300;
   if (!Number.isInteger(ttl) || ttl < 1 || ttl > 3600) throw new Error('ttl_seconds must be 1 to 3600');
   if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(input.amount) || Number(input.amount) <= 0) throw new Error('Invalid payment amount');
-  return { scheme: 'ringside-private-v1', network: 'solana-devnet', pay_to: input.pay_to, asset: input.asset, amount: input.amount, nonce: randomBytes(16).toString('hex'), expires_at: new Date(now + ttl * 1000).toISOString(), resource: input.resource };
+  return { scheme: 'ringside-private-v1', network: input.network || 'solana-devnet', pay_to: input.pay_to, asset: input.asset, amount: input.amount, nonce: randomBytes(16).toString('hex'), expires_at: new Date(now + ttl * 1000).toISOString(), resource: input.resource };
 }
 
 export function verifyPayment(input: { request: PaymentRequest; evidence?: PaymentEvidence; expected_payer?: string; expected_amount_base_units: bigint; consumed: boolean; now?: number }) {
   const { request, evidence, expected_payer, expected_amount_base_units, consumed } = input;
   const now = input.now ?? Date.now();
-  if (request.scheme !== 'ringside-private-v1' || request.network !== 'solana-devnet') return { valid: false, reason: 'INVALID_REQUEST' };
+  if (request.scheme !== 'ringside-private-v1' || !['solana-devnet', 'solana-localnet'].includes(request.network)) return { valid: false, reason: 'INVALID_REQUEST' };
   if (Date.parse(request.expires_at) <= now) return { valid: false, reason: 'EXPIRED' };
   if (consumed) return { valid: false, reason: 'REPLAY' };
   if (!evidence || evidence.status !== 'confirmed' || evidence.direction !== 'inbound') return { valid: false, reason: 'PAYMENT_NOT_FOUND' };

@@ -55,7 +55,7 @@ export function assertSpend(tool: string, asset: string, amount: bigint, decimal
   if (amount > decimalBase(cap.max_per_tx, decimals)) throw new Error('POLICY_DENIED: transaction cap exceeded');
   const db = ledger();
   try {
-    const day = new Date().setUTCHours(0, 0, 0, 0);
+    const day = Date.now() - 24 * 60 * 60 * 1000;
     const dayRows = db.prepare('SELECT amount_base FROM spends WHERE asset = ? AND ts >= ?').all(asset, day) as { amount_base: string }[];
     const sessionRows = db.prepare('SELECT amount_base FROM spends WHERE asset = ? AND session = ?').all(asset, session) as { amount_base: string }[];
     const daily = dayRows.reduce((sum, row) => sum + BigInt(row.amount_base), 0n);
@@ -78,7 +78,7 @@ export function solBudget() {
   if (!caps) return null;
   const db = ledger();
   try {
-    const day = new Date().setUTCHours(0, 0, 0, 0);
+    const day = Date.now() - 24 * 60 * 60 * 1000;
     const rows = db.prepare('SELECT ts, session, amount_base FROM spends WHERE asset = ?').all('SOL') as { ts: number; session: string; amount_base: string }[];
     const spentDay = rows.filter((row) => row.ts >= day).reduce((sum, row) => sum + BigInt(row.amount_base), 0n);
     const spentSession = rows.filter((row) => row.session === session).reduce((sum, row) => sum + BigInt(row.amount_base), 0n);

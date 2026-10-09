@@ -18,14 +18,16 @@ import { depositInstruction, DepositAsset } from '@heliuslabs/zolana/interface';
 const expand = (value: string) => value === '~' ? homedir() : value.startsWith('~/') ? join(homedir(), value.slice(2)) : value;
 
 export function clientConfig(): ZolanaClientConfig {
+  if (process.env.RINGSIDE_NETWORK && !['devnet', 'localnet'].includes(process.env.RINGSIDE_NETWORK)) throw new Error('RINGSIDE_NETWORK must be devnet or localnet');
+  const localnet = process.env.RINGSIDE_NETWORK === 'localnet';
   const key = process.env.HELIUS_API_KEY || process.env.API_KEY;
-  const endpoint = process.env.ZOLANA_ENDPOINT || (key ? `https://devnet.helius-rpc.com/?api-key=${encodeURIComponent(key)}` : undefined);
+  const endpoint = process.env.ZOLANA_ENDPOINT || (localnet ? 'http://127.0.0.1:8899' : key ? `https://devnet.helius-rpc.com/?api-key=${encodeURIComponent(key)}` : undefined);
   if (!endpoint) throw new Error('HELIUS_API_KEY or ZOLANA_ENDPOINT is required');
   if (/mainnet/i.test(endpoint)) throw new Error('Mainnet is disabled');
   return {
     solanaRpcUrl: endpoint,
-    indexerUrl: process.env.ZOLANA_INDEXER_URL || 'https://d2xah7tnhdhcom.cloudfront.net',
-    proverUrl: process.env.ZOLANA_PROVER_URL || 'https://d21ni15goiip6l.cloudfront.net',
+    indexerUrl: process.env.ZOLANA_INDEXER_URL || (localnet ? 'http://127.0.0.1:8784' : 'https://d2xah7tnhdhcom.cloudfront.net'),
+    proverUrl: process.env.ZOLANA_PROVER_URL || (localnet ? 'http://127.0.0.1:3001' : 'https://d21ni15goiip6l.cloudfront.net'),
   };
 }
 
@@ -47,7 +49,7 @@ export async function walletInfo() {
   const publicLamports = await client.getBalance(signer.address);
   const policy = loadPolicy();
   const engine = await engineHealth();
-  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), network: 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only } };
+  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), network: process.env.RINGSIDE_NETWORK === 'localnet' ? 'localnet' : 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only } };
 }
 
 export async function sendTransaction(transaction: Parameters<typeof signTransactionWithSigners>[1]) {
@@ -57,7 +59,8 @@ export async function sendTransaction(transaction: Parameters<typeof signTransac
   await sendTransactionWithoutConfirmingFactory({ rpc: client.solanaRpc })(signed, { commitment: 'confirmed' });
   const signature = getSignatureFromTransaction(signed);
   const slot = await client.confirmTransaction(signature);
-  return { signature, slot: slot.toString(), explorer_url: `https://explorer.solana.com/tx/${signature}?cluster=devnet` };
+  const cluster = process.env.RINGSIDE_NETWORK === 'localnet' ? `custom&customUrl=${encodeURIComponent(String(clientConfig().solanaRpcUrl))}` : 'devnet';
+  return { signature, slot: slot.toString(), explorer_url: `https://explorer.solana.com/tx/${signature}?cluster=${cluster}` };
 }
 
 async function sendInstructions(instructions: readonly Instruction[]) {
@@ -74,7 +77,8 @@ async function sendInstructions(instructions: readonly Instruction[]) {
   await sendTransactionWithoutConfirmingFactory({ rpc: client.solanaRpc })(signed, { commitment: 'confirmed' });
   const signature = getSignatureFromTransaction(signed);
   const slot = await client.confirmTransaction(signature);
-  return { signature, slot: slot.toString(), explorer_url: `https://explorer.solana.com/tx/${signature}?cluster=devnet` };
+  const cluster = process.env.RINGSIDE_NETWORK === 'localnet' ? `custom&customUrl=${encodeURIComponent(String(clientConfig().solanaRpcUrl))}` : 'devnet';
+  return { signature, slot: slot.toString(), explorer_url: `https://explorer.solana.com/tx/${signature}?cluster=${cluster}` };
 }
 
 export async function registerWallet() {

@@ -35,6 +35,8 @@ The same stdio command works in Claude Code and Cursor MCP settings. Keep `RINGS
 
 Run `HELIUS_API_KEY=... pnpm check:devnet` for a read-only RPC check. After funding a dedicated devnet keypair with at least 0.03 SOL, run `RINGSIDE_KEYPAIR=/path/to/keypair.json pnpm check:m1` to register and deposit 0.01 SOL. Its result is tracked in [STATUS.md](STATUS.md). The server package builds with `pnpm --filter ringside-mcp build` and runs over stdio with `node --use-env-proxy packages/mcp/dist/index.js`.
 
+To retry the currently blocked private transfer and withdrawal when the proof services recover, build the workspace and set `RINGSIDE_BUYER_KEYPAIR`, `RINGSIDE_SELLER_KEYPAIR`, `HELIUS_API_KEY`, and `RINGSIDE_RUN_LIVE_TRANSFER=1`, then run `pnpm check:live-transfer`. This submits a 0.003 SOL private transfer and a 0.001 SOL withdrawal; adjust `RINGSIDE_TEST_AMOUNT` and `RINGSIDE_TEST_WITHDRAW_AMOUNT` if needed. The script refuses to spend without the explicit flag. For a local `zolana dev start` network, set `RINGSIDE_NETWORK=localnet`; the MCP defaults to RPC `127.0.0.1:8899`, indexer `:8784`, and prover `:3001` and does not require `HELIUS_API_KEY`.
+
 `node packages/mcp/dist/index.js pair` prints the local dashboard pairing token; `kill` and `kill off` toggle the local emergency stop. The control API listens on `127.0.0.1:7420` and requires the pairing token; policy writes also require the owner's wallet signature.
 
 The owner dashboard runs locally with `pnpm --dir apps/dashboard dev` after `pnpm install`. Open `http://localhost:3000`, paste the pairing token, then connect the configured Phantom owner wallet. Set `RINGSIDE_DASHBOARD_ORIGINS` on the MCP server to include a hosted dashboard origin before using it remotely.

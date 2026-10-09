@@ -16,7 +16,7 @@ function store() {
 export async function createPaymentRequest(asset: string, amount: string, resource: string, ttlSeconds = 300) {
   const info = await walletInfo();
   if (!info.registered) throw new Error('Seller wallet must register before requesting private payments');
-  const request = makeRequest({ pay_to: info.solana_address, asset, amount, resource, ttl_seconds: ttlSeconds });
+  const request = makeRequest({ pay_to: info.solana_address, asset, amount, resource, ttl_seconds: ttlSeconds, network: info.network === 'localnet' ? 'solana-localnet' : 'solana-devnet' });
   const db = store();
   try { db.prepare('INSERT INTO payment_requests (nonce, body, created_at) VALUES (?, ?, ?)').run(request.nonce, JSON.stringify(request), Date.now()); }
   finally { db.close(); }
@@ -24,7 +24,8 @@ export async function createPaymentRequest(asset: string, amount: string, resour
 }
 
 export async function payPaymentRequest(request: PaymentRequest) {
-  if (request.scheme !== 'ringside-private-v1' || request.network !== 'solana-devnet' || Date.parse(request.expires_at) <= Date.now()) throw new Error('Invalid or expired payment request');
+  const expectedNetwork = process.env.RINGSIDE_NETWORK === 'localnet' ? 'solana-localnet' : 'solana-devnet';
+  if (request.scheme !== 'ringside-private-v1' || request.network !== expectedNetwork || Date.parse(request.expires_at) <= Date.now()) throw new Error('Invalid, cross-network, or expired payment request');
   const sent = await privateTransfer(request.pay_to, request.asset, request.amount);
   const payer = (await walletInfo()).solana_address;
   const x_payment_header = Buffer.from(JSON.stringify({ signature: sent.signature, nonce: request.nonce, payer })).toString('base64');

@@ -5,7 +5,7 @@
   "type": "module",
   "bin": { "ringside-mcp": "dist/index.js" },
   "exports": { "./seller": "./dist/seller.js" },
-  "scripts": { "build": "tsc", "check": "tsc --noEmit", "test": "node --test test/*.test.mjs", "dev": "node --use-env-proxy dist/index.js", "check:m1": "node --use-env-proxy scripts/check-m1.mjs" },
+  "scripts": { "build": "tsc", "check": "tsc --noEmit", "test": "node --test test/*.test.mjs", "dev": "node --use-env-proxy dist/index.js", "check:m1": "node --use-env-proxy scripts/check-m1.mjs", "check:live-transfer": "node --use-env-proxy scripts/check-live-transfer.mjs" },
   "dependencies": {
     "@heliuslabs/zolana": "0.3.1-alpha",
     "@modelcontextprotocol/sdk": "^1.0.0",

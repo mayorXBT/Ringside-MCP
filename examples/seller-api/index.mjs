@@ -17,7 +17,7 @@ const server = createServer(async (request, response) => {
       }
       const verdict = await verifyPayment(proof.signature, proof.nonce, proof.payer);
       if (verdict.valid) {
-        response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ report: 'Premium devnet market report', payment: verdict }));
+        response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ report: 'Premium market report', payment: verdict }));
         return;
       }
       response.writeHead(402, { 'content-type': 'application/json' }).end(JSON.stringify(verdict));
