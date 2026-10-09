@@ -1,6 +1,6 @@
 # Ringside MCP build status
 
-Updated Oct 8, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
 ## What is built
 
@@ -20,6 +20,12 @@ Updated Oct 8, 2026 (UTC). This is the handoff for continuing the PRD build. The
 5. **Engine tier:** Rust, Cargo, and Solana CLI are absent here; `/usr/bin/go` is not the required Go toolchain. The PRD allows Tier C. Its upstream swap/escrow proving keys are insecure test keys, and the example escrow only lets its creator withdraw after a timelock. An owner-approved bounty release would be a second, separate private transfer.
 6. **Dashboard scope:** A functional Next.js page was built with plain CSS first. Tailwind/shadcn styling, auditor mode, approval queue, and production deployment remain open.
 
+## Milestone 1 funded result
+
+- Supplied buyer and seller keypairs are outside the repository at `/workspace/ringside-keys/buyer.json` and `seller.json` (directory 0700, files 0600). Their derived public addresses are buyer `GxCNFRN7zRC43ugwdGQ5AsVZqkLFY2rviL8fts2gUaZP` and seller `79ARuP2P78svsx3wRyYKuD6mizktZvqkhuqF3yJEUr9J`. No private bytes were printed or tracked. The buyer was selected for M1.
+- Locked dependencies installed after outbound access became available. `RINGSIDE_KEYPAIR=/workspace/ringside-keys/buyer.json pnpm check:m1` passed: buyer started with 5 public SOL, registration confirmed at slot `509082806` (signature `2QE6bivxfFTdHwGy4fEfn2gCxbJn8Ya4sg2CvcK58V4XVJwWowjTXbrrqAJe3ELZpR5hFs8ASYqgQmti3kctZkKS`), deposit of 0.01 SOL confirmed at slot `509082814` (signature `UzHbjEKqdWdbrNB9ccjXUrqAZXK4FG23hkVG6omoULxHwRJvodHJghNjNvJfDqV3h41hz1wdq3tqmfw9PanERas`), and sync returned a private balance of 0.01 SOL in one UTXO. M1 core wallet exit is complete.
+- No PRD file is present in this checkout; this status and README carry the available requirements. The complete five-example funded sequence is still open.
+
 ## Verification completed
 
 - `pnpm check`, `pnpm test`, and `pnpm build` pass locally, including the dashboard production build. `pnpm check:examples` passes against the upstream TypeScript examples.
@@ -29,15 +35,13 @@ Updated Oct 8, 2026 (UTC). This is the handoff for continuing the PRD build. The
 
 ## Live checks blocked or still open
 
-- **M1 is not complete.** The isolated wallet `4a1bZaWDgDcThDNV5JPMXeqgVfFaPe5ju9WzQQWU4nB7` has 0 SOL. Its private key is only in ignored `.local/m1-agent.json` (mode 600). Helius airdrop returned HTTP 500, public devnet RPC returned an internal error or rate limit, and Alchemy demo RPC returned 429. The formal `check:m1` reached its funding gate and stopped; registration simulation and deposit cannot succeed without funds.
-- The user identified two funded devnet wallets, buyer `GxCNFRN7zRC43ugwdGQ5AsVZqkLFY2rviL8fts2gUaZP` and seller `79ARuP2P78svsx3wRyYKuD6mizktZvqkhuqF3yJEUr9J` (5 SOL each when queried). The proposed paths `/workspace/ringside-keys/buyer.json` and `/workspace/ringside-keys/seller.json` **do not exist in this execution workspace** as of this update. Path names alone do not transfer key files between environments. Do not paste key contents into chat or commit them.
-- All funded core transactions, the five upstream examples as a complete funded sequence, the buyer/seller 402 flow, dashboard wallet signing, and a clean-machine quickstart remain unverified. Registration's optional sponsor path is not implemented. SPL withdrawal and shielded-address recipient input still need live verification. Cross-process spend locking is not implemented; run one MCP process per wallet.
+- Funded M2 transactions, the five upstream examples as a complete funded sequence, the buyer/seller 402 flow, dashboard wallet signing, and a clean-machine quickstart remain unverified. Registration's optional sponsor path is not implemented. SPL withdrawal and shielded-address recipient input still need live verification. Cross-process spend locking is not implemented; run one MCP process per wallet.
 - Swap/escrow Tier A or B, Vercel deployment, videos, npm publishing, and hackathon submission have not been done. The current npm packages are private workspace packages.
 
 ## Next steps, in order
 
-1. **Make a funded signer available in this workspace.** Either fund `4a1bZaWDgDcThDNV5JPMXeqgVfFaPe5ju9WzQQWU4nB7` with at least 0.05 devnet SOL, or place the buyer/seller keypair JSON files at the two `/workspace/ringside-keys/` paths above using the *current cloud workspace terminal*. Keep them outside the repository and mode 600. Verify each file's derived public address without printing key contents.
-2. **Finish M1.** With `HELIUS_API_KEY` set, run `RINGSIDE_KEYPAIR=/workspace/Ringside-MCP/.local/m1-agent.json pnpm check:m1` after funding that wallet, or set `RINGSIDE_KEYPAIR` to the funded buyer file. The script registers the wallet, deposits 0.01 SOL, syncs, and asserts the private balance. Record public signatures, slot, balances, and endpoint behavior here. Run all five staged TypeScript examples unmodified with `API_KEY` and `ZOLANA_PAYER_KEYPAIR` set to a funded test signer; record any SDK-version differences.
+1. **Finish the upstream example run.** Run all five staged TypeScript examples with `API_KEY` and `ZOLANA_PAYER_KEYPAIR` set to a funded test signer; record any SDK-version differences. The buyer and seller keypairs are available at the local paths above.
+2. **Keep M1 evidence current.** Registration, deposit, and private balance sync passed on Oct 9 using the buyer wallet. Avoid rerunning the deposit unless another 0.01 SOL deposit is intended.
 3. **Finish M2 and seller end to end.** Register both buyer and seller, then run deposit → private transfer → sync/history → withdrawal, plus test token/interface setup and SPL withdrawal. Check policy denial, allowlist, and kill behavior against real tool calls. Start `examples/seller-api`, pay its 402 request, verify a 200 retry, then test wrong amount/asset/payer, expiry, and replay on devnet. Fix any SDK errors revealed by those runs.
 4. **Exercise the dashboard with an owner wallet.** Pair in Chrome, inspect live balances/activity, sign a policy change and kill toggle, verify wrong-wallet rejection, then configure an allowed origin and deploy to Vercel if access is available. Add auditor mode and approvals only after the core demo is reliable.
 5. **Decide engine tier after a real spike.** Install Rust/Cargo, Solana CLI, and Go 1.27.1+ in a suitable environment; build and deploy patched devnet programs with new IDs, test SPP CPI and escrow first, then swap. If that fails or the deadline is tight, keep Tier C explicit. Do not ungate engine spends before policy enforcement and encrypted escrow-note persistence are implemented.
