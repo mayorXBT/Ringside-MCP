@@ -3,6 +3,7 @@ node_modules/
 .local/
 .surfpool/
 engine/target/
+vendor/zolana/
 dist/
 .next/
 *.tsbuildinfo

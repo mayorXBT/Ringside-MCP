@@ -50,7 +50,7 @@ Use the same stdio command and environment in Claude Code or Cursor. `RINGSIDE_H
 | Spend | `private_transfer`, `withdraw`, `create_test_token`, `deposit_with_interface_setup` |
 | Owner policy | `get_policy`; per-transaction, session, and rolling-24-hour caps, allowlists, read-only mode, kill switch; owner-signed writes through a localhost control API |
 | Seller | `create_payment_request`, `pay_payment_request`, `verify_payment`; `/report` returned 402, then 200 after a private SOL payment, then rejected replay on localnet |
-| Swap and escrow | Nine discoverable tools; **Tier C**, each returns `ENGINE_UNAVAILABLE`. The Rust stdio sidecar scaffold reports its unavailable state. No swap or escrow funds should be locked with this release. |
+| Swap and escrow | Nine discoverable tools; **Ringside engine Tier C**, each returns `ENGINE_UNAVAILABLE`. Upstream make/take and lock/withdraw transaction tests passed on Zolana localnet, but the Rust sidecar does not yet drive them. No swap or escrow funds should be locked with this release. |
 
 The core SOL deposit → private transfer → seller balance sync → withdrawal loop passed on localnet. SPL interface deposit and withdrawal, plus a one-unit seller payment, passed with a six-decimal local test token. Registration and deposits passed on devnet, but a transfer proof failed at the Helius prover/indexer. [STATUS.md](STATUS.md) records the errors and signatures. `RINGSIDE_RUN_LIVE_TRANSFER=1 pnpm check:live-transfer` retries a guarded transfer and withdrawal after proof service recovery. `RINGSIDE_NETWORK=localnet` selects the services started by `zolana dev start` on ports 8899, 8784, and 3001. [The demo runbook](scripts/demo.md) gives exact seed, seller API, MCP, and dashboard commands.
 

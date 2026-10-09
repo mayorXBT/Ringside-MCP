@@ -209,7 +209,7 @@ Biggest unknown: **whether devnet SPP accepts `transact` CPIs from an arbitrary,
 | Tier | Condition | What ships |
 |---|---|---|
 | **A** | Deploy + CPI works on devnet | All tools on devnet; one network in the demo |
-| **B** | Devnet rejects CPI or no SOL for deploy | Swap/escrow on **localnet**: `ringside-engine localnet` wraps `zolana_program_test::localnet::FixtureLocalnet::start` (as in `swap-program/test/tests/shared.rs`) with our `.so` + `zolana_user_registry.so`; or `zolana dev start` plus program loading **(verify flag)**. MCP config `RINGSIDE_ENGINE_NETWORK=localnet`. Demo video labels it clearly. |
+| **B** | Devnet rejects CPI or no SOL for deploy | Swap/escrow on **localnet**: `ringside-engine localnet` wraps `zolana_program_test::localnet::FixtureLocalnet::start` (as in `swap-program/test/tests/shared.rs`) with our `.so` + `zolana_user_registry.so`; or `zolana dev start` plus program loading via `--sbf-program ADDRESS PATH` (verified against Zolana v0.4 CLI help and a localnet executable-account check on Oct 9). MCP config `RINGSIDE_ENGINE_NETWORK=localnet`. Demo video labels it clearly. |
 | **C** | Engine does not build in time | Swap/escrow tools present, return `ENGINE_UNAVAILABLE`; README documents the design; circuit tests run in CI. Core client tools + verify_payment + dashboard are the submission. |
 
 Core client tools are must-have regardless of tier.

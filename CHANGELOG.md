@@ -3,6 +3,7 @@
 ## 2026-10-09
 
 - Disabled Vercel project SSO protection for the dashboard; the public production and preview URLs return HTTP 200 without authentication.
+- Built upstream swap and escrow SBF programs, loaded them on Zolana localnet, and passed upstream make/take and lock/withdraw fixture tests. Kept the Ringside engine at Tier C pending user-key orchestration and spend-policy integration; recorded a transient Photon migration failure and the successful fresh retry.
 
 - Added the authoritative PRD to the repository.
 - Validated funded buyer and seller keypairs outside Git; confirmed buyer registration and private SOL deposits on devnet, and seller registration.
