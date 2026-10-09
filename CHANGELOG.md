@@ -9,3 +9,7 @@
 - Added M2 tool aliases and a stdio MCP annotation test; changed daily spend limits to a rolling 24-hour window.
 - Verified the seller API's 402, private payment, successful retry, and replay rejection on localnet.
 - Added owner-signed dashboard deposit/withdraw actions, control API authorization checks, and a read-only `/audit` fallback backed by the local control API.
+- Built a Tier C Rust stdio sidecar with health reporting and explicit unavailable errors; added Cargo tests to CI.
+- Verified localnet SPL interface deposit and withdrawal with a six-decimal test mint, and verified a one-token seller payment including replay rejection.
+- Deployed a Vercel dashboard preview and confirmed local browser activity refresh and owner-signed kill-switch enforcement with a synthetic test owner.
+- Added an idempotent demo seed script, localnet runbook, existing-key CLI initialization, and dashboard screenshots. Updated README with install guidance, architecture, comparison, and current limits.
