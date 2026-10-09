@@ -13,7 +13,7 @@ export function LandingReveals({children}:{children:React.ReactNode}) {
     gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((section) => {
       const inner = section.querySelector('.landing-container');
       if (!inner) return;
-      gsap.from(inner, { autoAlpha: 0, y: 8, duration: .32, ease: 'power2.out', clearProps: 'all', scrollTrigger: { trigger: section, start: 'top 88%', once: true } });
+      ScrollTrigger.create({ trigger: section, start: 'top 88%', once: true, onEnter: () => gsap.fromTo(inner, { opacity: .86, y: 8 }, { opacity: 1, y: 0, duration: .32, ease: 'power2.out', clearProps: 'all' }) });
     });
   }, { scope: root });
   return <div ref={root}>{children}</div>;

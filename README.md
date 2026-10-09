@@ -4,6 +4,8 @@ Private agent payments on Solana Rings, with owner spending controls and seller 
 
 ![Ringside landing page](docs/landing.png)
 
+[Mobile landing screenshot](docs/landing-mobile.png)
+
 ![Ringside dashboard design with illustrative localnet data](docs/dashboard-redesign-preview.png)
 
 [PRD](PRD.md) · [Build status](STATUS.md) · [Reproducible demo steps](scripts/demo.md) · [Security model](docs/security.md)
