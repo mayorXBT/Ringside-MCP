@@ -9,6 +9,12 @@ Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The
 - Desktop/mobile browser smoke checks showed no page errors or horizontal overflow; a mocked localnet control API verified the populated overview, activity, and policy routes. Screenshots in `docs/` show the landing page and illustrative populated data; the illustration is not fresh live-chain evidence. The dashboard production build and TypeScript check pass. Production deployment `dpl_9cbQd32UKksA8aJtTF8fhLZZygRX` is READY at `https://ringside-dashboard.vercel.app/` from commit `6e21bc0`; anonymous HTTP checks returned 200 for `/`, `/app`, `/app/activity`, `/app/policy`, and `/app/audit`, and `/audit` redirected to `/app/audit`.
 - **Open after redesign:** real Phantom signature check, accessible audit of dialogs/forms, and live devnet transfer when Helius proof services recover. Activity API has slots but no timestamps, so the UI displays slot instead of invented relative dates. The separate auditor token is a pairing credential for the local control API; a true browser viewing key is still unavailable.
 
+## Interaction pass (Oct 9)
+
+- Reviewed the private `mayor-skills` repository and applied `frontend-design`, `ui-ux-pro-max`, `gsap-react`, `gsap-core`, `gsap-scrolltrigger`, and GSAP performance guidance. `DESIGN.md` remains the authority where generic skill defaults differ.
+- Added a one-time, scroll-started MCP payment sequence on the landing hero, a Replay action, explorer amount/asset masking, short section entrances, and dialog/sheet transitions. GSAP animations are scoped to their React components and cleaned up on unmount. Reduced-motion preference renders the completed sequence without typing or movement. Removed the unused `motion` package.
+- Browser checks confirmed the sequence starts when scrolled into view, Replay runs again, reduced-motion shows the final state, no page errors, and no mobile horizontal overflow. `pnpm check`, `pnpm test`, and `pnpm build` passed before publishing this pass.
+
 ## What is built
 
 - **Workspace and source:** Node 24 / pnpm 11 monorepo, MIT license, README quickstart, architecture and security notes, GitHub Actions CI. `vendor/zolana-examples` is a git submodule at `3d39626853fea338efc802896024cabda39ed4ab`. The upstream TypeScript examples pass their format and type checks.

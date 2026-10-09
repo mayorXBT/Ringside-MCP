@@ -2,6 +2,8 @@
 
 ## 2026-10-09
 
+- Applied the private design and GSAP React skills to add a replayable MCP hero demonstration, privacy masking, restrained scroll entrances, and reduced-motion behavior. Removed unused `motion`.
+
 - Deployed the redesign publicly to `ringside-dashboard.vercel.app` and verified the landing, owner, activity, policy, auditor, and legacy redirect routes.
 
 - Added `DESIGN.md` and redesigned the public dashboard into a landing page plus `/app` owner, activity, policy, and auditor routes. Added first-run pairing, a connection drawer, signed review dialogs, structured policy editing, accurate privacy/preview copy, responsive navigation, and illustrative screenshots.
