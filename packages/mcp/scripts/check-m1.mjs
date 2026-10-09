@@ -16,4 +16,4 @@ const after = await balances();
 console.log('balances after', JSON.stringify(after));
 const sol = after.balances.find((entry) => entry.asset === 'SOL');
 if (!sol || BigInt(sol.amount_base_units) < 10_000_000n) throw new Error('M1 deposit missing from synced private balance');
-console.log('M1 devnet check passed');
+console.log('Registration and deposit smoke check passed; M1 also requires a private transfer and withdrawal');
