@@ -50,7 +50,7 @@ export RINGSIDE_NETWORK=localnet
 
 If an owner address was provided during seeding, run `RINGSIDE_HOME="$RINGSIDE_TEST_HOME/buyer" node packages/mcp/dist/index.js pair` to obtain a pairing token locally. Never paste it into a public issue or commit. Start the buyer MCP process above to serve the control API on `127.0.0.1:7420`, then run `pnpm --dir apps/dashboard dev` and open `http://localhost:3000`. Pair with the token, connect the configured owner wallet, and sign a policy change or kill toggle. The `/audit` page provides read-only balances and history through the local control API.
 
-The Vercel preview is `https://ringside-dashboard-mo1at248t-mayors-projects-ed2d2592.vercel.app/`. It is protected by Vercel Authentication. To connect that hosted origin to a local agent, include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` before starting the MCP process. The hosted page still reads the agent on `127.0.0.1`; use Chrome for localhost access from HTTPS. Owner wallet signing in the browser remains unverified.
+The public dashboard is `https://ringside-dashboard.vercel.app/`. To connect that hosted origin to a local agent, include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` before starting the MCP process. The hosted page still reads the agent on `127.0.0.1`; use Chrome for localhost access from HTTPS. Owner wallet signing in the browser remains unverified.
 
 ## Devnet retry after Helius proof services recover
 
