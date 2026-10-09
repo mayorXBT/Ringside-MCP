@@ -11,6 +11,7 @@
     "check:m1": "pnpm --filter ringside-mcp check:m1",
     "check:live-transfer": "pnpm --filter ringside-mcp check:live-transfer",
     "check:seller": "node --use-env-proxy scripts/check-seller-flow.mjs",
+    "seed:demo": "node --use-env-proxy scripts/seed-demo.mjs",
     "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs"
   }
 }

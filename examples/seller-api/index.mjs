@@ -23,7 +23,9 @@ const server = createServer(async (request, response) => {
       response.writeHead(402, { 'content-type': 'application/json' }).end(JSON.stringify(verdict));
       return;
     }
-    const { request: payment } = await createPaymentRequest('SOL', '0.01', '/report');
+    const asset = process.env.RINGSIDE_SELLER_ASSET || 'SOL';
+    const amount = process.env.RINGSIDE_SELLER_AMOUNT || '0.01';
+    const { request: payment } = await createPaymentRequest(asset, amount, '/report');
     response.writeHead(402, { 'content-type': 'application/json' }).end(JSON.stringify(payment));
   } catch (error) {
     response.writeHead(500, { 'content-type': 'application/json' }).end(JSON.stringify({ error: error instanceof Error ? error.message.replace(/api-key=[^&\s]+/gi, 'api-key=[redacted]') : 'Server error' }));

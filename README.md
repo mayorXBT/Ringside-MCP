@@ -1,12 +1,16 @@
 # Ringside MCP
 
-Private agent payments on Solana devnet using Helius Privacy (Solana Rings). Work in progress.
+Private agent payments on Solana Rings, with owner spending controls and seller verification. The MCP server runs on the agent's machine, keeps its keypair local, and works with Claude Desktop, Claude Code, Cursor, and other MCP clients. Solana **devnet is the target**; a complete SOL payment and seller flow has also passed on Zolana localnet while Helius devnet proof services are failing.
 
-The upstream TypeScript examples are staged in the `vendor/zolana-examples` submodule at commit `3d39626853fea338efc802896024cabda39ed4ab`. The PRD references `3069d79`, which is unavailable from the current upstream remote; current examples use SDK `0.4.0-alpha`. The server pins `@heliuslabs/zolana@0.3.1-alpha` as specified in the PRD.
+![Ringside owner dashboard before pairing](docs/dashboard.png)
 
-## Quickstart
+![Localnet private activity after a payment](docs/dashboard-live.png)
 
-Install Node 24 and pnpm 11, then clone with submodules and build:
+[PRD](PRD.md) · [Build status](STATUS.md) · [Reproducible demo steps](scripts/demo.md) · [Security model](docs/security.md)
+
+## Install and connect
+
+Use Node 24+ and pnpm 11. Clone and build:
 
 ```bash
 git clone --recurse-submodules https://github.com/mayorXBT/Ringside-MCP.git
@@ -17,39 +21,68 @@ export HELIUS_API_KEY='your-devnet-key'
 node packages/mcp/dist/index.js init --owner YOUR_OWNER_WALLET_ADDRESS
 ```
 
-Fund the printed **agent** address with devnet SOL. It is a dedicated hot wallet; the owner address is only used to sign policy changes. To start MCP over stdio, point your MCP client at the absolute `packages/mcp/dist/index.js` path. For Claude Desktop:
+`init` prints a new agent address. Fund that **dedicated hot wallet** with devnet SOL before using spend tools. The owner wallet signs policy changes and never needs to be the agent fee payer. To use an existing funded Solana CLI keypair without copying it, run `RINGSIDE_KEYPAIR=/absolute/path/agent.json node packages/mcp/dist/index.js init --owner YOUR_OWNER_WALLET_ADDRESS --keypair /absolute/path/agent.json`. The key file must be mode 600 and stay outside Git.
+
+Claude Desktop MCP config (replace both paths and the API key):
 
 ```json
 {
   "mcpServers": {
     "ringside": {
       "command": "node",
-      "args": ["/absolute/path/to/Ringside-MCP/packages/mcp/dist/index.js"],
-      "env": { "HELIUS_API_KEY": "your-devnet-key" }
+      "args": ["--use-env-proxy", "/absolute/path/Ringside-MCP/packages/mcp/dist/index.js"],
+      "env": {
+        "HELIUS_API_KEY": "your-devnet-key",
+        "RINGSIDE_KEYPAIR": "/absolute/path/agent.json"
+      }
     }
   }
 }
 ```
 
-The same stdio command works in Claude Code and Cursor MCP settings. Keep `RINGSIDE_HOME` consistent between the MCP process, CLI, seller API, and dashboard control API.
+Use the same stdio command and environment in Claude Code or Cursor. `RINGSIDE_HOME` defaults to `~/.ringside`; keep it the same for the MCP process, CLI, seller API profile, and dashboard control API. The server is built from source today; `npx ringside-mcp` is not published yet.
 
-Run `HELIUS_API_KEY=... pnpm check:devnet` for a read-only RPC check. After funding a dedicated devnet keypair with at least 0.03 SOL, run `RINGSIDE_KEYPAIR=/path/to/keypair.json pnpm check:m1` to register and deposit 0.01 SOL. Its result is tracked in [STATUS.md](STATUS.md). The server package builds with `pnpm --filter ringside-mcp build` and runs over stdio with `node --use-env-proxy packages/mcp/dist/index.js`.
+## What is working
 
-To retry the currently blocked private transfer and withdrawal when the proof services recover, build the workspace and set `RINGSIDE_BUYER_KEYPAIR`, `RINGSIDE_SELLER_KEYPAIR`, `HELIUS_API_KEY`, and `RINGSIDE_RUN_LIVE_TRANSFER=1`, then run `pnpm check:live-transfer`. This submits a 0.003 SOL private transfer and a 0.001 SOL withdrawal; adjust `RINGSIDE_TEST_AMOUNT` and `RINGSIDE_TEST_WITHDRAW_AMOUNT` if needed. The script refuses to spend without the explicit flag. For a local `zolana dev start` network, set `RINGSIDE_NETWORK=localnet`; the MCP defaults to RPC `127.0.0.1:8899`, indexer `:8784`, and prover `:3001` and does not require `HELIUS_API_KEY`.
+| Area | Tools and outcome |
+|---|---|
+| Wallet | `wallet_info`, `register_private_wallet` / `create_private_wallet`, `deposit`, `sync_balance` / `get_private_balance`, `read_history` / `get_private_history` |
+| Spend | `private_transfer`, `withdraw`, `create_test_token`, `deposit_with_interface_setup` |
+| Owner policy | `get_policy`; per-transaction, session, and rolling-24-hour caps, allowlists, read-only mode, kill switch; owner-signed writes through a localhost control API |
+| Seller | `create_payment_request`, `pay_payment_request`, `verify_payment`; `/report` returned 402, then 200 after a private SOL payment, then rejected replay on localnet |
+| Swap and escrow | Nine discoverable tools; **Tier C**, each returns `ENGINE_UNAVAILABLE`. The Rust stdio sidecar scaffold reports its unavailable state. No swap or escrow funds should be locked with this release. |
 
-`node packages/mcp/dist/index.js pair` prints the local dashboard pairing token; `kill` and `kill off` toggle the local emergency stop. The control API listens on `127.0.0.1:7420` and requires the pairing token; policy writes also require the owner's wallet signature.
+The core SOL deposit → private transfer → seller balance sync → withdrawal loop passed on localnet. SPL interface deposit and withdrawal, plus a one-unit seller payment, passed with a six-decimal local test token. Registration and deposits passed on devnet, but a transfer proof failed at the Helius prover/indexer. [STATUS.md](STATUS.md) records the errors and signatures. `RINGSIDE_RUN_LIVE_TRANSFER=1 pnpm check:live-transfer` retries a guarded transfer and withdrawal after proof service recovery. `RINGSIDE_NETWORK=localnet` selects the services started by `zolana dev start` on ports 8899, 8784, and 3001. [The demo runbook](scripts/demo.md) gives exact seed, seller API, MCP, and dashboard commands.
 
-The owner dashboard runs locally with `pnpm --dir apps/dashboard dev` after `pnpm install`. Open `http://localhost:3000`, paste the pairing token, then connect the configured Phantom owner wallet. Set `RINGSIDE_DASHBOARD_ORIGINS` on the MCP server to include a hosted dashboard origin before using it remotely.
+## Owner dashboard
 
-Devnet only. Default Rings transfers hide asset and amount while sender and recipient remain public. Deposits and withdrawals reveal their details on-chain.
+[Open the Vercel preview](https://ringside-dashboard-livd2ydg0-mayors-projects-ed2d2592.vercel.app/) (Vercel Authentication protects this preview), or run `pnpm --dir apps/dashboard dev`. Pair with the token printed by `RINGSIDE_HOME=/path/to/buyer-home node packages/mcp/dist/index.js pair`. The dashboard reads the local agent at `127.0.0.1:7420`, displays private balances and history, and lets the configured owner wallet sign policy, kill-switch, deposit, and withdrawal actions. The `/audit` route is a read-only fallback using the local control API. Browser-side viewing-key decryption remains unverified. A hosted page may need Chrome for HTTPS-to-localhost access; include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` on the MCP process.
 
-## Current tool coverage
+## Privacy and safety
 
-| Group | Tools | Status |
-|---|---|---|
-| Core wallet | `wallet_info`, `register_private_wallet`, `deposit`, `sync_balance`, `read_history`, `private_transfer`, `withdraw`, `create_test_token`, `deposit_with_interface_setup` | Implemented; read calls checked on devnet, funded transactions pending |
-| Owner policy | `get_policy` | Implemented; local caps, allowlist, kill switch and signed control writes tested |
-| Seller | `create_payment_request`, `pay_payment_request`, `verify_payment` | Implemented; logic tested, devnet end-to-end pending |
-| Swap and escrow | 9 tools | Tier C: return `ENGINE_UNAVAILABLE` until Rust engine and programs are built |
+```mermaid
+flowchart LR
+  A[MCP agent] -->|stdio| M[Ringside MCP]
+  M --> K[(local agent key and policy)]
+  M -->|RPC, indexer, prover| H[Solana Rings devnet or localnet]
+  D[Owner dashboard] -->|paired localhost API| M
+  O[Owner wallet] -->|signed policy and wallet actions| D
+  S[Seller API] -->|private receipt verification| H
+```
 
-Run `pnpm check`, `pnpm test`, and `pnpm build` for local verification. See [STATUS.md](STATUS.md) for the live acceptance checklist and [docs/security.md](docs/security.md) for limits. The dashboard is built locally but is not yet deployed. Swap and escrow example circuits use insecure test keys and must never be treated as mainnet-ready.
+Default Rings transfers conceal **asset and amount**, while sender, recipient, and transaction signature remain public. Deposits and withdrawals reveal their details on-chain: **funding is public; payments are private**. The server blocks mainnet URLs, keeps keys local, blocks transfers to unregistered recipients, and does not expose a policy-writing MCP tool. Spend tools carry destructive annotations. Swap/escrow example proving keys are insecure test keys and must never be treated as mainnet-ready.
+
+## Comparison
+
+| Approach | Agent interface | Owner controls | Seller receipt check | This release |
+|---|---|---|---|---|
+| Ringside MCP | Standard MCP stdio | Local caps, allowlists, signed policy, kill switch | `@ringside/verify` and demo 402 API | SOL flow verified on localnet; devnet proof path blocked |
+| b402, ZeroK, SNAP, oracle | Existing privacy/payment approaches referenced in the PRD | Varies by project | Varies by project | Direct feature comparison needs a current review of each project |
+
+Ringside's intended distinction is one MCP surface for the Zolana client, owner controls, and seller verification. The swap and escrow portion is documented Tier C, not a working comparison claim.
+
+## Checks and limits
+
+Run `pnpm check`, `pnpm test`, `pnpm build`, and `cargo test --manifest-path engine/Cargo.toml --locked`. The localnet demo uses `RINGSIDE_SEED_DEMO=1 pnpm seed:demo` and `RINGSIDE_RUN_SELLER_PAYMENT=1 pnpm check:seller`; both flags guard transactions. A full Claude Desktop devnet payment, actual USDC transfer and withdrawal, browser owner-wallet signing, and the escrow bounty demo remain unverified. See [STATUS.md](STATUS.md) for the current exit checklist.
+
+The repo is MIT licensed. The upstream TypeScript examples are staged at `3d39626853fea338efc802896024cabda39ed4ab`; the PRD's `3069d79` commit was not available from the current remote. This server pins `@heliuslabs/zolana@0.3.1-alpha`, while the staged upstream examples use `0.4.0-alpha`.
