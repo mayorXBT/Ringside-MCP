@@ -20,7 +20,7 @@ Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The
 - Corrected the landing hero so explorer values are masked in the initial HTML and throughout Replay. The balance figure is full white and the balance, terminal, and explorer cards overlap as one composition.
 - Reworked the mobile proof strip into an aligned two-column grid and changed the clone action to a compact Copy install command button. Tools, Controls, Seller, and Privacy now have stronger feature treatments and larger body copy.
 - Simplified the dashboard chrome to the network banner plus one visible badge, aligned the wordmark ring, dimmed and disabled unpaired navigation, made the desktop owner wallet button primary while disconnected, and added a guided copy action to onboarding. Auditor onboarding no longer repeats the connection heading or VIEW ONLY label; connection troubleshooting is collapsed.
-- Visual review at 390px and 1440px found no horizontal overflow. The generated landing screenshot was refreshed. The illustrative hero remains clearly labeled as an example; live devnet transfer status is unchanged.
+- Visual review at 390px and 1440px found no horizontal overflow. The generated landing screenshot was refreshed. The illustrative hero remains clearly labeled as an example; live devnet transfer status is unchanged. `pnpm check`, `pnpm test`, and `pnpm build` passed. Commit `cea4156` is on `main`; production deployment `dpl_Fj6jrsmm9VUcLT6scpTT1gVcZ6tT` reached READY at `https://ringside-dashboard.vercel.app/`. Anonymous HTTP checks returned 200 for `/`, `/app`, and `/app/audit`; the landing HTML contains the masked explorer chip and compact install button.
 
 ## What is built
 
