@@ -13,7 +13,7 @@ Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The
 
 - Reviewed the private `mayor-skills` repository and applied `frontend-design`, `ui-ux-pro-max`, `gsap-react`, `gsap-core`, `gsap-scrolltrigger`, and GSAP performance guidance. `DESIGN.md` remains the authority where generic skill defaults differ.
 - Added a one-time, scroll-started MCP payment sequence on the landing hero, a Replay action, explorer amount/asset masking, short section entrances, and dialog/sheet transitions. GSAP animations are scoped to their React components and cleaned up on unmount. Reduced-motion preference renders the completed sequence without typing or movement. Removed the unused `motion` package.
-- Browser checks confirmed the sequence starts when scrolled into view, Replay runs again, reduced-motion shows the final state, no page errors, and no mobile horizontal overflow. `pnpm check`, `pnpm test`, and `pnpm build` passed before publishing this pass.
+- Browser checks confirmed the sequence starts when scrolled into view, Replay runs again, reduced-motion shows the final state, no page errors, and no mobile horizontal overflow. `pnpm check`, `pnpm test`, and `pnpm build` passed. Commit `bef9f30` is on `main`; production deployment `dpl_Hbiq6g8nWXVy1jkwixzT4JatDN8Q` reached READY at `https://ringside-dashboard.vercel.app/`. A public HTTP check returned 200 with the hero and Replay markup. Local Chromium verified the animated behavior; remote Chromium navigation timed out in this environment, so the hosted animation itself was not browser-verified.
 
 ## What is built
 
