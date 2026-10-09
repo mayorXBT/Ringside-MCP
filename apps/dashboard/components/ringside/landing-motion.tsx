@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
-import { ArrowRight, RotateCcw, ShieldCheck } from 'lucide-react';
+import { RotateCcw, ShieldCheck } from 'lucide-react';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, TextPlugin);
 
@@ -30,7 +30,6 @@ export function HeroDemo() {
   const line1 = useRef<HTMLDivElement>(null);
   const line2 = useRef<HTMLDivElement>(null);
   const line3 = useRef<HTMLDivElement>(null);
-  const mask = useRef<HTMLSpanElement>(null);
   const timeline = useRef<gsap.core.Timeline|null>(null);
   const { contextSafe } = useGSAP(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,7 +37,6 @@ export function HeroDemo() {
       if (line1.current) line1.current.textContent = command;
       if (line2.current) line2.current.textContent = checks[0];
       if (line3.current) line3.current.textContent = checks[1];
-      if (mask.current) mask.current.textContent = 'Amount •••• · Asset ••••';
       return;
     }
     gsap.from('[data-hero-card]', { autoAlpha: 0, y: 8, duration: .32, ease: 'power2.out', clearProps: 'all' });
@@ -50,18 +48,14 @@ export function HeroDemo() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     timeline.current?.kill();
     [line1,line2,line3].forEach(line=>{if(line.current)line.current.textContent=''});
-    if(mask.current)mask.current.textContent='Amount 0.003 · Asset SOL';
     timeline.current=gsap.timeline();
     timeline.current.to(line1.current,{text:command,duration:command.length*.018,ease:'none'})
       .to(line2.current,{text:checks[0],duration:checks[0].length*.018,ease:'none'},'+=.4')
-      .to(line3.current,{text:checks[1],duration:checks[1].length*.018,ease:'none'},'+=.4')
-      .to(mask.current,{filter:'blur(5px)',duration:.2},'+=.2')
-      .call(()=>{if(mask.current)mask.current.textContent='Amount •••• · Asset ••••'})
-      .to(mask.current,{filter:'blur(0px)',duration:.2});
+      .to(line3.current,{text:checks[1],duration:checks[1].length*.018,ease:'none'},'+=.4');
   });
   return <div className="hero-visual" ref={root}>
-    <div className="card balance-card" data-hero-card><div style={{display:'flex',gap:8,alignItems:'center',color:'var(--private)'}}><ShieldCheck size={18}/>Private balance</div><div className="badge private" style={{margin:'16px 0'}}>Amount hidden on-chain</div><div className="balance-figure">0.051 <span style={{fontSize:24,color:'var(--fg-muted)'}}>SOL</span></div><div className="metric-row" style={{marginTop:20}}><span>TEST</span><span className="mono">1.3 · 2 notes</span></div></div>
-    <div className="code-block" data-terminal style={{margin:'-8px 12px 0',position:'relative',boxShadow:'0 16px 40px #0007',minHeight:123}}><div style={{display:'flex',justifyContent:'space-between',gap:10}}><span className="subtle-text">MCP exchange · illustrative</span><button className="replay-button" onClick={play} aria-label="Replay payment example"><RotateCcw size={13}/> Replay</button></div><div ref={line1} style={{minHeight:20}}/><div ref={line2} style={{color:'var(--success)',minHeight:20}}/><div ref={line3} style={{color:'var(--private)',minHeight:20}}/></div>
-    <div className="card" style={{margin:'12px 24px 0',fontSize:12}}><div className="subtle-text" style={{marginBottom:10}}>ON THE EXPLORER</div><span className="mono">From 4Hk2… · To 79AR…</span><br/><span className="badge private" style={{marginTop:8}} ref={mask}>Amount 0.003 · Asset SOL</span></div>
+    <div className="card balance-card hero-balance" data-hero-card><div style={{display:'flex',gap:8,alignItems:'center',color:'var(--private)'}}><ShieldCheck size={18}/>Private balance</div><div className="badge private" style={{margin:'16px 0'}}>Amount hidden on-chain</div><div className="balance-figure">0.051 <span style={{fontSize:24,color:'var(--fg-muted)'}}>SOL</span></div><div className="metric-row" style={{marginTop:20}}><span>TEST</span><span className="mono">1.3 · 2 notes</span></div></div>
+    <div className="code-block hero-terminal" data-terminal><div style={{display:'flex',justifyContent:'space-between',gap:10}}><span className="subtle-text">MCP exchange · illustrative</span><button className="replay-button" onClick={play} aria-label="Replay payment example"><RotateCcw size={13}/> Replay</button></div><div ref={line1} style={{minHeight:20}}/><div ref={line2} style={{color:'var(--success)',minHeight:20}}/><div ref={line3} style={{color:'var(--private)',minHeight:20}}/></div>
+    <div className="card hero-explorer"><div className="subtle-text" style={{marginBottom:10}}>ON THE EXPLORER</div><span className="mono">From 4Hk2… · To 79AR…</span><br/><span className="badge private" style={{marginTop:8}}>Amount •••• · Asset ••••</span></div>
   </div>;
 }

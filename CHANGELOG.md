@@ -2,6 +2,8 @@
 
 ## 2026-10-09
 
+- Fixed the design review issues: always-masked explorer example, overlapping white-balance hero, contained mobile proof strip, compact install button, stronger lower-section hierarchy, simplified badges and auditor copy, guided onboarding, and disabled unpaired navigation.
+
 - Applied the private design and GSAP React skills to add a replayable MCP hero demonstration, privacy masking, restrained scroll entrances, and reduced-motion behavior. Removed unused `motion`.
 
 - Deployed the redesign publicly to `ringside-dashboard.vercel.app` and verified the landing, owner, activity, policy, auditor, and legacy redirect routes.

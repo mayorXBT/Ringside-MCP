@@ -15,6 +15,13 @@ Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The
 - Added a one-time, scroll-started MCP payment sequence on the landing hero, a Replay action, explorer amount/asset masking, short section entrances, and dialog/sheet transitions. GSAP animations are scoped to their React components and cleaned up on unmount. Reduced-motion preference renders the completed sequence without typing or movement. Removed the unused `motion` package.
 - Browser checks confirmed the sequence starts when scrolled into view, Replay runs again, reduced-motion shows the final state, no page errors, and no mobile horizontal overflow. `pnpm check`, `pnpm test`, and `pnpm build` passed. Commit `bef9f30` is on `main`; production deployment `dpl_Hbiq6g8nWXVy1jkwixzT4JatDN8Q` reached READY at `https://ringside-dashboard.vercel.app/`. A public HTTP check returned 200 with the hero and Replay markup. Local Chromium verified the animated behavior; remote Chromium navigation timed out in this environment, so the hosted animation itself was not browser-verified.
 
+## Design review fixes (Oct 9)
+
+- Corrected the landing hero so explorer values are masked in the initial HTML and throughout Replay. The balance figure is full white and the balance, terminal, and explorer cards overlap as one composition.
+- Reworked the mobile proof strip into an aligned two-column grid and changed the clone action to a compact Copy install command button. Tools, Controls, Seller, and Privacy now have stronger feature treatments and larger body copy.
+- Simplified the dashboard chrome to the network banner plus one visible badge, aligned the wordmark ring, dimmed and disabled unpaired navigation, made the desktop owner wallet button primary while disconnected, and added a guided copy action to onboarding. Auditor onboarding no longer repeats the connection heading or VIEW ONLY label; connection troubleshooting is collapsed.
+- Visual review at 390px and 1440px found no horizontal overflow. The generated landing screenshot was refreshed. The illustrative hero remains clearly labeled as an example; live devnet transfer status is unchanged.
+
 ## What is built
 
 - **Workspace and source:** Node 24 / pnpm 11 monorepo, MIT license, README quickstart, architecture and security notes, GitHub Actions CI. `vendor/zolana-examples` is a git submodule at `3d39626853fea338efc802896024cabda39ed4ab`. The upstream TypeScript examples pass their format and type checks.
