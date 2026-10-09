@@ -25,7 +25,7 @@ Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The
 ## 0x-inspired redesign in progress (Oct 9)
 
 - Studied 0x.org homepage and `/products/swap` directly at 1280px and 390px. The reference uses a light cool canvas, centered headline, two audience cards with white/black contrast, pill navigation, and restrained proof panels.
-- Hero and navigation rebuilt with Ringside copy and honest stats. The visual direction follows 0x structure, not its product claims. Desktop/mobile captures show no horizontal overflow. The product section now shows a framed screenshot of the running `/app` overview with explicitly illustrative localnet fixture data; desktop/mobile captures have no horizontal overflow. The proof bento now uses mixed spans, one black contrast tile, large factual numbers, and icon chips. The 1280px/390px visual review found no overflow. Controls, tools, seller, privacy, app shell polish, and final deployment are next.
+- Hero and navigation rebuilt with Ringside copy and honest stats. The visual direction follows 0x structure, not its product claims. Desktop/mobile captures show no horizontal overflow. The product section now shows a framed screenshot of the running `/app` overview with explicitly illustrative localnet fixture data; desktop/mobile captures have no horizontal overflow. The proof bento now uses mixed spans, one black contrast tile, large factual numbers, and icon chips. The 1280px/390px visual review found no overflow. The controls section now centers one large limit/policy visual with a single black stop-spending panel; 1280px/390px captures have no overflow. Tools, seller, privacy, app shell polish, and final deployment are next.
 
 ## What is built
 
