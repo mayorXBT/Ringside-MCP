@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from '
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import bs58 from 'bs58';
-import { balances, history, walletInfo } from './core.js';
+import { balances, deposit, history, walletInfo, withdraw } from './core.js';
 import { loadPolicy, ringsideHome, solBudget, validatePolicy } from './policy.js';
 import { emitEvent, eventBus } from './events.js';
 import { redact } from './log.js';
@@ -96,6 +96,26 @@ async function handle(request: IncomingMessage, response: ServerResponse) {
       return;
     }
     if (request.method === 'GET' && path === '/v1/policy') { json(response, 200, { policy: loadPolicy(), budget: solBudget() }); return; }
+    if (request.method === 'POST' && (path === '/v1/wallet/deposit' || path === '/v1/wallet/withdraw')) {
+      if (!existsSync(configPath())) { json(response, 409, { error: 'Run init with an owner wallet first' }); return; }
+      const config = JSON.parse(readFileSync(configPath(), 'utf8')) as { owner_pubkey: string };
+      const body = await bodyJson(request);
+      const action = path === '/v1/wallet/deposit' ? 'deposit' : 'withdraw';
+      if (typeof body.asset !== 'string' || typeof body.amount !== 'string' || !/^(0|[1-9]\d*)(\.\d+)?$/.test(body.amount) || (body.recipient !== undefined && (action !== 'withdraw' || typeof body.recipient !== 'string'))) {
+        json(response, 400, { error: 'Invalid asset, amount, or recipient' }); return;
+      }
+      const payload = action === 'withdraw' ? { asset: body.asset, amount: body.amount, ...(body.recipient ? { recipient: body.recipient } : {}) } : { asset: body.asset, amount: body.amount };
+      const envelope = body.envelope as Parameters<typeof verifyOwnerEnvelope>[0]['envelope'];
+      if (!envelope || typeof body.signature !== 'string' || !verifyOwnerEnvelope({ action, payload, envelope, signature: body.signature, owner: config.owner_pubkey })) { json(response, 403, { error: 'Invalid owner signature' }); return; }
+      const db = nonceStore();
+      try {
+        const inserted = db.prepare('INSERT OR IGNORE INTO policy_nonces (nonce, ts) VALUES (?, ?)').run(envelope.nonce, Date.now());
+        if (!inserted.changes) { json(response, 409, { error: 'Nonce already used' }); return; }
+      } finally { db.close(); }
+      const result = action === 'deposit' ? await deposit(body.asset, body.amount) : await withdraw(body.asset, body.amount, body.recipient as string | undefined);
+      json(response, 200, result);
+      return;
+    }
     if (request.method === 'POST' && (path === '/v1/policy' || path === '/v1/kill')) {
       if (!existsSync(configPath())) { json(response, 409, { error: 'Run init with an owner wallet first' }); return; }
       const config = JSON.parse(readFileSync(configPath(), 'utf8')) as { owner_pubkey: string; policy: unknown; policy_version: number };

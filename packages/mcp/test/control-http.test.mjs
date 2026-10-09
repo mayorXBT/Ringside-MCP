@@ -36,3 +36,22 @@ test('control API applies one owner-signed policy change and rejects replay', as
     assert.equal(stored.policy_version, 2);
   } finally { server.close(); }
 });
+
+test('wallet actions require owner authorization before spending', async () => {
+  const home = mkdtempSync(join(tmpdir(), 'ringside-wallet-control-'));
+  process.env.RINGSIDE_HOME = home;
+  process.env.RINGSIDE_CONTROL_PORT = '0';
+  const owner = generateKeyPairSync('ed25519');
+  const ownerAddress = bs58.encode(owner.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32));
+  writeFileSync(join(home, 'config.json'), JSON.stringify({ owner_pubkey: ownerAddress, policy_version: 1, policy: {} }));
+  const server = startControlServer();
+  try {
+    if (!server.listening) await once(server, 'listening');
+    const url = `http://127.0.0.1:${server.address().port}/v1/wallet/deposit`;
+    const token = readFileSync(join(home, 'pairing-token'), 'utf8').trim();
+    const request = (body, auth = token) => fetch(url, { method: 'POST', headers: { authorization: `Bearer ${auth}`, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    assert.equal((await request({ asset: 'SOL', amount: '0.01' }, 'wrong')).status, 401);
+    assert.equal((await request({ asset: 'SOL', amount: '0.01' })).status, 403);
+    assert.equal((await request({ asset: 'SOL', amount: '-1' })).status, 400);
+  } finally { server.close(); }
+});
