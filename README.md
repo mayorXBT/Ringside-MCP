@@ -56,7 +56,7 @@ The core SOL deposit → private transfer → seller balance sync → withdrawal
 
 ## Owner dashboard
 
-[Open the Vercel preview](https://ringside-dashboard-livd2ydg0-mayors-projects-ed2d2592.vercel.app/) (Vercel Authentication protects this preview), or run `pnpm --dir apps/dashboard dev`. Pair with the token printed by `RINGSIDE_HOME=/path/to/buyer-home node packages/mcp/dist/index.js pair`. The dashboard reads the local agent at `127.0.0.1:7420`, displays private balances and history, and lets the configured owner wallet sign policy, kill-switch, deposit, and withdrawal actions. The `/audit` route is a read-only fallback using the local control API. Browser-side viewing-key decryption remains unverified. A hosted page may need Chrome for HTTPS-to-localhost access; include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` on the MCP process.
+[Open the Vercel preview](https://ringside-dashboard-mo1at248t-mayors-projects-ed2d2592.vercel.app/) (Vercel Authentication protects this preview), or run `pnpm --dir apps/dashboard dev`. Pair with the token printed by `RINGSIDE_HOME=/path/to/buyer-home node packages/mcp/dist/index.js pair`. The dashboard reads the local agent at `127.0.0.1:7420`, displays private balances and history, and lets the configured owner wallet sign policy, kill-switch, deposit, and withdrawal actions. The `/audit` route is a read-only fallback using the local control API. Browser-side viewing-key decryption remains unverified. A hosted page may need Chrome for HTTPS-to-localhost access; include its exact origin in `RINGSIDE_DASHBOARD_ORIGINS` on the MCP process.
 
 ## Privacy and safety
 

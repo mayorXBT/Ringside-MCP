@@ -12,4 +12,5 @@
 - Built a Tier C Rust stdio sidecar with health reporting and explicit unavailable errors; added Cargo tests to CI.
 - Verified localnet SPL interface deposit and withdrawal with a six-decimal test mint, and verified a one-token seller payment including replay rejection.
 - Deployed a Vercel dashboard preview and confirmed local browser activity refresh and owner-signed kill-switch enforcement with a synthetic test owner.
+- Verified the latest Vercel preview from `main` responds on `/` and `/audit`; exercised four read tools through an MCP stdio client on localnet.
 - Added an idempotent demo seed script, localnet runbook, existing-key CLI initialization, and dashboard screenshots. Updated README with install guidance, architecture, comparison, and current limits.
