@@ -1,6 +1,6 @@
 # Reproduce the current Ringside demo
 
-The localnet SOL payment flow below passes end to end. Devnet private transfer and withdrawal remain blocked by Helius proof services; swap and escrow are Tier C (`ENGINE_UNAVAILABLE`). The target 1 USDC and escrow bounty demos are not yet verified. Keep all keypair files outside Git.
+The localnet SOL payment flow below passes end to end. Devnet private transfer and withdrawal passed on Zolana 0.4.0-alpha with real signatures; the MCP server still pins 0.3.1-alpha; swap and escrow are Tier C (`ENGINE_UNAVAILABLE`). The target 1 USDC and escrow bounty demos are not yet verified. Keep all keypair files outside Git.
 
 ## One-time setup
 

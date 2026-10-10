@@ -4,7 +4,7 @@
 
 **Private payments for agents. Controls for owners.**
 
-Private agent payments on Solana Rings, with owner spending controls and seller verification. The established self-hosted MCP server keeps its keypair on the agent's machine. A hosted OAuth connector for Claude and ChatGPT is being added; hosted signup is currently gated on production Postgres. Solana **devnet is the target**; a complete SOL payment and seller flow has passed on Zolana localnet while Helius devnet proof services are failing.
+Private agent payments on Solana Rings, with owner spending controls and seller verification. The established self-hosted MCP server keeps its keypair on the agent's machine. A hosted OAuth connector for Claude and ChatGPT is being added; hosted signup is currently gated on production Postgres. Solana **devnet is the target**; a complete SOL payment and seller flow has passed on Zolana localnet and Zolana 0.4.0-alpha now passes transfer and withdrawal on devnet; the MCP server remains pinned to 0.3.1-alpha.
 
 ![Ringside landing page](docs/landing.png)
 
@@ -88,7 +88,7 @@ Default Rings transfers conceal **asset and amount**, while sender, recipient, a
 
 | Approach | Agent interface | Owner controls | Seller receipt check | This release |
 |---|---|---|---|---|
-| Ringside MCP | Standard MCP stdio | Local caps, allowlists, signed policy, kill switch | `@ringside/verify` and demo 402 API | SOL flow verified on localnet; devnet proof path blocked |
+| Ringside MCP | Standard MCP stdio | Local caps, allowlists, signed policy, kill switch | `@ringside/verify` and demo 402 API | SOL flow verified on localnet; Zolana 0.4.0 transfer/withdraw verified on devnet; MCP pin pending retest |
 | b402, ZeroK, SNAP, oracle | Existing privacy/payment approaches referenced in the PRD | Varies by project | Varies by project | Direct feature comparison needs a current review of each project |
 
 Ringside's intended distinction is one MCP surface for the Zolana client, owner controls, and seller verification. The swap and escrow portion is documented Tier C, not a working comparison claim.
