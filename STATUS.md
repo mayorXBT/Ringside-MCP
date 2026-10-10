@@ -2,6 +2,12 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted OAuth mobile handoff (Oct 10)
+
+- Authorization now stores client ID, exact redirect URI, PKCE challenge and client state in the existing server-side authorization row, and carries only a 10-minute HMAC-signed flow token across `/oauth/authorize` and `/connect`. The authorize route can resume that token in Phantom’s separate browser; the challenge endpoint resolves it to the row ID before issuing a one-time Sign-In with Solana message. No OAuth flow cookie is required.
+- The mobile consent page offers a Phantom browse deep link when no Phantom provider is injected. Client identity is loaded from the server-side row; registered ChatGPT/OpenAI callback hosts display “ChatGPT.” Mobile completion attempts the exact OAuth callback in a new tab and keeps a visible “Return to ChatGPT” link with that same URL. Expired or used flows show a plain message and Retry.
+- Dashboard TypeScript and production build passed. The hosted protocol smoke now checks signed resume and tamper rejection. Production cross-browser and actual ChatGPT connector handoff remain to be checked after deployment; an automated callback cannot prove the ChatGPT mobile app’s OS link handling.
+
 ## Guided demo retest fixes (Oct 10)
 
 - The guided dashboard activity row links the real private-transfer signature to Solana Explorer when a live payment exists; recorded activity remains explicitly labelled without a fabricated signature. Registration now presents its confirmed signature as a visible explorer link and preserves it if a repeat registration reports already registered.

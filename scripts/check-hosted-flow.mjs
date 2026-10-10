@@ -13,6 +13,9 @@ const client=await json(await post('/oauth/register',{client_name:'Ringside host
 const query=new URLSearchParams({response_type:'code',client_id:client.client_id,redirect_uri:redirect,code_challenge:challenge,code_challenge_method:'S256',state:'smoke-test'});
 const authorization=await fetch(`${base}/oauth/authorize?${query}`,{redirect:'manual'});assert.equal(authorization.status,302);
 const flow=new URL(authorization.headers.get('location')).searchParams.get('flow');assert.ok(flow);
+const flowDetails=await json(await fetch(`${base}/api/hosted/flow?id=${encodeURIComponent(flow)}`));assert.equal(flowDetails.client_name,'Ringside hosted smoke test');
+const resumed=await fetch(flowDetails.authorize_url,{redirect:'manual'});assert.equal(resumed.status,302);assert.equal(new URL(resumed.headers.get('location')).searchParams.get('flow'),flow);
+const tampered=flow.slice(0,-1)+(flow.endsWith('A')?'B':'A');assert.equal((await fetch(`${base}/api/hosted/flow?id=${encodeURIComponent(tampered)}`)).status,400);
 const signedChallenge=await json(await post('/api/hosted/challenge',{flow_id:flow}));
 const signature=Buffer.from(nacl.sign.detached(Buffer.from(signedChallenge.message),pair.secretKey)).toString('base64');
 const loginResponse=await post('/api/hosted/login',{owner,signature,challenge_id:signedChallenge.challenge_id});const login=await json(loginResponse);

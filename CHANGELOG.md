@@ -116,3 +116,8 @@
 
 - Added explorer links and explicit public deposit visibility for real browser-burner devnet transactions; signatures survive reloads in browser storage.
 
+
+# 2026-10-10 — Cross-browser hosted OAuth handoff
+
+- Added expiring, signed authorization resume links backed by server-side OAuth state, plus a mobile Phantom browse link and explicit connector return URL.
+- Preserved ChatGPT identity on its registered callback host, mapped expired flows to plain retry guidance, and extended the hosted smoke test for resume and token tampering.
