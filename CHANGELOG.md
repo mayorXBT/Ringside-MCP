@@ -127,3 +127,4 @@
 
 - Render the consent page dynamically with a server mobile hint, promote Open in Phantom when the injected provider is absent, and offer the same link after a mobile connection failure.
 - Disable caching for `/connect` and `/oauth/authorize`; confirmed the Android Chrome user-agent page renders a functional Phantom deep link.
+- Verified the public deployment with an Android Chrome user agent, no-store responses, and a cross-browser OAuth/PKCE simulation.
