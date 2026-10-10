@@ -3,6 +3,7 @@
 ## 2026-10-10 — Guided demo retest fixes
 
 - Linked live activity and registration signatures, added a replay check to the seller step, kept accessible names on completed sidebar steps, gated burner actions by funding/registration/balance, and explained the zero private balance after withdrawal.
+- Re-ran the deployed guide with a real deposit, private payment, seller verdict, replay denial, linked activity, and withdrawal; captured the signatures in `STATUS.md`.
 
 ## 2026-10-10 — Demo RPC and faucet
 
