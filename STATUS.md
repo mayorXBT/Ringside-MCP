@@ -2,6 +2,13 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Guided demo retest fixes (Oct 10)
+
+- The guided dashboard activity row links the real private-transfer signature to Solana Explorer when a live payment exists; recorded activity remains explicitly labelled without a fabricated signature. Registration now presents its confirmed signature as a visible explorer link and preserves it if a repeat registration reports already registered.
+- After a live seller verification, the demo offers **Try replaying this payment**. It submits the same signature and nonce again and displays the server's `REPLAY` denial without replacing the successful original verdict. Every guided sidebar step has a stable accessible label.
+- Burner controls now follow prerequisites: registration needs public fee SOL; deposit needs registration plus 0.015 public SOL; sync needs registration; transfer needs synced private SOL, public fee SOL and a fresh seller request; withdrawal needs synced private SOL and public fee SOL. The public balance refreshes on burner restoration. A completed withdrawal sets the private balance to zero and tells the visitor to deposit and sync before another transfer.
+- Dashboard production build passed. Local Chromium checks at 1280px and 390px confirmed all five burner actions disabled for an unfunded burner, all eight sidebar names present, no page errors, and no horizontal overflow. Production replay and signature-link browser checks follow deployment.
+
 ## Demo RPC and faucet recovery (Oct 10)
 
 - The demo browser no longer calls `api.devnet.solana.com`. Phantom balance, burner SDK calls, transaction submission, and burner balance refresh now use `/api/demo/rpc`, an allowlisted server proxy to Helius devnet with bounded retries. A local proxy `getBalance` returned the funded treasury's 200,000,000 lamports; a disallowed RPC method returned 400. A 390px browser smoke created a burner with no page errors, overflow, or public devnet RPC requests.

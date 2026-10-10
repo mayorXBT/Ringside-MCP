@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-10 — Guided demo retest fixes
+
+- Linked live activity and registration signatures, added a replay check to the seller step, kept accessible names on completed sidebar steps, gated burner actions by funding/registration/balance, and explained the zero private balance after withdrawal.
+
 ## 2026-10-10 — Demo RPC and faucet
 
 - Routed demo browser RPC through a retrying Helius devnet proxy, added a 0.02 SOL server treasury faucet with IP and address limits, made demo errors retryable, linked activity signatures, made the swap notice dismissible, and removed automatic PWA manifest advertising.
