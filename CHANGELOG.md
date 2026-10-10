@@ -80,3 +80,7 @@
 
 - Restored the devnet-only burner from browser local storage on reload, clarified the deposit warning, and surfaced nested withdrawal error codes. Full and partial live withdrawal attempts both reached the Helius prover and failed before submission.
 
+# 2026-10-10 — Browser burner policy check
+
+- Added a browser-local spend cap to the live burner panel. A 0.1 SOL test and a real deposit attempt reject before transaction building when over the cap.
+
