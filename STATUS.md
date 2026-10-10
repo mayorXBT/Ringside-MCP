@@ -2,6 +2,8 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+- Landing and current docs copy now reflects the confirmed Oct 10 devnet browser-burner and funded buyer transfers. The dashboard preview remains labelled illustrative. The MCP 0.3.1-alpha devnet path and hosted connector spending are still pending their own acceptance checks; historical blocker notes lower in this file describe earlier runs.
+
 ## M1 devnet recheck on Zolana 0.4.0-alpha (Oct 10)
 
 - **M1 transfer and withdrawal now pass on devnet with SDK 0.4.0-alpha.** The funded buyer already had 20,000,000 private lamports; `pnpm check:m1:04` preflighted that balance and the guarded live run made **no deposit**. A 1,000,000-lamport private transfer to the registered seller confirmed at slot `509544164`, signature `5p4d4f5C73H7peAJa5TE6i8vRLd3nysS31ehwb9gotSFQvkPso6aTw5hZeMgWb6TkzGKwKJSeLxXPSw358CUntaB`. Seller private sync returned 1,000,000 lamports. A 500,000-lamport withdrawal to the seller's public wallet confirmed at slot `509544185`, signature `M7mKhqdDfgDWKEV8Fd7tGcumEyjdAeSQGkxkmk8RHVp5GShbWL1GnUgh69uWKe3kaaeWYwhXKTp1apRa19vpiTv`. The script explicitly refuses to make a deposit. The existing M1 deposit and registration evidence, plus this transfer/withdrawal, satisfy the chain-operation exit on 0.4.0. The production MCP still pins 0.3.1-alpha, and browser burner transfer/withdrawal were separately validated in the next step.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-10 — Devnet status copy
+
+- Updated landing and docs claims after the confirmed Zolana 0.4.0-alpha devnet payments. The preview stays labelled illustrative, and the MCP 0.3.1-alpha and hosted connector limits remain explicit.
+
 ## 2026-10-10 — M1 devnet recovery
 
 - Added a guarded Zolana 0.4.0-alpha preflight/transfer/withdrawal script that never deposits. Confirmed a real private transfer and public withdrawal from existing funded buyer state; recorded both signatures in `STATUS.md`.
