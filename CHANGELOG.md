@@ -5,6 +5,7 @@
 - Added a guarded Zolana 0.4.0-alpha preflight/transfer/withdrawal script that never deposits. Confirmed a real private transfer and public withdrawal from existing funded buyer state; recorded both signatures in `STATUS.md`.
 - Added Zolana 0.4.0-alpha to the browser burner independently of the MCP pin. Confirmed a real browser-burner private transfer and withdrawal on devnet.
 - Connected the guided `/demo` transfer and withdrawal steps to browser-signed devnet transactions, added a prover/indexer check and retry fallback, and displayed real signatures in the masked explorer view. Updated public copy to distinguish those live steps from recorded seller verification.
+- Ran the full deployed browser-burner path on devnet: registration, deposit, private balance sync, private transfer, and withdrawal all confirmed; recorded the real signatures in `STATUS.md`.
 
 ## 2026-10-10
 
