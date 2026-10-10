@@ -2,6 +2,11 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Android Chrome OAuth handoff correction (Oct 10)
+
+- A real Android Chrome retest after `2b15a84` showed the wrong Connect Phantom control and a failed wallet-adapter connect. The revised `/connect` route reads the request user agent on the server, checks the injected `window.phantom?.solana` provider on the client, and makes **Open in Phantom** primary on mobile without injection regardless of adapter `Loadable`/`NotDetected` state. If a mobile wallet connect still fails, the same deep link replaces the failed control.
+- `/connect` is now dynamically rendered with `Cache-Control: no-store, max-age=0`; `/oauth/authorize` redirects and route headers also send no-store. Local Android Chrome user-agent browser test confirmed a working Phantom browse URL and no Connect Phantom button; the local connect response carried no-store. Dashboard check and production build passed. Production deployment and a real-device retest are pending.
+
 ## Hosted OAuth mobile handoff (Oct 10)
 
 - Authorization now stores client ID, exact redirect URI, PKCE challenge and client state in the existing server-side authorization row, and carries only a 10-minute HMAC-signed flow token across `/oauth/authorize` and `/connect`. The authorize route can resume that token in Phantom’s separate browser; the challenge endpoint resolves it to the row ID before issuing a one-time Sign-In with Solana message. No OAuth flow cookie is required.

@@ -3,6 +3,9 @@ import { db, ensureSchema } from '@/lib/hosted/db';
 import { createFlowToken, readFlowToken } from '@/lib/hosted/flow-token';
 import { problem } from '@/lib/hosted/http';
 
+const noStore = { 'Cache-Control': 'no-store, max-age=0', Pragma: 'no-cache' };
+const redirectNoStore = (url: URL) => new Response(null, { status: 302, headers: { Location: url.toString(), ...noStore } });
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const params = url.searchParams;
@@ -14,7 +17,7 @@ export async function GET(request: Request) {
       await ensureSchema();
       const rows = await db()`SELECT id FROM hosted_authorizations WHERE id=${id} AND expires_at>now()`;
       if (!rows[0]) return problem(400, 'invalid_flow');
-      return Response.redirect(new URL(`/connect?flow=${encodeURIComponent(resume)}`, url));
+      return redirectNoStore(new URL(`/connect?flow=${encodeURIComponent(resume)}`, url));
     } catch { return problem(503, 'temporarily_unavailable'); }
   }
   const client = params.get('client_id');
@@ -33,6 +36,6 @@ export async function GET(request: Request) {
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
     await db()`INSERT INTO hosted_authorizations(id,client_id,redirect_uri,state,code_challenge,expires_at) VALUES(${id},${client},${redirect},${state},${challenge},${expiresAt.toISOString()}::timestamptz)`;
     const token = createFlowToken(id, expiresAt);
-    return Response.redirect(new URL(`/connect?flow=${encodeURIComponent(token)}`, url));
+    return redirectNoStore(new URL(`/connect?flow=${encodeURIComponent(token)}`, url));
   } catch { return problem(503, 'temporarily_unavailable'); }
 }

@@ -122,3 +122,8 @@
 - Added expiring, signed authorization resume links backed by server-side OAuth state, plus a mobile Phantom browse link and explicit connector return URL.
 - Preserved ChatGPT identity on its registered callback host, mapped expired flows to plain retry guidance, and extended the hosted smoke test for resume and token tampering.
 - Verified the deployed flow in separate mobile browser contexts and a desktop wallet-extension simulation, including PKCE exchange, token tampering, and expired-link recovery.
+
+# 2026-10-10 — Android Chrome hosted OAuth control
+
+- Render the consent page dynamically with a server mobile hint, promote Open in Phantom when the injected provider is absent, and offer the same link after a mobile connection failure.
+- Disable caching for `/connect` and `/oauth/authorize`; confirmed the Android Chrome user-agent page renders a functional Phantom deep link.
