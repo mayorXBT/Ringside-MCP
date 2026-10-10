@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build && next build",
+    "build": "node scripts/prepare-zolana-wasm.cjs && pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build && next build",
     "check": "tsc --noEmit"
   },
   "dependencies": {

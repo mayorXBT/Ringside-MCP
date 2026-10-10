@@ -71,3 +71,8 @@
 
 - Added a specific Helius devnet prover capability probe and Retry control to `/demo`; the recorded transfer remains clearly labelled while the required proof key is missing.
 
+# 2026-10-10 — Browser burner devnet actions
+
+- Added browser-only devnet burner registration, 0.01 SOL deposit, private balance sync, and a withdrawal attempt to `/demo`. Confirmed registration, deposit, and balance with real devnet signatures; withdrawal still fails during proof building.
+- Bundled the pinned Zolana browser WASM files during dashboard build and persisted the devnet burner seed in browser local storage for return visits.
+
