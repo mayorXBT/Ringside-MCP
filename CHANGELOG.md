@@ -54,3 +54,5 @@
 - Added agent use-case grid to the public landing page.
 
 - Clarified self-hosted versus hosted key custody across landing proof, privacy, FAQ, and a dedicated section.
+
+- Added a Helius-aligned privacy FAQ and corrected the off-chain policy row.

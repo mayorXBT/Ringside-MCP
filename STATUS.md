@@ -121,3 +121,5 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Added a three-case landing grid for report purchases, paid API calls, and owner-capped automation, with localnet verification caveat.
 
 - Added explicit self-hosted versus hosted agent-key custody section and corrected landing claims that keys always stay local.
+
+- Added a Helius-aligned what-is-private FAQ covering public deposits and withdrawals, default-ring transfer visibility, and no automatic public payment fallback.
