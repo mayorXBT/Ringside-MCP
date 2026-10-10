@@ -2,7 +2,9 @@
   "name": "ringside-workspace",
   "private": true,
   "packageManager": "pnpm@11.18.0",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "check": "pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp check && pnpm --filter ringside-dashboard check",
     "test": "pnpm --filter @ringside/verify build && pnpm --filter @ringside/verify test && pnpm --filter ringside-mcp build && pnpm --filter ringside-mcp test",
@@ -12,6 +14,7 @@
     "check:live-transfer": "pnpm --filter ringside-mcp check:live-transfer",
     "check:seller": "node --use-env-proxy scripts/check-seller-flow.mjs",
     "seed:demo": "node --use-env-proxy scripts/seed-demo.mjs",
-    "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs"
+    "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs",
+    "check:hosted": "node --use-env-proxy scripts/check-hosted-flow.mjs"
   }
 }
