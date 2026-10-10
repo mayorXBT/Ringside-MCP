@@ -5,6 +5,7 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 ## Hosted connector work (Oct 10)
 
 - Step 1: added OAuth protected-resource and authorization-server discovery, public-client dynamic registration, PKCE authorization/code exchange with refresh tokens, one-time Sign-In with Solana challenge verification, consent copy, owner session cookie, per-owner encrypted agent-key creation, and default 0.05 SOL transaction / 0.2 SOL daily policy. Hosted routes fail closed until `DATABASE_URL` and `RINGSIDE_HOSTED_SECRET` are provisioned. No hosted deposit or payment has been claimed. Next: the authenticated Streamable HTTP transport and durable hosted spend enforcement, followed by dashboard and connector testing.
+- Step 2: `/mcp` now uses the SDK Web Standard Streamable HTTP transport, requires an OAuth bearer token, and registers the same tools as stdio through a shared server factory. Hosted requests decrypt the owner key only in memory, use the request's async context, and atomically reserve spend against a durable 24-hour cap before sending. A production build passes; an unauthenticated initialize request returns 401 with OAuth resource metadata. Database provisioning, a funded Helius devnet key on Vercel, and authenticated connector testing remain open.
 
 ## Landing polish (Oct 10)
 

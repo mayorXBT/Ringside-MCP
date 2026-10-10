@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import { hostedContext } from './hosted.js';
 
 const limits = z.object({ max_per_tx: z.string(), max_per_session: z.string(), max_per_day: z.string() });
 const schema = z.object({
@@ -22,6 +23,7 @@ const session = randomUUID();
 export const ringsideHome = () => process.env.RINGSIDE_HOME || join(homedir(), '.ringside');
 
 export function loadPolicy() {
+  const hosted=hostedContext();if(hosted)return hosted.policy;
   let raw: unknown = { policy: {} };
   try { raw = JSON.parse(readFileSync(join(ringsideHome(), 'config.json'), 'utf8')); }
   catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
@@ -44,7 +46,7 @@ const decimalBase = (value: string, decimals: number): bigint => {
   return BigInt(whole) * 10n ** BigInt(decimals) + BigInt(fraction.padEnd(decimals, '0') || '0');
 };
 
-export function assertSpend(tool: string, asset: string, amount: bigint, decimals: number, recipient?: string) {
+export async function assertSpend(tool: string, asset: string, amount: bigint, decimals: number, recipient?: string) {
   const policy = loadPolicy();
   if (policy.kill_switch) throw new Error('KILL_SWITCH: owner has stopped spending');
   if (policy.read_only) throw new Error('POLICY_DENIED: read-only mode');
@@ -53,6 +55,7 @@ export function assertSpend(tool: string, asset: string, amount: bigint, decimal
   const cap = policy.assets[asset];
   if (!cap) throw new Error('POLICY_DENIED: no cap configured for asset');
   if (amount > decimalBase(cap.max_per_tx, decimals)) throw new Error('POLICY_DENIED: transaction cap exceeded');
+  const hosted=hostedContext();if(hosted){await hosted.reserve(tool,asset,amount,decimals,recipient);return;}
   const db = ledger();
   try {
     const day = Date.now() - 24 * 60 * 60 * 1000;
@@ -66,13 +69,15 @@ export function assertSpend(tool: string, asset: string, amount: bigint, decimal
   } finally { db.close(); }
 }
 
-export function recordSpend(tool: string, asset: string, amount: bigint, recipient: string | undefined, signature: string) {
+export async function recordSpend(tool: string, asset: string, amount: bigint, recipient: string | undefined, signature: string) {
+  const hosted=hostedContext();if(hosted){await hosted.record(tool,asset,amount,recipient,signature);return;}
   const db = ledger();
   try { db.prepare('INSERT INTO spends (id, ts, session, tool, asset, amount_base, recipient, signature) VALUES (?, ?, ?, ?, ?, ?, ?, ?)').run(randomUUID(), Date.now(), session, tool, asset, amount.toString(), recipient || null, signature); }
   finally { db.close(); }
 }
 
 export function solBudget() {
+  const hosted=hostedContext();if(hosted)return hosted.budget;
   const policy = loadPolicy();
   const caps = policy.assets.SOL;
   if (!caps) return null;

@@ -7,6 +7,7 @@ import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana/transaction
 import { isWalletRegistered } from '@heliuslabs/zolana/wallet';
 import { resolveRegisteredAddress } from '@heliuslabs/zolana/wallet';
 import { assertSpend, loadPolicy, recordSpend } from './policy.js';
+import { hostedContext } from './hosted.js';
 import { engineHealth } from './engine.js';
 import { emitEvent } from './events.js';
 import { getCreateAccountInstruction } from '@solana-program/system';
@@ -34,7 +35,8 @@ export function clientConfig(): ZolanaClientConfig {
 export async function context() {
   await initializePoseidon();
   const path = expand(process.env.RINGSIDE_KEYPAIR || process.env.ZOLANA_PAYER_KEYPAIR || join(process.env.RINGSIDE_HOME || join(homedir(), '.ringside'), 'agent.json'));
-  const data: unknown = JSON.parse(await readFile(path, 'utf8'));
+  const hosted=hostedContext();
+  const data: unknown = hosted ? Array.from(hosted.secretKey) : JSON.parse(await readFile(path, 'utf8'));
   if (!Array.isArray(data) || data.length !== 64 || data.some((v) => !Number.isInteger(v) || v < 0 || v > 255)) throw new Error(`Invalid Solana keypair at ${path}`);
   const seed = Uint8Array.from(data.slice(0, 32));
   const signing = SigningKey.fromEd25519Bytes(seed as Bytes32);
@@ -82,7 +84,7 @@ async function sendInstructions(instructions: readonly Instruction[]) {
 }
 
 export async function registerWallet() {
-  assertSpend('register_private_wallet', 'SOL', 0n, 9);
+  await assertSpend('register_private_wallet', 'SOL', 0n, 9);
   const { client, identity, signer } = await context();
   const transaction = await buildRegistrationTransaction({ client, owner: signer.address, address: identity.shieldedAddress() });
   if (!transaction) return { registered: true, already_registered: true };
@@ -98,10 +100,10 @@ export async function deposit(asset: string, amount: string, sourceTokenAccount?
     const { client, identity, signer } = await context();
     const { mint, decimals, base } = await assetAmount(client, asset, amount);
     if (asset !== 'SOL' && !sourceTokenAccount) throw new Error('source_token_account is required for SPL deposits');
-    assertSpend('deposit', asset, base, decimals);
+    await assertSpend('deposit', asset, base, decimals);
     const transaction = await buildDepositTransaction({ client, feePayer: signer.address, depositor: signer.address, recipient: identity.shieldedAddress(), asset: mint, amount: base, splTokenAccount: sourceTokenAccount ? address(sourceTokenAccount) : undefined, splTokenProgram: tokenProgram ? address(tokenProgram) : undefined });
     const sent = await sendTransaction(transaction);
-    recordSpend('deposit', asset, base, undefined, sent.signature);
+    await recordSpend('deposit', asset, base, undefined, sent.signature);
     emitEvent('spend.confirmed', { tool: 'deposit', asset, amount_base_units: base.toString(), signature: sent.signature });
     return { asset, amount, amount_base_units: base.toString(), ...sent };
   });
@@ -155,14 +157,14 @@ export async function privateTransfer(recipient: string, asset: string, amount: 
     const { mint, decimals, base } = await assetAmount(client, asset, amount);
     const resolved = await resolveRegisteredAddress({ rpc: client, owner: address(recipient) });
     if (!resolved) throw new Error('RECIPIENT_NOT_REGISTERED: recipient must register a private wallet first');
-    assertSpend('private_transfer', asset, base, decimals, recipient);
+    await assertSpend('private_transfer', asset, base, decimals, recipient);
     const wallet = new Wallet({ identity: identity.shieldedAddress(), registry: new AssetRegistry() });
     const keys = LocalKeys.fromKeypair(identity, client.proofService);
     try {
       await syncWallet({ wallet, keys, client, config: { pageLimit: 50 } });
       const transaction = await buildTransferTransaction({ client, wallet, keys, feePayer: signer.address, recipient: resolved.address, asset: mint, amount: base });
       const sent = await sendTransaction(transaction);
-      recordSpend('private_transfer', asset, base, recipient, sent.signature);
+      await recordSpend('private_transfer', asset, base, recipient, sent.signature);
       emitEvent('spend.confirmed', { tool: 'private_transfer', asset, amount_base_units: base.toString(), recipient, signature: sent.signature });
       return { amount, amount_base_units: base.toString(), recipient, ...sent };
     } finally { keys.destroy(); }
@@ -174,14 +176,14 @@ export async function withdraw(asset: string, amount: string, recipient?: string
     const { client, identity, signer } = await context();
     const { mint, decimals, base } = await assetAmount(client, asset, amount);
     const destination = recipient ? address(recipient) : signer.address;
-    assertSpend('withdraw', asset, base, decimals, destination);
+    await assertSpend('withdraw', asset, base, decimals, destination);
     const wallet = new Wallet({ identity: identity.shieldedAddress(), registry: new AssetRegistry() });
     const keys = LocalKeys.fromKeypair(identity, client.proofService);
     try {
       await syncWallet({ wallet, keys, client, config: { pageLimit: 50 } });
       const transaction = await buildWithdrawalTransaction({ client, wallet, keys, feePayer: signer.address, recipient: destination, asset: mint, amount: base });
       const sent = await sendTransaction(transaction);
-      recordSpend('withdraw', asset, base, destination, sent.signature);
+      await recordSpend('withdraw', asset, base, destination, sent.signature);
       emitEvent('spend.confirmed', { tool: 'withdraw', asset, amount_base_units: base.toString(), recipient: destination, signature: sent.signature });
       return { amount, amount_base_units: base.toString(), recipient: destination, ...sent };
     } finally { keys.destroy(); }
@@ -190,7 +192,7 @@ export async function withdraw(asset: string, amount: string, recipient?: string
 
 export async function createTestToken(amount: string, decimals = 9) {
   return serializeSpend(async () => {
-    assertSpend('create_test_token', 'SOL', 0n, 9);
+    await assertSpend('create_test_token', 'SOL', 0n, 9);
     if (!Number.isInteger(decimals) || decimals < 0 || decimals > 9) throw new Error('decimals must be 0 to 9');
     const base = parseAmount(amount, decimals);
     if (base <= 0n) throw new Error('amount must be positive');
@@ -216,7 +218,7 @@ export async function depositWithInterfaceSetup(mintText: string, amount: string
     const mint = address(mintText);
     const sourceToken = address(sourceText);
     const { base, decimals } = await assetAmount(client, mintText, amount);
-    assertSpend('deposit_with_interface_setup', mintText, base, decimals);
+    await assertSpend('deposit_with_interface_setup', mintText, base, decimals);
     const vault = await getSplAssetVaultAddress(mint);
     const exists = !!(await client.getAccount(vault));
     const instructions: Instruction[] = [];
@@ -224,7 +226,7 @@ export async function depositWithInterfaceSetup(mintText: string, amount: string
     const shielded = identity.shieldedAddress();
     instructions.push(await depositInstruction({ tree: client.tree, depositor: signer, deposits: [{ asset: DepositAsset.spl({ mint, sourceTokenAccount: sourceToken, tokenProgram: TOKEN_PROGRAM_ADDRESS }), viewTag: shielded.confidentialViewTag(), recipientOwnerHash: shielded.ownerHash(), amount: base }] }));
     const sent = await sendInstructions(instructions);
-    recordSpend('deposit_with_interface_setup', mintText, base, undefined, sent.signature);
+    await recordSpend('deposit_with_interface_setup', mintText, base, undefined, sent.signature);
     emitEvent('spend.confirmed', { tool: 'deposit_with_interface_setup', asset: mintText, amount_base_units: base.toString(), signature: sent.signature });
     return { mint: mintText, amount, amount_base_units: base.toString(), interface_created: !exists, ...sent };
   });

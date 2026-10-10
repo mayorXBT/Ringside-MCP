@@ -1,0 +1,5 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
+export type HostedContext={owner:string;secretKey:Uint8Array;policy:{kill_switch:boolean;read_only:boolean;assets:Record<string,{max_per_tx:string;max_per_session:string;max_per_day:string}>;asset_allowlist:string[];recipient_allowlist:string[];allowlist_mode:'off'|'enforce';allow_withdrawal_fallback:boolean};budget:{asset:string;spent_today:string;spent_session:string;max_per_day:string;max_per_session:string};reserve:(tool:string,asset:string,amount:bigint,decimals:number,recipient?:string)=>Promise<void>;record:(tool:string,asset:string,amount:bigint,recipient:string|undefined,signature:string)=>Promise<void>};
+const context=new AsyncLocalStorage<HostedContext>();
+export const hostedContext=()=>context.getStore();
+export const runHosted=<T>(value:HostedContext,fn:()=>Promise<T>)=>context.run(value,fn);
