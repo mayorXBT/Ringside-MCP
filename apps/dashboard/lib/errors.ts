@@ -1,4 +1,6 @@
 export function friendlyError(raw: string): string {
+  if (raw.includes('AGENT_NEEDS_FEE_SOL')) return raw.split('AGENT_NEEDS_FEE_SOL: ')[1] || 'Fund the agent’s public devnet wallet, refresh its balance, then retry.';
+  if (raw.includes('-32002') || raw.includes('Transaction already in progress')) return 'Another transaction is still in progress. Finish any open wallet approval, wait for confirmation, then refresh and retry.';
   if (raw === 'AGENT_OFFLINE') return 'Could not reach your agent. Check that Ringside MCP is running, then retry.';
   if (raw === 'PAIRING_REJECTED') return 'That token did not work. Run ringside-mcp pair again and paste the new token.';
   if (raw.includes('KILL_SWITCH')) return 'Spending is stopped by the owner. Resume spending after reviewing the current limits.';
@@ -9,7 +11,7 @@ export function friendlyError(raw: string): string {
   if (raw.includes('recipient is not allowed')) return 'Payment blocked: this recipient is not on the allowlist. Review Policy.';
   if (raw.includes('read-only mode')) return 'Spending is blocked because read-only mode is on. Turn it off in Policy.';
   if (raw.includes('RECIPIENT_NOT_REGISTERED')) return 'The recipient has not set up a private wallet, so a private payment is not possible.';
-  if (raw.includes('ENGINE_UNAVAILABLE')) return 'Swap and escrow are unavailable in this release.';
+  if (raw.includes('ENGINE_UNAVAILABLE')) return 'This advanced swap or escrow action is unavailable on devnet in this release. Retry the status check later; core payments use a separate path.';
   if (raw.includes('Invalid owner signature') || raw.includes('403')) return 'Signature rejected. Connect the owner wallet and try again within 60 seconds.';
   return raw;
 }

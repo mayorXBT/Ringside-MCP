@@ -2,6 +2,12 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted funding and registration fix (Oct 10)
+
+- Sent 0.05 public devnet SOL from the funded buyer `GxCNFRN7zRC43ugwdGQ5AsVZqkLFY2rviL8fts2gUaZP` to the new hosted agent `6S3g4Ee4UTWhLejnfmRkdiQ4EVixMbfWHrnCP9Z4r9JB`. Signature `3y22uAKe9dsDhLM6H7NeBMxW3vHoV35kwVridbEycfGe4WPSwEgrfhDXxRw47PBnvYdXZeJxEyiAFrPwWacKT6xD` finalized at slot `509579796`; recipient balance was 50,000,000 lamports.
+- Hosted dashboard now presents public funding immediately after login, including full address, copy, and a Phantom-signed 0.05 SOL transfer. Registration is disabled below 0.005 public SOL and the server independently enforces fee balance before registration, deposit, or withdrawal. Disabled deposit/withdraw states explain their prerequisites. Transaction-in-progress and engine-unavailable errors have plain messages and retry controls.
+- Dashboard production build passed. A real Phantom signature for the new funding button and registration under the user's hosted session still require an authenticated browser owner session; they were not performed with the buyer key. The recipient is funded for the user's retest.
+
 - Landing and current docs copy now reflects the confirmed Oct 10 devnet browser-burner and funded buyer transfers. The dashboard preview remains labelled illustrative. The MCP 0.3.1-alpha devnet path and hosted connector spending are still pending their own acceptance checks; historical blocker notes lower in this file describe earlier runs.
 
 ## M1 devnet recheck on Zolana 0.4.0-alpha (Oct 10)

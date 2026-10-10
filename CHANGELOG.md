@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-10 — Hosted wallet funding
+
+- Added a Phantom-signed public funding action, balance checks before hosted registration/deposit/withdrawal, disabled-action explanations, and readable retryable errors. Funded the new hosted devnet agent with 0.05 SOL for retesting.
+
 ## 2026-10-10 — Devnet status copy
 
 - Updated landing and docs claims after the confirmed Zolana 0.4.0-alpha devnet payments. The preview stays labelled illustrative, and the MCP 0.3.1-alpha and hosted connector limits remain explicit.
