@@ -117,3 +117,5 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Added public `/demo` with a seven-step interactive 0.01 SOL seller-payment scenario: example owner cap, agent request, animated policy check and rejection, private transfer, seller verification, dashboard balance/activity, and masked explorer fields. The UI is explicitly labelled DEMO DATA; it submits no transactions or policy changes. The public landing hero and nav link to it.
 - Live mode is not enabled: a Helius devnet end-to-end transfer has not passed, and the deployed app has no funded, authorized public demo agent. The recorded path is the safe current fallback; do not call it a live devnet transaction.
 - Production build passed. Chromium checks at 1280px/390px found no page errors or horizontal overflow. Walkthrough and under-limit rejection were exercised.
+
+- Added a three-case landing grid for report purchases, paid API calls, and owner-capped automation, with localnet verification caveat.

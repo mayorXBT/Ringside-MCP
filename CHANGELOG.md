@@ -50,3 +50,5 @@
 
 - Added `/demo`, a no-install, seven-step interactive seller-payment walkthrough with owner policy rejection, seller verification, updated dashboard preview, and masked explorer view.
 - Marked every transaction and balance as demo data while devnet proofs remain unverified; linked the route from landing hero and navigation.
+
+- Added agent use-case grid to the public landing page.
