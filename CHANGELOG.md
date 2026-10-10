@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-10 — M1 devnet recovery
+
+- Added a guarded Zolana 0.4.0-alpha preflight/transfer/withdrawal script that never deposits. Confirmed a real private transfer and public withdrawal from existing funded buyer state; recorded both signatures in `STATUS.md`.
+
 ## 2026-10-10
 
 - Added a hosted Streamable HTTP MCP route, OAuth discovery/DCR/PKCE, Sign-In with Solana consent, encrypted per-owner agent keys, durable policy reservations, and the shared 25-tool server factory.

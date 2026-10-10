@@ -12,6 +12,7 @@
     "check:examples": "pnpm --dir vendor/zolana-examples/typescript-client check",
     "check:m1": "pnpm --filter ringside-mcp check:m1",
     "check:live-transfer": "pnpm --filter ringside-mcp check:live-transfer",
+    "check:m1:04": "node --use-env-proxy scripts/check-m1-zolana04.mjs",
     "check:seller": "node --use-env-proxy scripts/check-seller-flow.mjs",
     "seed:demo": "node --use-env-proxy scripts/seed-demo.mjs",
     "check:devnet": "node --use-env-proxy scripts/check-devnet.mjs",
