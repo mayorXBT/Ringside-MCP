@@ -58,3 +58,8 @@
 - Added a Helius-aligned privacy FAQ and corrected the off-chain policy row.
 
 - Added a contact section with direct GitHub issue and documentation links.
+
+## Oct 10, 2026 — Unified Ringside brand
+
+- Introduced the gap-shield logomark and light/dark SVG exports, new favicon and Apple icon, Geist Open Graph image, and 1920×1080 pitch title cards.
+- Added `/brand`, downloadable assets and brand tokens; unified the tagline and added manifest, theme color, robots, and sitemap metadata.

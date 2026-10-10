@@ -1,1 +1,1 @@
-Ringside: Private payments for agents. Control every rule. Keep amounts private.
+Ringside — Private payments for agents. Controls for owners. Demo balance beside a public explorer view with masked amount and asset.

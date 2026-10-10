@@ -1,4 +1,8 @@
+<img src="brand/logo-light.svg" alt="Ringside" width="288" />
+
 # Ringside MCP
+
+**Private payments for agents. Controls for owners.**
 
 Private agent payments on Solana Rings, with owner spending controls and seller verification. The established self-hosted MCP server keeps its keypair on the agent's machine. A hosted OAuth connector for Claude and ChatGPT is being added; hosted signup is currently gated on production Postgres. Solana **devnet is the target**; a complete SOL payment and seller flow has passed on Zolana localnet while Helius devnet proof services are failing.
 

@@ -130,3 +130,9 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 
 - Re-ran `RINGSIDE_RUN_LIVE_TRANSFER=1 pnpm check:live-transfer` with the existing local buyer and seller devnet test keys. The build failed before submission with `WALLET_BUILD_TRANSFER` / `CLIENT_PROVER_HTTP`, prover HTTP 400: `proving_error: transfer-eddsa: no key file mapping for transfer-confidential with 2 inputs and 3 outputs`. No transfer or withdrawal signature was produced. `/demo` therefore remains explicitly recorded data; a live browser flow also requires a funded, authorized demo agent and seller, which are not provisioned on Vercel.
 - Final production-build browser pass covered `/`, `/demo`, and `/docs` at 1280px and 390px: no page errors or horizontal overflow. The demo walkthrough reached the masked explorer state, and a 0.005 SOL cap blocked its 0.01 SOL payment. Vercel production deployment for commit `3a4304a` is READY; all three public routes return 200.
+
+## Branding pass (Oct 10)
+
+- Replaced the old C-shaped mark with one open shield-ring geometry across the React wordmark, light/dark SVG exports, SVG/ICO favicon, Apple icon, Open Graph art, README header, and public `/brand` page. The mark has no dot motif or rotation.
+- Regenerated the 1200×630 Open Graph card in Geist with the exact tagline, illustrative balance, and masked explorer fields. Added 1920×1080 pitch intro/outro PNGs. Added `brand/` exports, palette, Geist fonts and license, plus `manifest.webmanifest`, theme color, robots, and sitemap routes.
+- The tagline is now `Private payments for agents. Controls for owners.` in primary metadata, hero, README, brand kit, and social artwork. Production build passed; 1280px and 390px brand-page screenshots were visually reviewed. Vercel verification follows the push.
