@@ -121,3 +121,4 @@
 
 - Added expiring, signed authorization resume links backed by server-side OAuth state, plus a mobile Phantom browse link and explicit connector return URL.
 - Preserved ChatGPT identity on its registered callback host, mapped expired flows to plain retry guidance, and extended the hosted smoke test for resume and token tampering.
+- Verified the deployed flow in separate mobile browser contexts and a desktop wallet-extension simulation, including PKCE exchange, token tampering, and expired-link recovery.
