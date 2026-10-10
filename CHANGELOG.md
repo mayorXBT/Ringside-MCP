@@ -3,6 +3,7 @@
 ## 2026-10-10 — Demo RPC and faucet
 
 - Routed demo browser RPC through a retrying Helius devnet proxy, added a 0.02 SOL server treasury faucet with IP and address limits, made demo errors retryable, linked activity signatures, made the swap notice dismissible, and removed automatic PWA manifest advertising.
+- Verified the deployed browser burner through treasury funding, registration, deposit, private balance sync, and withdrawal. Confirmed the second IP claim is rate limited; recorded signatures in `STATUS.md`.
 
 ## 2026-10-10 — Hosted wallet funding
 
