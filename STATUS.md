@@ -125,3 +125,8 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Added a Helius-aligned what-is-private FAQ covering public deposits and withdrawals, default-ring transfer visibility, and no automatic public payment fallback.
 
 - Added a contact CTA linking to GitHub issue intake and the docs, plus landing navigation.
+
+## Devnet recheck for public demo (Oct 10)
+
+- Re-ran `RINGSIDE_RUN_LIVE_TRANSFER=1 pnpm check:live-transfer` with the existing local buyer and seller devnet test keys. The build failed before submission with `WALLET_BUILD_TRANSFER` / `CLIENT_PROVER_HTTP`, prover HTTP 400: `proving_error: transfer-eddsa: no key file mapping for transfer-confidential with 2 inputs and 3 outputs`. No transfer or withdrawal signature was produced. `/demo` therefore remains explicitly recorded data; a live browser flow also requires a funded, authorized demo agent and seller, which are not provisioned on Vercel.
+- Final production-build browser pass covered `/`, `/demo`, and `/docs` at 1280px and 390px: no page errors or horizontal overflow. The demo walkthrough reached the masked explorer state, and a 0.005 SOL cap blocked its 0.01 SOL payment. Vercel production deployment for commit `3a4304a` is READY; all three public routes return 200.
