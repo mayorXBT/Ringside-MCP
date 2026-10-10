@@ -56,3 +56,5 @@
 - Clarified self-hosted versus hosted key custody across landing proof, privacy, FAQ, and a dedicated section.
 
 - Added a Helius-aligned privacy FAQ and corrected the off-chain policy row.
+
+- Added a contact section with direct GitHub issue and documentation links.

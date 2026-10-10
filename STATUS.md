@@ -123,3 +123,5 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Added explicit self-hosted versus hosted agent-key custody section and corrected landing claims that keys always stay local.
 
 - Added a Helius-aligned what-is-private FAQ covering public deposits and withdrawals, default-ring transfer visibility, and no automatic public payment fallback.
+
+- Added a contact CTA linking to GitHub issue intake and the docs, plus landing navigation.
