@@ -8,7 +8,7 @@ Private agent payments on Solana Rings, with owner spending controls and seller 
 
 ![Ringside dashboard design with illustrative localnet data](docs/dashboard-redesign-preview.png)
 
-[PRD](PRD.md) · [Build status](STATUS.md) · [Reproducible demo steps](scripts/demo.md) · [Security model](docs/security.md)
+[Web documentation](https://ringside-dashboard.vercel.app/docs) · [PRD](PRD.md) · [Build status](STATUS.md) · [Reproducible demo steps](scripts/demo.md) · [Security model](docs/security.md)
 
 ## Install and connect
 

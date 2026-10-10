@@ -35,3 +35,8 @@
 - Deployed a Vercel dashboard preview and confirmed local browser activity refresh and owner-signed kill-switch enforcement with a synthetic test owner.
 - Verified the latest Vercel preview from `main` responds on `/` and `/audit`; exercised four read tools through an MCP stdio client on localnet.
 - Added an idempotent demo seed script, localnet runbook, existing-key CLI initialization, and dashboard screenshots. Updated README with install guidance, architecture, comparison, and current limits.
+
+## Oct 10, 2026 — Web documentation
+
+- Added a dedicated, responsive documentation page at `/docs`, with sidebar navigation, copyable setup commands, tool inventory, privacy table, release status, and troubleshooting.
+- Linked the landing page and README to the new guide.

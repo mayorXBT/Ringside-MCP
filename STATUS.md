@@ -99,3 +99,9 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 4. **Exercise the dashboard with the owner's wallet.** Pair in Chrome, sign a policy change and kill toggle, and verify wrong-wallet rejection. The production page is public; configure a secure control connection for the demo.
 5. **Revisit engine tier.** The upstream programs and fixture flows work on localnet. A Tier B Ringside implementation still requires sidecar proof orchestration with local user keys, spend-policy integration, and encrypted escrow-note persistence before any spend tool can be enabled. Keep Tier C explicit until then.
 6. **Ship after live acceptance:** rerun the demo from a clean state, record pitch/demo videos, finalize README and submission details, then publish/deploy/submit as appropriate. The PRD's internal target is Oct 12, 22:00 WAT; hard deadline is Oct 13, 07:59 WAT.
+
+## Documentation page (Oct 10)
+
+- Added a dedicated `/docs` page with a grouped, sticky desktop sidebar and collapsible mobile navigation, using the shadcn sidebar blocks as a structural reference. The landing Docs link now points to it.
+- Professional guide covers hosted versus self-hosted custody, install and MCP configuration, first payment, owner policy, all 25 registered tools, seller verification, privacy, availability, and troubleshooting. The page identifies hosted production storage and Helius devnet proof service blockers rather than implying those flows passed.
+- `pnpm --filter ringside-dashboard exec tsc --noEmit` and `pnpm --filter ringside-dashboard build` passed. Chromium checks at 1280px and 390px found no horizontal overflow or page errors; mobile navigation and clipboard copy were exercised. Production deployment verification follows the push.
