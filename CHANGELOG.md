@@ -76,3 +76,7 @@
 - Added browser-only devnet burner registration, 0.01 SOL deposit, private balance sync, and a withdrawal attempt to `/demo`. Confirmed registration, deposit, and balance with real devnet signatures; withdrawal still fails during proof building.
 - Bundled the pinned Zolana browser WASM files during dashboard build and persisted the devnet burner seed in browser local storage for return visits.
 
+# 2026-10-10 — Burner recovery and withdrawal retry
+
+- Restored the devnet-only burner from browser local storage on reload, clarified the deposit warning, and surfaced nested withdrawal error codes. Full and partial live withdrawal attempts both reached the Helius prover and failed before submission.
+
