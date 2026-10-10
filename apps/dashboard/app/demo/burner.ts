@@ -1,9 +1,10 @@
 import { getBase64EncodedWireTransaction, getSignatureFromTransaction, signTransactionWithSigners, type Transaction } from '@solana/kit';
-import { buildDepositTransaction, buildRegistrationTransaction, buildWithdrawalTransaction, createZolanaClient, initializePoseidon, LocalKeys, ShieldedKeypair, SigningKey, Wallet, syncWallet, SOL_MINT, type Bytes32 } from '@heliuslabs/zolana';
-import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana/transaction';
+import { buildDepositTransaction, buildRegistrationTransaction, buildTransferTransaction, buildWithdrawalTransaction, createZolanaClient, initializePoseidon, LocalKeys, ShieldedKeypair, SigningKey, Wallet, syncWallet, SOL_MINT, type Bytes32 } from '@heliuslabs/zolana04';
+import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana04/transaction';
 
 const seedKey = 'ringside:demo:burner-seed';
 const config = { solanaRpcUrl: 'https://api.devnet.solana.com', indexerUrl: 'https://d2xah7tnhdhcom.cloudfront.net', proverUrl: 'https://d21ni15goiip6l.cloudfront.net' };
+export const demoSeller = '79ARuP2P78svsx3wRyYKuD6mizktZvqkhuqF3yJEUr9J';
 type Client = Awaited<ReturnType<typeof createZolanaClient>>;
 
 export function burnerIdentity() {
@@ -63,4 +64,12 @@ export async function burnerWithdraw(recipient: string) {
   if (lamports <= 0n) throw new Error('No synced private SOL is available to withdraw.');
   const transaction = await buildWithdrawalTransaction({ client, wallet, keys: LocalKeys.fromKeypair(identity, client.proofService), feePayer: identity.toSolanaSigner().address, recipient: recipient as ReturnType<typeof identity.toSolanaSigner>['address'], asset: SOL_MINT, amount: lamports });
   return { signature: await send(client, identity, transaction), amount: Number(lamports) / 1e9 };
+}
+
+export async function burnerTransfer() {
+  const { lamports, wallet, client, identity } = await burnerBalance();
+  const amount = 1_000_000n;
+  if (lamports < amount) throw new Error('Deposit and sync at least 0.001 private SOL first.');
+  const transaction = await buildTransferTransaction({ client, wallet, keys: LocalKeys.fromKeypair(identity, client.proofService), feePayer: identity.toSolanaSigner().address, recipient: demoSeller as ReturnType<typeof identity.toSolanaSigner>['address'], asset: SOL_MINT, amount });
+  return { signature: await send(client, identity, transaction), amount: 0.001, seller: demoSeller };
 }
