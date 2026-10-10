@@ -45,3 +45,8 @@
 
 - Expanded web documentation with five Helius Privacy operation guides, private-state and localnet explanations, exact tool inputs, upstream references, and a full 25-tool reference table.
 - Added clear visibility and availability notes for deposits, transfers, withdrawals, indexer reads, SPL interface setup, and the current devnet prover blocker.
+
+## Oct 10, 2026 — Guided demo
+
+- Added `/demo`, a no-install, seven-step interactive seller-payment walkthrough with owner policy rejection, seller verification, updated dashboard preview, and masked explorer view.
+- Marked every transaction and balance as demo data while devnet proofs remain unverified; linked the route from landing hero and navigation.
