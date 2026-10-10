@@ -105,3 +105,9 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Added a dedicated `/docs` page with a grouped, sticky desktop sidebar and collapsible mobile navigation, using the shadcn sidebar blocks as a structural reference. The landing Docs link now points to it.
 - Professional guide covers hosted versus self-hosted custody, install and MCP configuration, first payment, owner policy, all 25 registered tools, seller verification, privacy, availability, and troubleshooting. The page identifies hosted production storage and Helius devnet proof service blockers rather than implying those flows passed.
 - `pnpm --filter ringside-dashboard exec tsc --noEmit` and `pnpm --filter ringside-dashboard build` passed. Chromium checks at 1280px and 390px found no horizontal overflow or page errors; mobile navigation and clipboard copy were exercised. Production deployment verification follows the push.
+
+## Helius-backed documentation expansion (Oct 10)
+
+- Reviewed the official Helius Privacy guides for deposit, transfer, withdraw, private balance, and private history, and compared each operation with Ringside's `core.ts` and MCP registration code. Expanded `/docs` with a private-state explanation, localnet setup, five operation guides, exact Ringside inputs, upstream source links, and a 25-tool input/availability table.
+- Clarified the default Ring's public sender and recipient, public deposit and withdrawal fields, indexer decryption boundary, proof requirement for transfer and withdrawal, and current SPL interface shortcut limits. The guide keeps Helius devnet transfer and production hosted signup marked blocked.
+- `pnpm --filter ringside-dashboard build` passed. Production-build Chromium checks at 1280px and 390px found 17 documentation sections, 25 tool rows, no page errors, and no horizontal overflow. Public deployment verification follows the push.

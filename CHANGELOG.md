@@ -40,3 +40,8 @@
 
 - Added a dedicated, responsive documentation page at `/docs`, with sidebar navigation, copyable setup commands, tool inventory, privacy table, release status, and troubleshooting.
 - Linked the landing page and README to the new guide.
+
+## Oct 10, 2026 — Helius Privacy guide integration
+
+- Expanded web documentation with five Helius Privacy operation guides, private-state and localnet explanations, exact tool inputs, upstream references, and a full 25-tool reference table.
+- Added clear visibility and availability notes for deposits, transfers, withdrawals, indexer reads, SPL interface setup, and the current devnet prover blocker.
