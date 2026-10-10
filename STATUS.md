@@ -136,3 +136,9 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Replaced the old C-shaped mark with one open shield-ring geometry across the React wordmark, light/dark SVG exports, SVG/ICO favicon, Apple icon, Open Graph art, README header, and public `/brand` page. The mark has no dot motif or rotation.
 - Regenerated the 1200×630 Open Graph card in Geist with the exact tagline, illustrative balance, and masked explorer fields. Added 1920×1080 pitch intro/outro PNGs. Added `brand/` exports, palette, Geist fonts and license, plus `manifest.webmanifest`, theme color, robots, and sitemap routes.
 - The tagline is now `Private payments for agents. Controls for owners.` in primary metadata, hero, README, brand kit, and social artwork. Production build passed; 1280px and 390px brand-page screenshots were visually reviewed. Vercel verification follows the push.
+
+## Visitor-wallet demo conversion (Oct 10)
+
+- Step 1: `/demo` now offers Phantom connection, reads the visitor's public devnet balance from Solana RPC, and links to the Solana faucet when it is zero. This is read-only wallet access; the payment walkthrough remains labelled DEMO DATA and does not submit transactions.
+- The pinned Zolana 0.3.1-alpha SDK exposes `LocalKeys.fromDerivationSeed`, but its verifier requires a signature over the Solana off-chain envelope. Its own derivation comments say Phantom refuses that envelope and signs only the bare payload, which produces different keys. Registration, private-balance decryption, browser proving, and withdrawal must be validated before any live action is offered. No visitor keys are sent to Ringside.
+- Build passed; 1280px/390px `/demo` browser checks had no page errors or overflow. Branding routes (`/brand`, favicon SVG/ICO, Apple icon, OG image, manifest, robots, sitemap) returned 200 locally.

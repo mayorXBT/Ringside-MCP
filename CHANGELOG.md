@@ -63,3 +63,7 @@
 
 - Introduced the gap-shield logomark and light/dark SVG exports, new favicon and Apple icon, Geist Open Graph image, and 1920×1080 pitch title cards.
 - Added `/brand`, downloadable assets and brand tokens; unified the tagline and added manifest, theme color, robots, and sitemap metadata.
+
+## Oct 10, 2026 — Visitor-wallet demo groundwork
+
+- Added Phantom connection, public devnet balance read, and zero-balance faucet link to `/demo`; retained explicit recorded-data labels for unverified payment steps.
