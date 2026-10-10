@@ -2,6 +2,11 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Chrome-to-Phantom OAuth return handoff (Oct 10)
+
+- A real Android test exposed a second handoff bug: signing succeeded in Phantom, but opening the ChatGPT callback from Phantom sent the user to the Android app and left the original Chrome connector tab waiting. Mobile Phantom now stops on a completion screen and tells the user to return to the original Chrome tab. The server stores the one-time callback under the signed flow token for five minutes; the original tab polls `/api/hosted/handoff` and navigates to the exact callback itself. Phantom also offers a copyable completion URL if Chrome cannot resume automatically.
+- Android Chrome desktop mode is detected through the platform client hint or coarse touch input even when its user agent string looks desktop. The hosted protocol smoke now checks pending → ready handoff and callback equality. Full workspace check, tests, and dashboard production build pass. Production two-browser verification is pending deployment. Actual OS handoff behavior still needs a physical-device retest.
+
 ## Android Chrome OAuth handoff correction (Oct 10)
 
 - A real Android Chrome retest after `2b15a84` showed the wrong Connect Phantom control and a failed wallet-adapter connect. The revised `/connect` route reads the request user agent on the server, checks the injected `window.phantom?.solana` provider on the client, and makes **Open in Phantom** primary on mobile without injection regardless of adapter `Loadable`/`NotDetected` state. If a mobile wallet connect still fails, the same deep link replaces the failed control.

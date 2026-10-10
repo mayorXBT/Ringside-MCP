@@ -26,6 +26,8 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
   const [forcePhantomLink, setForcePhantomLink] = useState(false);
   const [returnUrl, setReturnUrl] = useState('');
   const [currentUrl, setCurrentUrl] = useState('');
+  const [handoffReady, setHandoffReady] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [isMobile, setIsMobile] = useState(mobileHint);
 
   const loadFlow = useCallback(async () => {
@@ -45,12 +47,31 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
   useEffect(() => {
     fetch('/api/hosted/readiness').then(r => r.json()).then(v => setAvailable(v.available === true)).catch(() => setAvailable(false));
     const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
-      (navigator as Navigator & { userAgentData?: { mobile?: boolean } }).userAgentData?.mobile === true;
+      (navigator as Navigator & { userAgentData?: { mobile?: boolean } }).userAgentData?.mobile === true ||
+      (navigator.maxTouchPoints > 0 && window.matchMedia('(pointer: coarse)').matches);
     setIsMobile(Boolean(mobileHint || mobile));
     setHasInjectedPhantom(Boolean((window as Window & { phantom?: { solana?: unknown } }).phantom?.solana));
     setCurrentUrl(window.location.href);
   }, [mobileHint]);
   useEffect(() => { void loadFlow(); }, [loadFlow]);
+  useEffect(() => {
+    if (!flow || hasInjectedPhantom || !currentUrl || returnUrl) return;
+    let stopped = false;
+    async function checkHandoff() {
+      try {
+        const response = await fetch(`/api/hosted/handoff?flow=${encodeURIComponent(flow!)}`, { cache: 'no-store' });
+        if (!response.ok) return;
+        const result = await response.json() as { status: string; redirect?: string };
+        if (!stopped && result.status === 'ready' && result.redirect) {
+          setHandoffReady(true);
+          window.location.assign(result.redirect);
+        }
+      } catch { /* The next poll retries a transient network failure. */ }
+    }
+    void checkHandoff();
+    const timer = window.setInterval(() => { void checkHandoff(); }, 1500);
+    return () => { stopped = true; window.clearInterval(timer); };
+  }, [flow, hasInjectedPhantom, currentUrl, returnUrl]);
   const showPhantomLink = (isMobile && !hasInjectedPhantom) || forcePhantomLink;
   const phantomTarget = authorizeUrl || currentUrl;
   const phantomLink = phantomTarget && currentUrl
@@ -72,8 +93,7 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
       if (!response.ok) throw new Error(result.error);
       if (flow && isMobile) {
         setReturnUrl(result.redirect);
-        // Keep the callback visible in case the mobile OS does not hand it to the connector.
-        window.open(result.redirect, '_blank', 'noopener,noreferrer');
+        // The original Chrome tab completes the OAuth callback through the handoff poll.
       } else window.location.assign(result.redirect);
     } catch (cause) { setError(messageFor(cause instanceof Error ? cause.message : 'unknown')); }
     finally { setBusy(false); }
@@ -99,9 +119,11 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
     <p>Sign a message with Phantom to create your private agent wallet. No transaction is sent by signing in.</p>
     {flow && <p className="hosted-consent">Authorize <strong>{client || 'your connector'}</strong> to read balances and request devnet payments within your spending policy.</p>}
     <div className="hosted-custody">Ringside holds the agent key encrypted on its server. Give this agent only capped devnet funds: 0.05 SOL per payment and 0.2 SOL per day. Your owner wallet can stop spending.</div>
-    {returnUrl ? <div role="status"><p>Sign-in complete. If you are still here, return to {client || 'your connector'} with the same authorization link.</p><a className="zero-pill black" href={returnUrl}>Return to {client || 'connector'}</a></div> : <>
+    {returnUrl ? <div role="status"><p>Signed in. Return to your original Chrome tab. It will finish connecting {client || 'your connector'} automatically.</p><p>If that tab cannot finish, copy this one-time completion link and paste it into Chrome within five minutes.</p><button className="zero-pill black" onClick={async () => { await navigator.clipboard.writeText(returnUrl); setCopied(true); }}>{copied ? 'Copied completion link' : 'Copy completion link'}</button></div> : <>
       {showPhantomLink ? <a className="zero-pill black" href={phantomLink || undefined} aria-disabled={!phantomLink || Boolean(flow && !authorizeUrl)} onClick={event => { if (!phantomLink || (flow && !authorizeUrl)) event.preventDefault(); }}>Open in Phantom</a> : <button className="zero-pill black" disabled={busy || available !== true || Boolean(flow && !authorizeUrl)} onClick={connectOrSignIn}>{busy ? 'Signing in…' : !wallet.connected ? 'Connect Phantom' : 'Sign in with Solana'}</button>}
     </>}
+    {handoffReady && <p role="status">Sign-in complete. Returning to {client || 'your connector'} in this Chrome tab…</p>}
+    {flow && showPhantomLink && !returnUrl && <p role="status">Keep this Chrome tab open. After signing in Phantom, come back here to finish connecting {client || 'your connector'}.</p>}
     {available === false && <p role="status">Hosted signup is temporarily unavailable.</p>}
     {error && <div role="alert"><p>{error}</p><button className="zero-pill" onClick={() => { setError(''); void loadFlow(); }}>Retry</button></div>}
   </div></main>;

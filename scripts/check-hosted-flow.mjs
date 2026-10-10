@@ -16,10 +16,12 @@ const flow=new URL(authorization.headers.get('location')).searchParams.get('flow
 const flowDetails=await json(await fetch(`${base}/api/hosted/flow?id=${encodeURIComponent(flow)}`));assert.equal(flowDetails.client_name,'Ringside hosted smoke test');
 const resumed=await fetch(flowDetails.authorize_url,{redirect:'manual'});assert.equal(resumed.status,302);assert.equal(new URL(resumed.headers.get('location')).searchParams.get('flow'),flow);
 const tampered=flow.slice(0,-1)+(flow.endsWith('A')?'B':'A');assert.equal((await fetch(`${base}/api/hosted/flow?id=${encodeURIComponent(tampered)}`)).status,400);
+const pendingHandoff=await json(await fetch(`${base}/api/hosted/handoff?flow=${encodeURIComponent(flow)}`));assert.equal(pendingHandoff.status,'pending');
 const signedChallenge=await json(await post('/api/hosted/challenge',{flow_id:flow}));
 const signature=Buffer.from(nacl.sign.detached(Buffer.from(signedChallenge.message),pair.secretKey)).toString('base64');
 const loginResponse=await post('/api/hosted/login',{owner,signature,challenge_id:signedChallenge.challenge_id});const login=await json(loginResponse);
 const cookie=loginResponse.headers.get('set-cookie')?.split(';')[0];assert.ok(cookie);
+const handoff=await json(await fetch(`${base}/api/hosted/handoff?flow=${encodeURIComponent(flow)}`));assert.equal(handoff.status,'ready');assert.equal(handoff.redirect,login.redirect);
 const code=new URL(login.redirect).searchParams.get('code');assert.ok(code);
 const token=await json(await fetch(base+'/oauth/token',{method:'POST',body:new URLSearchParams({grant_type:'authorization_code',client_id:client.client_id,redirect_uri:redirect,code,code_verifier:verifier})}));assert.ok(token.access_token);
 const rpc=async(id,name,args)=>json(await post('/mcp',{jsonrpc:'2.0',id,method:name,params:args},{authorization:`Bearer ${token.access_token}`,accept:'application/json, text/event-stream'}));
