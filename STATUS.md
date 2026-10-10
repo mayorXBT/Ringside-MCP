@@ -119,3 +119,5 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 - Production build passed. Chromium checks at 1280px/390px found no page errors or horizontal overflow. Walkthrough and under-limit rejection were exercised.
 
 - Added a three-case landing grid for report purchases, paid API calls, and owner-capped automation, with localnet verification caveat.
+
+- Added explicit self-hosted versus hosted agent-key custody section and corrected landing claims that keys always stay local.

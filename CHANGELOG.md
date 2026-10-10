@@ -52,3 +52,5 @@
 - Marked every transaction and balance as demo data while devnet proofs remain unverified; linked the route from landing hero and navigation.
 
 - Added agent use-case grid to the public landing page.
+
+- Clarified self-hosted versus hosted key custody across landing proof, privacy, FAQ, and a dedicated section.
