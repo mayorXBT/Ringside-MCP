@@ -2,6 +2,10 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted connector work (Oct 10)
+
+- Step 1: added OAuth protected-resource and authorization-server discovery, public-client dynamic registration, PKCE authorization/code exchange with refresh tokens, one-time Sign-In with Solana challenge verification, consent copy, owner session cookie, per-owner encrypted agent-key creation, and default 0.05 SOL transaction / 0.2 SOL daily policy. Hosted routes fail closed until `DATABASE_URL` and `RINGSIDE_HOSTED_SECRET` are provisioned. No hosted deposit or payment has been claimed. Next: the authenticated Streamable HTTP transport and durable hosted spend enforcement, followed by dashboard and connector testing.
+
 ## Landing polish (Oct 10)
 
 - Kept the 0x-inspired layout and added Framer Motion one-shot 12px/0.4s section entrances with staggered children, count-up stats, code typing, explorer masking, and the 0.12/0.5 SOL meter fill. Hover lift is 2px on cards and pill controls. Reduced-motion displays final states without movement or loops.
