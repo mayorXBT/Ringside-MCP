@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-10
+
+- Polished the landing with one-shot Framer Motion scroll entrances, count-ups, a filling spend meter, typed MCP call, masked explorer amount, and reduced-motion support.
+- Added custom duotone proof icons, a gap-ring brand mark, mobile hamburger, masked explorer and seller flow snippets, Helius/Solana logos, 2x WebP dashboard previews, and favicon/social assets.
+- Refreshed 1280px and 390px screenshots after browser checks; all checks, tests, and builds pass.
+
 ## 2026-10-09
 
 - Rebuilt the landing and app shell on a light 0x-inspired structural system: centered hero, audience cards, factual proof bento, framed dashboard UI, large controls and seller visuals, privacy table, and matching owner app. Kept product claims Ringside-specific and labeled fixture imagery.

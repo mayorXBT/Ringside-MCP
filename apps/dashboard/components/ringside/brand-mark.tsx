@@ -1,0 +1,1 @@
+export function BrandMark({size=28}:{size?:number}){return <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M30.8 8.9a15 15 0 1 0 1.9 20.7" stroke="currentColor" strokeWidth="5.4" strokeLinecap="round"/><path d="m26.8 27.5 7.4 3.7-3.8 7.1" fill="#8B9BFF" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/></svg>}

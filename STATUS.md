@@ -1,6 +1,12 @@
 # Ringside MCP build status
 
-Updated Oct 9, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+
+## Landing polish (Oct 10)
+
+- Kept the 0x-inspired layout and added Framer Motion one-shot 12px/0.4s section entrances with staggered children, count-up stats, code typing, explorer masking, and the 0.12/0.5 SOL meter fill. Hover lift is 2px on cards and pill controls. Reduced-motion displays final states without movement or loops.
+- Replaced bento stock icons with six custom periwinkle-fill duotone SVGs; added a gap-ring Ringside mark and mobile hamburger. Added a masked explorer snippet, seller flow snippets, actual Helius and Solana logo assets, 2x WebP exports of the illustrative dashboard preview, favicon, Apple touch icon, and 1200×630 Open Graph image.
+- Production-build Chromium checks at 1280px and 390px found no page errors or horizontal overflow. Verified completed count-ups, typed call/status, masked amounts, meter fill, and reduced-motion final states. Updated `docs/landing.png` and `docs/landing-mobile.png`. `CI=true pnpm check`, `CI=true pnpm test`, and `CI=true pnpm build` passed. Live-chain limits listed below are unchanged.
 
 ## Design update (Oct 9)
 

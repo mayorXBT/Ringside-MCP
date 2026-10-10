@@ -9,11 +9,12 @@ import { toast, Toaster } from 'sonner';
 import { useRingside, type RingsideState } from '@/lib/control-client';
 import { friendlyError } from '@/lib/errors';
 import { explorerAddress, shortAddress } from '@/lib/utils';
+import { BrandMark } from './brand-mark';
 
 type AppContext = RingsideState & { setFunds: (mode:'deposit'|'withdraw'|null)=>void; setKillOpen:(open:boolean)=>void; setConnectionOpen:(open:boolean)=>void };
 const Context=createContext<AppContext|null>(null);
 export function useApp(){const value=useContext(Context);if(!value)throw new Error('App provider missing');return value;}
-export function Brand(){return <Link href="/" className="brand-lockup"><span className="brand-ring" aria-hidden="true">◌</span><span>Ringside</span></Link>}
+export function Brand(){return <Link href="/" className="brand-lockup"><span className="brand-ring"><BrandMark/></span><span>Ringside</span></Link>}
 export function NetworkBadge({network,viewOnly=false}:{network?:string;viewOnly?:boolean}){return <span className={`badge ${viewOnly?'view':'beta'}`}>{viewOnly?'VIEW ONLY':network==='localnet'?'LOCALNET':'DEVNET BETA'}</span>}
 export function AppShell({children}:{children:React.ReactNode}){
  const path=usePathname(), audit=path.startsWith('/app/audit'), app=useRingside(audit), [funds,setFunds]=useState<'deposit'|'withdraw'|null>(null),[killOpen,setKillOpen]=useState(false),[connectionOpen,setConnectionOpen]=useState(false),[banner,setBanner]=useState(true);
