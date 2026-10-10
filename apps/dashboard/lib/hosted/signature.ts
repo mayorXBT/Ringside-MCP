@@ -1,0 +1,5 @@
+import 'server-only';
+import { createHash } from 'node:crypto';
+import { verifyWalletMessage } from './crypto';
+const canonical=(value:unknown):string=>Array.isArray(value)?`[${value.map(canonical).join(',')}]`:value&&typeof value==='object'?`{${Object.entries(value).sort(([a],[b])=>a.localeCompare(b)).map(([key,item])=>`${JSON.stringify(key)}:${canonical(item)}`).join(',')}}`:JSON.stringify(value);
+export function verifyOwnerAction(owner:string,action:string,payload:unknown,envelope:Record<string,string>,signature:string){if(!envelope||envelope.action!==action||!/^[a-f0-9]{32}$/.test(envelope.nonce))return false;const issued=Date.parse(envelope.issued_at),expires=Date.parse(envelope.expires_at),now=Date.now();if(!Number.isFinite(issued)||!Number.isFinite(expires)||issued>now+5000||expires<now||expires-issued>61000)return false;const digest=createHash('sha256').update(canonical(payload)).digest('hex');if(digest!==envelope.payload_sha256)return false;return verifyWalletMessage(owner,`ringside-mcp:v1:${canonical(envelope)}`,signature)}

@@ -2,6 +2,8 @@
 
 ## 2026-10-10
 
+- Added a hosted Streamable HTTP MCP route, OAuth discovery/DCR/PKCE, Sign-In with Solana consent, encrypted per-owner agent keys, durable policy reservations, and the shared 25-tool server factory.
+- Added hosted dashboard session, funding/deposit/withdraw and signed kill controls, plus Claude/ChatGPT connector onboarding and a self-host advanced path. Hosted signup fails closed until a production Postgres URL is configured.
 - Polished the landing with one-shot Framer Motion scroll entrances, count-ups, a filling spend meter, typed MCP call, masked explorer amount, and reduced-motion support.
 - Added custom duotone proof icons, a gap-ring brand mark, mobile hamburger, masked explorer and seller flow snippets, Helius/Solana logos, 2x WebP dashboard previews, and favicon/social assets.
 - Refreshed 1280px and 390px screenshots after browser checks; all checks, tests, and builds pass.

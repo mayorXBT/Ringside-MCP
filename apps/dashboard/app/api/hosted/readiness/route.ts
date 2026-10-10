@@ -1,0 +1,1 @@
+export function GET(){return Response.json({available:!!(process.env.DATABASE_URL&&process.env.RINGSIDE_HOSTED_SECRET&&process.env.HELIUS_API_KEY),network:'devnet'},{headers:{'Cache-Control':'no-store'}})}

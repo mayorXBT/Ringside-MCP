@@ -36,8 +36,8 @@ export async function context() {
   await initializePoseidon();
   const path = expand(process.env.RINGSIDE_KEYPAIR || process.env.ZOLANA_PAYER_KEYPAIR || join(process.env.RINGSIDE_HOME || join(homedir(), '.ringside'), 'agent.json'));
   const hosted=hostedContext();
-  const data: unknown = hosted ? Array.from(hosted.secretKey) : JSON.parse(await readFile(path, 'utf8'));
-  if (!Array.isArray(data) || data.length !== 64 || data.some((v) => !Number.isInteger(v) || v < 0 || v > 255)) throw new Error(`Invalid Solana keypair at ${path}`);
+  const data: unknown = hosted ? hosted.secretKey : JSON.parse(await readFile(path, 'utf8'));
+  if (!(Array.isArray(data) || data instanceof Uint8Array) || data.length !== 64 || Array.from(data).some((v) => !Number.isInteger(v) || v < 0 || v > 255)) throw new Error('Invalid Solana keypair');
   const seed = Uint8Array.from(data.slice(0, 32));
   const signing = SigningKey.fromEd25519Bytes(seed as Bytes32);
   seed.fill(0);
@@ -47,8 +47,11 @@ export async function context() {
 
 export async function walletInfo() {
   const { client, identity, signer } = await context();
-  const registered = await isWalletRegistered({ rpc: client, owner: signer.address });
-  const publicLamports = await client.getBalance(signer.address);
+  const hosted=hostedContext();
+  const registered = hosted ? hosted.registered : await isWalletRegistered({ rpc: client, owner: signer.address });
+  let publicLamports: bigint;
+  if (hosted) { const response=await fetch(clientConfig().solanaRpcUrl!,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'getBalance',params:[signer.address]})}); const body=await response.json() as {result?:{value:number};error?:unknown}; if(!response.ok||body.error||body.result?.value===undefined)throw new Error('RPC_BALANCE_UNAVAILABLE');publicLamports=BigInt(body.result.value); }
+  else publicLamports = await client.getBalance(signer.address);
   const policy = loadPolicy();
   const engine = await engineHealth();
   return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), network: process.env.RINGSIDE_NETWORK === 'localnet' ? 'localnet' : 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only } };
@@ -87,8 +90,9 @@ export async function registerWallet() {
   await assertSpend('register_private_wallet', 'SOL', 0n, 9);
   const { client, identity, signer } = await context();
   const transaction = await buildRegistrationTransaction({ client, owner: signer.address, address: identity.shieldedAddress() });
-  if (!transaction) return { registered: true, already_registered: true };
-  return { registered: true, ...await sendTransaction(transaction) };
+  if (!transaction) { await hostedContext()?.markRegistered(); return { registered: true, already_registered: true }; }
+  const sent=await sendTransaction(transaction);await hostedContext()?.markRegistered();
+  return { registered: true, ...sent };
 }
 
 export async function depositSol(amount: string) {

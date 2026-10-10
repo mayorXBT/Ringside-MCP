@@ -1,0 +1,7 @@
+import { sessionOwner,problem } from '@/lib/hosted/http';
+import { db,getOwner } from '@/lib/hosted/db';
+import { withOwner } from '@/lib/hosted/service';
+import { walletInfo,balances,history } from 'ringside-mcp/core';
+export const runtime='nodejs';
+export const maxDuration=60;
+export async function GET(){try{const owner=await sessionOwner();if(!owner)return problem(401,'login_required');const account=await getOwner(owner);if(!account)return problem(404,'owner_not_found');const budgetRows=await db()`SELECT spent,window_started FROM hosted_budgets WHERE owner=${owner} AND asset='SOL'`;const spent=budgetRows[0]&&Date.now()-new Date(budgetRows[0].window_started as string).getTime()<86400000?(Number(budgetRows[0].spent)/1e9).toString():'0';return await withOwner(owner,async()=>{const info=await walletInfo();const [balanceResult,historyResult]=await Promise.allSettled([balances(),history(50)]);return Response.json({...info,owner_pubkey:owner,policy:account.policy,hosted:true,budget:{spent_today:spent,max_per_day:(account.policy.assets as {SOL?:{max_per_day:string}})?.SOL?.max_per_day||'0.2'},balances:balanceResult.status==='fulfilled'?balanceResult.value.balances:[],transactions:historyResult.status==='fulfilled'?historyResult.value.transactions:[],sync_error:balanceResult.status==='rejected'||historyResult.status==='rejected'?'Private indexer is unavailable; on-chain status still works.':undefined},{headers:{'Cache-Control':'no-store'}})})}catch{return problem(503,'hosted_unavailable')}}
