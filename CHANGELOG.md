@@ -6,6 +6,7 @@
 - Added Zolana 0.4.0-alpha to the browser burner independently of the MCP pin. Confirmed a real browser-burner private transfer and withdrawal on devnet.
 - Connected the guided `/demo` transfer and withdrawal steps to browser-signed devnet transactions, added a prover/indexer check and retry fallback, and displayed real signatures in the masked explorer view. Updated public copy to distinguish those live steps from recorded seller verification.
 - Ran the full deployed browser-burner path on devnet: registration, deposit, private balance sync, private transfer, and withdrawal all confirmed; recorded the real signatures in `STATUS.md`.
+- Repeated the guarded funded buyer → seller M1 transfer and seller withdrawal on devnet without a new deposit. Provisioned the demo seller key as a server-only production secret for the upcoming live verification endpoint.
 
 ## 2026-10-10
 
