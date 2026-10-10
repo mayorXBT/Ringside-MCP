@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-10 — Demo RPC and faucet
+
+- Routed demo browser RPC through a retrying Helius devnet proxy, added a 0.02 SOL server treasury faucet with IP and address limits, made demo errors retryable, linked activity signatures, made the swap notice dismissible, and removed automatic PWA manifest advertising.
+
 ## 2026-10-10 — Hosted wallet funding
 
 - Added a Phantom-signed public funding action, balance checks before hosted registration/deposit/withdrawal, disabled-action explanations, and readable retryable errors. Funded the new hosted devnet agent with 0.05 SOL for retesting.

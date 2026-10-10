@@ -2,6 +2,13 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Demo RPC and faucet recovery (Oct 10)
+
+- The demo browser no longer calls `api.devnet.solana.com`. Phantom balance, burner SDK calls, transaction submission, and burner balance refresh now use `/api/demo/rpc`, an allowlisted server proxy to Helius devnet with bounded retries. A local proxy `getBalance` returned the funded treasury's 200,000,000 lamports; a disallowed RPC method returned 400. A 390px browser smoke created a burner with no page errors, overflow, or public devnet RPC requests.
+- Created a separate demo treasury `CFPWifwCyBp1ovBUtmaTAYxyEerhqiRfpPRJWhCweSKG` outside Git and funded it with 0.2 devnet SOL from the buyer. Funding signature `5KzdQDXSK5HCTsfo5AfkSymdvM5B75BCiWBiNu6a2uUGETNviWUgCgePN88pHaqm4ZdnwqaBjFbPSU4yrwcLei7L` finalized at slot `509586785`. Its 0600 key is stored as an encrypted production environment variable. `/api/demo/fund` sends 0.02 SOL to a browser burner and reserves one claim per IP per UTC day and one per recipient in Postgres before submitting.
+- Demo errors now use plain messages with Retry. Activity rows link signatures to the devnet explorer. The swap/escrow notice is dismissible, and the PWA manifest is no longer advertised automatically. The manifest file stays available for intentional installation later. Local dashboard build passed; the production faucet and browser registration need deployment checks after push.
+- The user reports hosted `/app` registration, deposit, balance, policy, and kill switch passed end to end. This report supersedes older hosted acceptance blockers below. It does not establish browser demo or MCP core acceptance.
+
 ## Hosted funding and registration fix (Oct 10)
 
 - Sent 0.05 public devnet SOL from the funded buyer `GxCNFRN7zRC43ugwdGQ5AsVZqkLFY2rviL8fts2gUaZP` to the new hosted agent `6S3g4Ee4UTWhLejnfmRkdiQ4EVixMbfWHrnCP9Z4r9JB`. Signature `3y22uAKe9dsDhLM6H7NeBMxW3vHoV35kwVridbEycfGe4WPSwEgrfhDXxRw47PBnvYdXZeJxEyiAFrPwWacKT6xD` finalized at slot `509579796`; recipient balance was 50,000,000 lamports.

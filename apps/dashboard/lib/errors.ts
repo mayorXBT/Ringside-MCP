@@ -1,4 +1,7 @@
 export function friendlyError(raw: string): string {
+  if (raw.includes('WALLET_BUILD_REGISTRATION') || raw.includes('CLIENT_RPC')) return 'The devnet RPC could not prepare your registration. Refresh the burner balance, then retry. Your browser key is unchanged.';
+  if (raw.includes('CLIENT_PROVER_HTTP') || raw.includes('WALLET_BUILD_WITHDRAWAL') || raw.includes('WALLET_BUILD_TRANSFER')) return 'The devnet proof service could not build this transaction. Check service health, then retry. No payment was submitted.';
+  if (raw.includes('429') || raw.includes('Too Many Requests')) return 'Devnet is busy or this request has reached its limit. Wait briefly, then retry.';
   if (raw.includes('AGENT_NEEDS_FEE_SOL')) return raw.split('AGENT_NEEDS_FEE_SOL: ')[1] || 'Fund the agent’s public devnet wallet, refresh its balance, then retry.';
   if (raw.includes('-32002') || raw.includes('Transaction already in progress')) return 'Another transaction is still in progress. Finish any open wallet approval, wait for confirmation, then refresh and retry.';
   if (raw === 'AGENT_OFFLINE') return 'Could not reach your agent. Check that Ringside MCP is running, then retry.';

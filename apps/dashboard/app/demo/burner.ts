@@ -3,7 +3,7 @@ import { buildDepositTransaction, buildRegistrationTransaction, buildTransferTra
 import { AssetRegistry, LocalShieldedKeys } from '@heliuslabs/zolana04/transaction';
 
 const seedKey = 'ringside:demo:burner-seed';
-const config = { solanaRpcUrl: 'https://api.devnet.solana.com', indexerUrl: 'https://d2xah7tnhdhcom.cloudfront.net', proverUrl: 'https://d21ni15goiip6l.cloudfront.net' };
+const config = { solanaRpcUrl: typeof window === 'undefined' ? 'http://localhost:3000/api/demo/rpc' : `${window.location.origin}/api/demo/rpc`, indexerUrl: 'https://d2xah7tnhdhcom.cloudfront.net', proverUrl: 'https://d21ni15goiip6l.cloudfront.net' };
 export const demoSeller = '79ARuP2P78svsx3wRyYKuD6mizktZvqkhuqF3yJEUr9J';
 type Client = Awaited<ReturnType<typeof createZolanaClient>>;
 
