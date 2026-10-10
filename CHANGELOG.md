@@ -84,3 +84,7 @@
 
 - Added a browser-local spend cap to the live burner panel. A 0.1 SOL test and a real deposit attempt reject before transaction building when over the cap.
 
+# 2026-10-10 — Live explorer view
+
+- Added explorer links and explicit public deposit visibility for real browser-burner devnet transactions; signatures survive reloads in browser storage.
+
