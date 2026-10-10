@@ -67,3 +67,7 @@
 ## Oct 10, 2026 — Visitor-wallet demo groundwork
 
 - Added Phantom connection, public devnet balance read, and zero-balance faucet link to `/demo`; retained explicit recorded-data labels for unverified payment steps.
+# 2026-10-10 — Devnet demo prover check
+
+- Added a specific Helius devnet prover capability probe and Retry control to `/demo`; the recorded transfer remains clearly labelled while the required proof key is missing.
+
