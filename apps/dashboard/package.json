@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/prepare-zolana-wasm.cjs && pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build && next build",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "test": "node --test lib/hosted/auto-shield-plan.test.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
