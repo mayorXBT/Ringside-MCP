@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-11 — Hosted devnet transfer SDK update
+
+- Upgraded the MCP core to Zolana 0.4.0-alpha after a fresh hosted auto-shield succeeded but a private payment failed twice at the 0.3.1-alpha transfer builder.
+
 ## 2026-10-11 — Hosted auto-shield
 
 - Added signed default-on auto-shield policy and fee reserve, owner-scoped database lease, automatic registration and SOL deposit after funding, synced balance, activity signatures, dashboard status and retry, and MCP wallet_info status. Automatic deposits do not consume spend caps.

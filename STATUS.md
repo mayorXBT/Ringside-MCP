@@ -2,6 +2,11 @@
 
 Updated Oct 11, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted auto-shield devnet run and 0.4 transfer correction (Oct 11)
+
+- A fresh hosted owner `Div3xKFyj7fURB9SnHQAKFKjUntH7dk45jEkSeCqMJAh` received a new agent `9gVtmz8nmrSoJhMmLjjDHcKgBm7QM53NeKLpsN6zMdWk`. Buyer funded it with 0.05 devnet SOL: `4NWKKpDU2u1pBr4u34DCuUYVnufGp26D8jw1a2YQFeVjmYiqgNAe9F9qZCh1hLQCCuJqFKoxJfRCukn7LWo58KRw`. Auto registration confirmed: `575u3VKgrSnhjFpPbwXrtxPsakYeHUpB4F86urMLGGetWDip1eCZVDoMf4MhVJdYLMmQ22zHFSMAWn3VBGUeK4po`. Auto deposit confirmed: `38UNkP12n9DmJTLKWBoELyLDuSiRAHMXr6yDzrT9WadPPaP9o7ZzU7c6vkN3m5u1YcYXqYd5zKNj6nVWuRDevneu`. Public balance after was 0.004995 SOL (network fee reduced the 0.005 reserve), and synced private balance was 0.04366404 SOL after protocol fees.
+- Hosted MCP `private_transfer` failed twice at `WALLET_BUILD_TRANSFER` using the 0.3.1-alpha core, including after the indexer had time to catch up. The seller wallet is registered. The earlier M1 devnet transfer used Zolana 0.4.0-alpha successfully, so the MCP core dependency is being upgraded to 0.4.0-alpha and redeployed before retrying this same wallet's existing private balance. A ChatGPT app-originated payment, kill-switch payment rejection, and toggle-off behavior are still unverified.
+
 ## Hosted auto-shield (Oct 11, devnet acceptance in progress)
 
 - Added default-on hosted auto-shield with an owner signed policy toggle and editable public SOL fee reserve (minimum 0.005). `/app` checks every 15 seconds while open; every hosted MCP POST checks too. A PostgreSQL per-owner lease prevents concurrent auto-register/deposit, and a durable action state requires a manual Retry after an interrupted transaction rather than blindly starting a second deposit. The owner kill switch and read-only policy stop automatic actions.

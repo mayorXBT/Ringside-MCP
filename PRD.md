@@ -83,6 +83,8 @@ Source: `helius-labs/zolana-examples` @ `3069d79` (Sep 24 2026), Helius privacy 
 - `typescript-client/src/lib.ts` actually uses separate hosts: `INDEXER_URL=https://d2xah7tnhdhcom.cloudfront.net`, `PROVER_URL=https://d21ni15goiip6l.cloudfront.net`; `.env.example` mentions an ELB host. Support overrides `ZOLANA_INDEXER_URL` / `ZOLANA_PROVER_URL`; default to the lib.ts values, fall back to single URL **(verify which works on day 1)**.
 - Custom Rings RPC (not used): `https://d24brah9h1i4q9.cloudfront.net`.
 
+**Oct 11 implementation update:** The MCP core is moving to `0.4.0-alpha` after fresh hosted auto registration and deposit succeeded on devnet but two private transfers failed at `WALLET_BUILD_TRANSFER` on `0.3.1-alpha`. The browser demo already used 0.4.0-alpha for successful devnet transfer and withdrawal. Keep 0.3.1-alpha as the original foundation pin and historic reference; hosted transfer acceptance on 0.4.0-alpha is pending.
+
 **Oct 9 verification:** The separate CloudFront indexer and prover defaults worked for read-only sync and health. The single Helius RPC URL did not serve those calls in the earlier check. A funded upstream transfer using SDK `0.4.0-alpha` reached the prover and received HTTP 502; the pinned `0.3.1-alpha` transfer path failed at indexer `getMerkleProofs` with `API_JSON_RPC`. The endpoint setup is usable for registration and deposit, but the proof path remains unverified and M1 is blocked.
 
 ### 5.3 On-chain addresses (devnet)
