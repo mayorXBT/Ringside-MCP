@@ -2,6 +2,11 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Desktop ChatGPT OAuth return (Oct 11)
+
+- A PC user reported seeing the mobile-only “Return to your original Chrome tab / Copy completion link” screen after Phantom sign-in. The sign-in branch had reused a broad mobile UI flag that also matched coarse-pointer touch devices. Desktop completion now checks the actual Android/iOS platform separately and immediately replaces the Ringside OAuth tab with ChatGPT’s registered callback. The mobile cross-browser handoff remains for Android/iOS.
+- Dashboard TypeScript and production build passed. Next: verify a touch-enabled desktop Phantom flow and the Android handoff on the deployed build. ChatGPT’s actual account-side success screen still requires a real connector account to check.
+
 ## Plain-language landing copy (Oct 11)
 
 - Applied the private `seo-content-writer` and `copywriting` skills to the homepage, `/onboard`, `/demo` intro, and shared title/description metadata. Primary search intent: people looking for private payments for AI agents with spending limits. The page now explains connect → add test funds → set a limit → pay before introducing MCP tools, and uses direct owner and privacy questions in the FAQ. No keyword volume or ranking claims were invented.

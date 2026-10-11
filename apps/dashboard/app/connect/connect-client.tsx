@@ -29,6 +29,7 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
   const [handoffReady, setHandoffReady] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isMobile, setIsMobile] = useState(mobileHint);
+  const [isMobileOS, setIsMobileOS] = useState(mobileHint);
 
   const loadFlow = useCallback(async () => {
     if (!flow) return;
@@ -46,10 +47,12 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
 
   useEffect(() => {
     fetch('/api/hosted/readiness').then(r => r.json()).then(v => setAvailable(v.available === true)).catch(() => setAvailable(false));
-    const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
-      (navigator as Navigator & { userAgentData?: { mobile?: boolean } }).userAgentData?.mobile === true ||
-      (navigator.maxTouchPoints > 0 && window.matchMedia('(pointer: coarse)').matches);
-    setIsMobile(Boolean(mobileHint || mobile));
+    const agentData = (navigator as Navigator & { userAgentData?: { mobile?: boolean; platform?: string } }).userAgentData;
+    const mobileOS = mobileHint || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      /Android|iOS/i.test(agentData?.platform || '') ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    setIsMobileOS(mobileOS);
+    setIsMobile(mobileOS || (navigator.maxTouchPoints > 0 && window.matchMedia('(pointer: coarse)').matches));
     setHasInjectedPhantom(Boolean((window as Window & { phantom?: { solana?: unknown } }).phantom?.solana));
     setCurrentUrl(window.location.href);
   }, [mobileHint]);
@@ -91,10 +94,10 @@ function ConnectInner({ mobileHint }: { mobileHint: boolean }) {
       const response = await fetch('/api/hosted/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ owner: wallet.publicKey.toBase58(), signature: btoa(Array.from(signature, byte => String.fromCharCode(byte)).join('')), challenge_id: body.challenge_id }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error);
-      if (flow && isMobile) {
+      if (flow && isMobileOS) {
         setReturnUrl(result.redirect);
         // The original Chrome tab completes the OAuth callback through the handoff poll.
-      } else window.location.assign(result.redirect);
+      } else window.location.replace(result.redirect);
     } catch (cause) { setError(messageFor(cause instanceof Error ? cause.message : 'unknown')); }
     finally { setBusy(false); }
   }
