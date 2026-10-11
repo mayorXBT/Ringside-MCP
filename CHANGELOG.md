@@ -3,7 +3,7 @@
 ## 2026-10-11 — Auto-shield live acceptance
 
 - Verified two fresh hosted agents on devnet, including auto registration/deposit, exact 0.005 SOL reserve, synced private balance, hosted MCP private payment, kill-switch rejection, toggle off, and one transaction from concurrent auto-shield requests. Captured signatures in `STATUS.md`.
-- Polished checklist total and activity order, and preserved unsaved auto-shield policy edits across status polling.
+- Polished checklist total and activity order, kept explorer links visible on mobile, and preserved unsaved auto-shield policy edits across status polling.
 
 ## 2026-10-11 — Hosted devnet transfer SDK update
 
