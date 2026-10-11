@@ -2,6 +2,12 @@
 
 Updated Oct 11, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted auto-shield (Oct 11, devnet acceptance in progress)
+
+- Added default-on hosted auto-shield with an owner signed policy toggle and editable public SOL fee reserve (minimum 0.005). `/app` checks every 15 seconds while open; every hosted MCP POST checks too. A PostgreSQL per-owner lease prevents concurrent auto-register/deposit, and a durable action state requires a manual Retry after an interrupted transaction rather than blindly starting a second deposit. The owner kill switch and read-only policy stop automatic actions.
+- Auto registration starts after at least 0.005 public SOL. Once registered, auto deposit sends only the public balance above the configured reserve if the deposit is at least 0.005 SOL. This hosted-only deposit path does not charge spend caps. It syncs the private balance and records register/deposit signatures as activity. `wallet_info` includes auto-shield status and the last action. The dashboard has a live checklist, plain error and Retry, and manual fallback controls.
+- `auto-shield-plan` tests passed for fresh 0.05 SOL funding, minimum deposit, reserve preservation, and invalid reserve. TypeScript and production build passed. A fresh deployed hosted wallet, real devnet signatures, a ChatGPT client payment, kill switch rejection, and signed toggle-off still need live acceptance.
+
 ## dashboard-01 sidebar correction (Oct 11)
 
 - Corrected the previous claim of using dashboard-01 as a base. The first pass used shadcn UI components and imitated the block layout, but did not install its sidebar. This follow-up adds the shadcn SidebarProvider, Sidebar, SidebarMenu, SidebarInset, and SidebarTrigger and adapts the dashboard-01 app-sidebar/page structure to Ringside navigation and owner controls. No wallet action path changed.

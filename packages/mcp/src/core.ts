@@ -54,7 +54,7 @@ export async function walletInfo() {
   else publicLamports = await client.getBalance(signer.address);
   const policy = loadPolicy();
   const engine = await engineHealth();
-  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), network: process.env.RINGSIDE_NETWORK === 'localnet' ? 'localnet' : 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only } };
+  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), public_lamports: publicLamports.toString(), network: process.env.RINGSIDE_NETWORK === 'localnet' ? 'localnet' : 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only }, ...(hosted ? { auto_shield: hosted.autoShield } : {}) };
 }
 
 export async function sendTransaction(transaction: Parameters<typeof signTransactionWithSigners>[1]) {
@@ -99,15 +99,15 @@ export async function depositSol(amount: string) {
   return deposit('SOL', amount);
 }
 
-export async function deposit(asset: string, amount: string, sourceTokenAccount?: string, tokenProgram?: string) {
+export async function deposit(asset: string, amount: string, sourceTokenAccount?: string, tokenProgram?: string, autoShield = false) {
   return serializeSpend(async () => {
     const { client, identity, signer } = await context();
     const { mint, decimals, base } = await assetAmount(client, asset, amount);
     if (asset !== 'SOL' && !sourceTokenAccount) throw new Error('source_token_account is required for SPL deposits');
-    await assertSpend('deposit', asset, base, decimals);
+    if (autoShield) { if (!hostedContext() || asset !== 'SOL') throw new Error('AUTO_SHIELD_HOSTED_ONLY'); if (hostedContext()!.policy.kill_switch || hostedContext()!.policy.read_only) throw new Error('KILL_SWITCH: owner has stopped spending'); } else await assertSpend('deposit', asset, base, decimals);
     const transaction = await buildDepositTransaction({ client, feePayer: signer.address, depositor: signer.address, recipient: identity.shieldedAddress(), asset: mint, amount: base, splTokenAccount: sourceTokenAccount ? address(sourceTokenAccount) : undefined, splTokenProgram: tokenProgram ? address(tokenProgram) : undefined });
     const sent = await sendTransaction(transaction);
-    await recordSpend('deposit', asset, base, undefined, sent.signature);
+    if (!autoShield) await recordSpend('deposit', asset, base, undefined, sent.signature);
     emitEvent('spend.confirmed', { tool: 'deposit', asset, amount_base_units: base.toString(), signature: sent.signature });
     return { asset, amount, amount_base_units: base.toString(), ...sent };
   });

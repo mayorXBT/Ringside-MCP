@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-11 — Hosted auto-shield
+
+- Added signed default-on auto-shield policy and fee reserve, owner-scoped database lease, automatic registration and SOL deposit after funding, synced balance, activity signatures, dashboard status and retry, and MCP wallet_info status. Automatic deposits do not consume spend caps.
+
 ## 2026-10-11 — dashboard-01 sidebar correction
 
 - Installed and integrated shadcn SidebarProvider, SidebarMenu, SidebarInset, and SidebarTrigger from the dashboard-01 block pattern, replacing the hand-built sidebar and mobile navigation.
