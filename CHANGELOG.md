@@ -142,3 +142,7 @@
 # 2026-10-11 — Agent client marks
 
 - Replaced the header GitHub word with its logo and added a responsive Claude, ChatGPT, Cursor, Grok, Gemini and Copilot logo row to the landing page.
+
+# 2026-10-11 — Friendlier landing copy
+
+- Rewrote the homepage, onboarding intro and steps, demo intro, FAQs, and search metadata for AI agent users. Clarified the live devnet demo, public funding, encrypted hosted key custody, owner limits, and connector test status.

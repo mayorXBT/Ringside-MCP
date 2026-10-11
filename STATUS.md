@@ -2,6 +2,12 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Plain-language landing copy (Oct 11)
+
+- Applied the private `seo-content-writer` and `copywriting` skills to the homepage, `/onboard`, `/demo` intro, and shared title/description metadata. Primary search intent: people looking for private payments for AI agents with spending limits. The page now explains connect → add test funds → set a limit → pay before introducing MCP tools, and uses direct owner and privacy questions in the FAQ. No keyword volume or ranking claims were invented.
+- Kept the brand tagline and devnet disclosures. Corrected old homepage claims that Helius devnet payments were still blocked, while distinguishing the live browser demo from AI app connector paths that remain unverified. Removed a misleading claim that hosted policies are stored encrypted; hosted agent keys are encrypted server-side, while policy is server-side account data.
+- Dashboard TypeScript and production build passed. Local Chromium at 1280px and 390px loaded homepage, onboarding and demo without page errors or horizontal overflow. Production deployment follows push.
+
 ## Landing client marks (Oct 11)
 
 - Replaced the desktop GitHub text link with an accessible GitHub mark. Added a compact landing row with Claude, ChatGPT, Cursor, Grok, Gemini and GitHub Copilot marks, labelled as MCP client examples with a note that connector support varies by client and plan. Mark sources are recorded in `brand/third-party-marks.md`.
