@@ -2,6 +2,11 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Landing header layout (Oct 11)
+
+- Consolidated the crowded desktop header into five primary links and a More menu for Controls, Privacy, Custody and Contact. Nav pills are single-line; brand and dashboard action keep their width. The mobile hamburger retains all links.
+- Dashboard TypeScript and production build passed. Local Chromium checks at 1264px, 1100px and 390px found no horizontal overflow; the More menu exposed all four secondary links. A 1264px screenshot confirmed the header no longer wraps link labels. Production deployment follows push.
+
 ## Chrome-to-Phantom OAuth return handoff (Oct 10)
 
 - A real Android test exposed a second handoff bug: signing succeeded in Phantom, but opening the ChatGPT callback from Phantom sent the user to the Android app and left the original Chrome connector tab waiting. Mobile Phantom now stops on a completion screen and tells the user to return to the original Chrome tab. The server stores the one-time callback under the signed flow token for five minutes; the original tab polls `/api/hosted/handoff` and navigates to the exact callback itself. Phantom also offers a copyable completion URL if Chrome cannot resume automatically.

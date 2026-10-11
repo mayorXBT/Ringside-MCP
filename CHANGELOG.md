@@ -134,3 +134,7 @@
 - Store a short-lived callback handoff after Phantom signs, poll it from the original connector tab, and stop opening the callback inside Phantom.
 - Detect Android Chrome desktop mode through platform and touch hints; add a copyable callback fallback and pending/ready handoff checks to the hosted smoke test.
 - Verified production with isolated Chrome and Phantom browser contexts: the original Chrome tab now receives the callback and completes PKCE; desktop extension and desktop-mode touch controls also passed.
+
+# 2026-10-11 — Landing header spacing
+
+- Reduced desktop navigation to five primary links plus a More menu, kept pill labels on one line, and preserved all links in the mobile menu.
