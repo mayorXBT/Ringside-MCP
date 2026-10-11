@@ -2,6 +2,11 @@
 
 Updated Oct 11, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## dashboard-01 sidebar correction (Oct 11)
+
+- Corrected the previous claim of using dashboard-01 as a base. The first pass used shadcn UI components and imitated the block layout, but did not install its sidebar. This follow-up adds the shadcn SidebarProvider, Sidebar, SidebarMenu, SidebarInset, and SidebarTrigger and adapts the dashboard-01 app-sidebar/page structure to Ringside navigation and owner controls. No wallet action path changed.
+- At 1280px the real Sidebar spacer and main content align; at 390px the shadcn mobile Sheet opens. Chromium found no document overflow at either width. A temporary visual fixture was removed before commit.
+
 ## Hosted `/app` shadcn dashboard rebuild (Oct 11)
 
 - Rebuilt the hosted owner dashboard with shadcn/ui primitives following dashboard-01: persistent desktop sidebar, mobile navigation sheet, private balance overview, progressive setup checklist, three spending stat cards, activity table and empty state, owner signed policy form, and withdrawal sheet. The red kill switch remains in the header. Reused the existing hosted status, funding, owner-signature, registration, deposit, withdrawal, and policy action paths.

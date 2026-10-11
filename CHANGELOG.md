@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-11 — dashboard-01 sidebar correction
+
+- Installed and integrated shadcn SidebarProvider, SidebarMenu, SidebarInset, and SidebarTrigger from the dashboard-01 block pattern, replacing the hand-built sidebar and mobile navigation.
+
 ## 2026-10-11 — Hosted dashboard redesign
 
 - Rebuilt `/app` with shadcn/ui dashboard components, a desktop sidebar and mobile sheet, progressive setup, spending cards, masked activity table, policy form, and withdraw sheet. Kept existing hosted wallet and owner-signature actions.
