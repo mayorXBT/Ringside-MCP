@@ -2,6 +2,11 @@
 
 Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Landing client marks (Oct 11)
+
+- Replaced the desktop GitHub text link with an accessible GitHub mark. Added a compact landing row with Claude, ChatGPT, Cursor, Grok, Gemini and GitHub Copilot marks, labelled as MCP client examples with a note that connector support varies by client and plan. Mark sources are recorded in `brand/third-party-marks.md`.
+- Dashboard TypeScript and production build passed. Chromium at 1280px and 390px loaded all six marks, found no horizontal overflow, and confirmed the GitHub link's accessible name. Production deployment follows push.
+
 ## Landing header layout (Oct 11)
 
 - Consolidated the crowded desktop header into five primary links and a More menu for Controls, Privacy, Custody and Contact. Nav pills are single-line; brand and dashboard action keep their width. The mobile hamburger retains all links.

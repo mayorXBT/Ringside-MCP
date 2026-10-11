@@ -138,3 +138,7 @@
 # 2026-10-11 — Landing header spacing
 
 - Reduced desktop navigation to five primary links plus a More menu, kept pill labels on one line, and preserved all links in the mobile menu.
+
+# 2026-10-11 — Agent client marks
+
+- Replaced the header GitHub word with its logo and added a responsive Claude, ChatGPT, Cursor, Grok, Gemini and Copilot logo row to the landing page.
