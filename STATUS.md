@@ -2,6 +2,13 @@
 
 Updated Oct 11, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted `/app` shadcn dashboard rebuild (Oct 11)
+
+- Rebuilt the hosted owner dashboard with shadcn/ui primitives following dashboard-01: persistent desktop sidebar, mobile navigation sheet, private balance overview, progressive setup checklist, three spending stat cards, activity table and empty state, owner signed policy form, and withdrawal sheet. The red kill switch remains in the header. Reused the existing hosted status, funding, owner-signature, registration, deposit, withdrawal, and policy action paths.
+- Kept the 0x-style light palette and Geist. The swap/escrow alert now persists its dismissed state in local storage. Activity amounts for private transfers are masked; explorer links use the real transaction signature. The Zolana history response contains slot and signature but no time, so the time cell shows an em dash until a timestamp is available; it does not invent a time.
+- The final connect-agent checklist step links to the connector guide and stays pending because hosted status does not expose an authoritative connector-complete flag. A transfer is not treated as proof of connector setup.
+- Dashboard TypeScript and production build passed. Chromium screenshots at 1280px and 390px with representative hosted status had no horizontal overflow. The mobile sidebar and withdrawal sheet opened successfully. The preview fixture used for visual checks was removed before commit. Live owner-wallet signing was not exercised in this visual pass.
+
 ## ChatGPT connector accepted on desktop (Oct 11)
 
 - The owner supplied a ChatGPT plugin-settings screenshot showing **“Primary is now connected”**, a connected “MAYOR’s Ring-Side account,” the hosted `/mcp` URL, and “Authorization supported: OAuth.” This is real account-side acceptance of the desktop OAuth connection, beyond the earlier simulated callback and PKCE tests. The screenshot also displays “Safety scan: Warning”; its reason was not available in the image.

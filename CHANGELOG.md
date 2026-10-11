@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-11 — Hosted dashboard redesign
+
+- Rebuilt `/app` with shadcn/ui dashboard components, a desktop sidebar and mobile sheet, progressive setup, spending cards, masked activity table, policy form, and withdraw sheet. Kept existing hosted wallet and owner-signature actions.
+- Made the swap/escrow notice dismissal persistent and checked the hydrated layout at 1280px and 390px.
+
 ## 2026-10-10 — Guided demo retest fixes
 
 - Linked live activity and registration signatures, added a replay check to the seller step, kept accessible names on completed sidebar steps, gated burner actions by funding/registration/balance, and explained the zero private balance after withdrawal.
