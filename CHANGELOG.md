@@ -150,3 +150,4 @@
 # 2026-10-11 — Desktop OAuth callback routing
 
 - Separate Android/iOS detection from coarse-pointer UI detection so PC Phantom sign-in redirects to the ChatGPT callback instead of showing mobile handoff instructions.
+- Verified the deployed touch-enabled PC branch redirects to ChatGPT and completes PKCE; the Android handoff branch remains intact.

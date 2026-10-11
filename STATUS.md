@@ -5,7 +5,7 @@ Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. Th
 ## Desktop ChatGPT OAuth return (Oct 11)
 
 - A PC user reported seeing the mobile-only “Return to your original Chrome tab / Copy completion link” screen after Phantom sign-in. The sign-in branch had reused a broad mobile UI flag that also matched coarse-pointer touch devices. Desktop completion now checks the actual Android/iOS platform separately and immediately replaces the Ringside OAuth tab with ChatGPT’s registered callback. The mobile cross-browser handoff remains for Android/iOS.
-- Dashboard TypeScript and production build passed. Next: verify a touch-enabled desktop Phantom flow and the Android handoff on the deployed build. ChatGPT’s actual account-side success screen still requires a real connector account to check.
+- Dashboard TypeScript and production build passed. Production deployment `dpl_Ga5pfNZ2pAKByRsQctudz6MKUBAg` is READY from `539632b`. Browser automation on the public site with a desktop user agent and touch input signed through a simulated Phantom extension, navigated the Ringside OAuth tab directly to the registered ChatGPT callback, and exchanged the code with PKCE. An Android Phantom simulation stayed on the return-to-Chrome screen and its handoff code exchanged successfully. ChatGPT’s actual account-side success screen still requires a real connector account to check.
 
 ## Plain-language landing copy (Oct 11)
 
