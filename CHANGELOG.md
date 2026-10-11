@@ -151,3 +151,7 @@
 
 - Separate Android/iOS detection from coarse-pointer UI detection so PC Phantom sign-in redirects to the ChatGPT callback instead of showing mobile handoff instructions.
 - Verified the deployed touch-enabled PC branch redirects to ChatGPT and completes PKCE; the Android handoff branch remains intact.
+
+# 2026-10-11 — ChatGPT connector accepted
+
+- Recorded the owner’s real ChatGPT plugin-settings result: the hosted Ring-Side MCP connector is primary and connected through OAuth. Tool invocation and payment acceptance remain separate checks.

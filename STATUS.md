@@ -1,11 +1,16 @@
 # Ringside MCP build status
 
-Updated Oct 10, 2026 (UTC). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+Updated Oct 11, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+
+## ChatGPT connector accepted on desktop (Oct 11)
+
+- The owner supplied a ChatGPT plugin-settings screenshot showing **“Primary is now connected”**, a connected “MAYOR’s Ring-Side account,” the hosted `/mcp` URL, and “Authorization supported: OAuth.” This is real account-side acceptance of the desktop OAuth connection, beyond the earlier simulated callback and PKCE tests. The screenshot also displays “Safety scan: Warning”; its reason was not available in the image.
+- This confirms connector installation and owner sign-in. It does not yet confirm ChatGPT can invoke `wallet_info` or make a private payment through that connection. Android handoff remains a separate real-device acceptance item.
 
 ## Desktop ChatGPT OAuth return (Oct 11)
 
 - A PC user reported seeing the mobile-only “Return to your original Chrome tab / Copy completion link” screen after Phantom sign-in. The sign-in branch had reused a broad mobile UI flag that also matched coarse-pointer touch devices. Desktop completion now checks the actual Android/iOS platform separately and immediately replaces the Ringside OAuth tab with ChatGPT’s registered callback. The mobile cross-browser handoff remains for Android/iOS.
-- Dashboard TypeScript and production build passed. Production deployment `dpl_Ga5pfNZ2pAKByRsQctudz6MKUBAg` is READY from `539632b`. Browser automation on the public site with a desktop user agent and touch input signed through a simulated Phantom extension, navigated the Ringside OAuth tab directly to the registered ChatGPT callback, and exchanged the code with PKCE. An Android Phantom simulation stayed on the return-to-Chrome screen and its handoff code exchanged successfully. ChatGPT’s actual account-side success screen still requires a real connector account to check.
+- Dashboard TypeScript and production build passed. Production deployment `dpl_Ga5pfNZ2pAKByRsQctudz6MKUBAg` is READY from `539632b`. Browser automation on the public site with a desktop user agent and touch input signed through a simulated Phantom extension, navigated the Ringside OAuth tab directly to the registered ChatGPT callback, and exchanged the code with PKCE. An Android Phantom simulation stayed on the return-to-Chrome screen and its handoff code exchanged successfully. The owner’s subsequent ChatGPT screenshot confirms account-side connection; tool calls and spending still need acceptance.
 
 ## Plain-language landing copy (Oct 11)
 
