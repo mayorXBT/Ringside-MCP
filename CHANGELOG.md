@@ -209,3 +209,7 @@
 - Production OAuth protocol tests passed on both domains. Reattached the old project domain without a platform redirect, so only site pages 308 to the new domain and existing MCP connectors retain old-host OAuth endpoints.
 
 - Owner confirmed a fresh ChatGPT custom-connector login through `https://ringside.ghoste.trade/mcp` completed successfully after Phantom sign-in.
+
+# 2026-10-12 — Landing preview and proof grid
+
+- Gave the dashboard preview a Mac-style dark browser frame and improved the proof grid's layout, seller flow, and official Helius icon.

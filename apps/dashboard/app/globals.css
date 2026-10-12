@@ -152,3 +152,26 @@ body{font-size:16px}.card{box-shadow:none}.balance-card:before{display:none}.bad
 .rs-app .rs-usd-estimate{display:flex;align-items:center;gap:10px;margin-top:13px;color:#CDD5DE;font-family:var(--font-geist-mono),monospace;font-size:15px;font-variant-numeric:tabular-nums}.rs-app .rs-usd-estimate button{color:#D6DEE8;text-decoration:underline;font-family:var(--font-geist-sans),sans-serif;font-size:11px}.rs-app .rs-public-usd{font-family:var(--font-geist-mono),monospace;font-size:11px;color:#9CA7B3}.rs-app .rs-usd-disclaimer{margin:16px 0 0;padding-top:14px;border-top:1px solid #30363F;color:#8D96A2;font-size:11px;line-height:1.5}
 .rs-app .rs-type-cell .rs-ring-detail{font-family:var(--font-geist-mono),monospace;font-size:9px;color:#697684;line-height:1.4;max-width:340px;white-space:normal}
 .rs-app .rs-type-cell .rs-ring-detail{overflow-wrap:anywhere}
+
+/* The product preview uses the same quiet browser framing as the reference mockup. */
+.zero-browser-frame{background:#15171b;border:1px solid #22252c;border-radius:26px;box-shadow:0 28px 72px #11182725,0 4px 12px #1118270c}
+.zero-browser-bar{height:58px;padding:0 16px;gap:16px;border-bottom:1px solid #24272d;background:#1b1d21;color:#90949e}
+.zero-browser-lights{display:flex;align-items:center;gap:7px;flex:none}
+.zero-browser-lights i{display:block;width:10px;height:10px;border-radius:50%;background:#ff5f57}
+.zero-browser-lights i:nth-child(2){background:#febc2e}
+.zero-browser-lights i:nth-child(3){background:#28c840}
+.zero-browser-address{display:flex;align-items:center;min-width:0;flex:1;height:32px;padding:0 14px;border-radius:11px;background:#212328;color:#a9acb4;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zero-browser-frame picture{display:block;line-height:0}
+.zero-helius{grid-column:1/-1;min-height:230px;flex-direction:row;align-items:center;gap:48px;background:#e8ecfa}
+.zero-helius-copy{display:flex;align-items:flex-start;gap:24px;max-width:660px}
+.zero-helius-copy h3{margin-top:2px}
+.zero-helius-icon{flex:none;background:#fff}
+.zero-helius-mark{display:block;width:32px;height:32px;overflow:hidden}
+.zero-helius-mark img{display:block;width:152px;height:32px;max-width:none}
+.zero-helius-side{display:flex;flex-direction:column;justify-content:center;gap:12px;min-width:260px;padding:24px;border:1px solid #d3d9ee;border-radius:20px;background:#f6f7fd}
+.zero-helius-side>span{font-size:11px;letter-spacing:.12em;font-weight:700;color:#68728d}
+.zero-helius-side .zero-built-logos{margin:0;gap:22px}
+.zero-seller-steps{display:flex;align-items:center;gap:9px;margin-top:28px;white-space:nowrap;font-size:clamp(1.25rem,2vw,2rem);font-weight:750;letter-spacing:-.045em;color:#0b0b0f}
+.zero-seller-steps b{font-size:.82em;color:#8b9bff}
+.zero-seller-steps span:last-child{font-size:.82em}
+@media(max-width:700px){.zero-browser-frame{border-radius:18px}.zero-browser-bar{height:48px;padding:0 12px;gap:12px}.zero-browser-address{height:28px;padding:0 10px;font-size:10px}.zero-browser-lights{gap:5px}.zero-browser-lights i{width:8px;height:8px}.zero-helius{grid-column:auto;flex-direction:column;align-items:stretch;gap:24px}.zero-helius-copy{display:block}.zero-helius-copy h3{margin-top:20px}.zero-helius-side{min-width:0}.zero-seller-steps{font-size:1.6rem}}
