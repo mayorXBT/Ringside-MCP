@@ -95,6 +95,8 @@ flowchart LR
   S[Seller verifier] -->|Private receipt check| R
 ```
 
+For a private transfer, give the agent the exact registered recipient wallet address and check that address in the tool approval. The derived ring address is a separate internal account; an unregistered wallet cannot receive a private transfer.
+
 Default Rings transfers conceal **asset and amount**, while sender, recipient, and transaction signature remain public. Deposits and withdrawals reveal their details on-chain: **funding is public; payments are private**. Hosted agent keys are encrypted server-side; self-hosted keys stay local. The server blocks mainnet URLs, blocks transfers to unregistered recipients, and does not expose a policy-writing MCP tool. Spend tools carry destructive annotations. Swap/escrow example proving keys are insecure test keys and must never be treated as mainnet-ready.
 
 ## Comparison

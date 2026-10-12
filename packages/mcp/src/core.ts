@@ -155,12 +155,20 @@ async function assetAmount(client: Awaited<ReturnType<typeof createZolanaClient>
   return { mint, decimals, base };
 }
 
+export async function registeredRecipientRingAddress(recipient: string) {
+  const client = await createZolanaClient(clientConfig());
+  const resolved = await resolveRegisteredAddress({ rpc: client, owner: address(recipient) });
+  return resolved && String(resolved.owner) === recipient ? Buffer.from(resolved.address.toBytes()).toString('hex') : null;
+}
+
 export async function privateTransfer(recipient: string, asset: string, amount: string) {
   return serializeSpend(async () => {
     const { client, identity, signer } = await context();
     const { mint, decimals, base } = await assetAmount(client, asset, amount);
     const resolved = await resolveRegisteredAddress({ rpc: client, owner: address(recipient) });
-    if (!resolved) throw new Error('RECIPIENT_NOT_REGISTERED: recipient must register a private wallet first');
+    if (!resolved) throw new Error('RECIPIENT_NOT_REGISTERED: the exact recipient wallet is not registered for private payments; do not substitute another wallet');
+    if (String(resolved.owner) !== recipient) throw new Error('RECIPIENT_MISMATCH: registry resolved a different owner; payment was not sent');
+    const recipientRingAddress = Buffer.from(resolved.address.toBytes()).toString('hex');
     await assertSpend('private_transfer', asset, base, decimals, recipient);
     const wallet = new Wallet({ identity: identity.shieldedAddress(), registry: new AssetRegistry() });
     const keys = LocalKeys.fromKeypair(identity, client.proofService);
@@ -170,7 +178,7 @@ export async function privateTransfer(recipient: string, asset: string, amount: 
       const sent = await sendTransaction(transaction);
       await recordSpend('private_transfer', asset, base, recipient, sent.signature);
       emitEvent('spend.confirmed', { tool: 'private_transfer', asset, amount_base_units: base.toString(), recipient, signature: sent.signature });
-      return { amount, amount_base_units: base.toString(), recipient, ...sent };
+      return { amount, amount_base_units: base.toString(), recipient, recipient_wallet: recipient, recipient_ring_address: recipientRingAddress, recipient_explanation: 'This registered wallet owns the derived ring account that received the private payment.', ...sent };
     } finally { keys.destroy(); }
   });
 }

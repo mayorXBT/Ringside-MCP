@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const requireMcp = createRequire(resolve(import.meta.dirname, '../packages/mcp/package.json'));
+const sdkRoot = resolve(import.meta.dirname, '../packages/mcp/node_modules/@heliuslabs/zolana/dist');
+const { ShieldedKeypair, SigningKey, createZolanaClient, initializePoseidon, syncWallet, Wallet, SOL_MINT } = await import(pathToFileURL(resolve(sdkRoot, 'index.js')));
+const { AssetRegistry, LocalShieldedKeys } = await import(pathToFileURL(resolve(sdkRoot, 'transaction/index.js')));
+const { resolveRegisteredAddress } = await import(pathToFileURL(resolve(sdkRoot, 'wallet/index.js')));
+const { address } = requireMcp('@solana/kit');
+
+const expected = process.env.RINGSIDE_EXPECTED_RECIPIENT;
+const signature = process.env.RINGSIDE_TX_SIGNATURE;
+const keyPath = process.env.RINGSIDE_RECIPIENT_KEYPAIR;
+const expectedAmount = process.env.RINGSIDE_EXPECTED_LAMPORTS;
+if (!expected || !signature || !keyPath || !expectedAmount) throw new Error('Set RINGSIDE_EXPECTED_RECIPIENT, RINGSIDE_TX_SIGNATURE, RINGSIDE_RECIPIENT_KEYPAIR, and RINGSIDE_EXPECTED_LAMPORTS');
+if (!process.env.HELIUS_API_KEY) throw new Error('HELIUS_API_KEY is required');
+const bytes = JSON.parse(await readFile(keyPath, 'utf8'));
+assert(Array.isArray(bytes) && bytes.length === 64, 'Invalid recipient keypair');
+const seed = Uint8Array.from(bytes.slice(0, 32));
+const identity = ShieldedKeypair.fromKeypair(SigningKey.fromEd25519Bytes(seed));
+seed.fill(0);
+assert.equal(identity.toSolanaSigner().address, expected, 'Provided keypair does not own requested wallet');
+await initializePoseidon();
+const client = await createZolanaClient({ solanaRpcUrl: `https://devnet.helius-rpc.com/?api-key=${encodeURIComponent(process.env.HELIUS_API_KEY)}`, indexerUrl: 'https://d2xah7tnhdhcom.cloudfront.net', proverUrl: 'https://d21ni15goiip6l.cloudfront.net' });
+const resolved = await resolveRegisteredAddress({ rpc: client, owner: address(expected) });
+assert(resolved, 'Requested recipient is not registered');
+assert.equal(resolved.owner, expected, 'Registry owner mismatch');
+assert.deepEqual(resolved.address.toBytes(), identity.shieldedAddress().toBytes(), 'Registered ring address is not owned by the requested wallet');
+const wallet = new Wallet({ identity: identity.shieldedAddress(), registry: new AssetRegistry() });
+await syncWallet({ wallet, keys: LocalShieldedKeys.fromKeypair(identity), client, config: { pageLimit: 50 } });
+const received = wallet.privateTransactions().find(tx => tx.id.signature === signature && tx.direction === 'inbound' && tx.asset === SOL_MINT && tx.amount === BigInt(expectedAmount));
+assert(received, 'Requested recipient could not decrypt the expected inbound payment');
+console.log(JSON.stringify({ recipient_wallet: expected, signature, amount_lamports: received.amount.toString(), received: true }));

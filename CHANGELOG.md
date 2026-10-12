@@ -187,3 +187,8 @@
 # 2026-10-12 — Wallet USD reference
 
 - Added a SOL/USD market quote to the hosted Wallet page. Private and public SOL balances now display approximate USD references, with a clear notice that devnet SOL has no cash value. The quote endpoint uses CoinGecko with Coinbase fallback and a five-minute cache.
+
+# 2026-10-12 — Recipient transparency
+
+- Identified a ChatGPT payment that reached the registered test seller instead of the unregistered address requested by the user. Added explicit wallet/ring address fields to private transfer results and outgoing hosted activity, plus a registry owner guard and clearer MCP descriptions.
+- Added a devnet receipt check that proves the requested wallet key controls the registered ring account and decrypted the specific inbound payment.
