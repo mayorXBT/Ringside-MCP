@@ -192,3 +192,8 @@
 
 - Identified a ChatGPT payment that reached the registered test seller instead of the unregistered address requested by the user. Added explicit wallet/ring address fields to private transfer results and outgoing hosted activity, plus a registry owner guard and clearer MCP descriptions.
 - Added a devnet receipt check that proves the requested wallet key controls the registered ring account and decrypted the specific inbound payment.
+
+# 2026-10-12 — Landing cleanup and current dashboard preview
+
+- Removed the footer disclaimer, extra privacy-note cards and paragraph, and Developer setup section from the landing page.
+- Updated the desktop and mobile dashboard preview to the current dark hosted app using labeled example-data captures.

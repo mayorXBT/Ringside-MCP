@@ -2,6 +2,11 @@
 
 Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Landing page cleanup (Oct 12)
+
+- Removed the requested footer disclaimer, the three extra privacy-note cards and trailing privacy paragraph, and the landing's Developer setup section. The privacy table, FAQ, and self-host documentation remain accessible.
+- Replaced the obsolete light dashboard preview assets with desktop and mobile captures of the current dark hosted Overview. The captures use mocked example data, not a live owner balance. The landing preview now says so explicitly.
+
 ## Hosted recipient mismatch investigation (Oct 12)
 
 - ChatGPT was asked to send 0.01 SOL privately to `Ackghc2DUNrGGkN9Gn9tdCDNYKFgXVBeBoAFG7z7grt`, but the reported recipient was `79ARuP2P78svsx3wRyYKuD6mizktZvqkhuqF3yJEUr9J`. Devnet signature `3kWQ6AzZTP7DbHh7Yj58o4ffykwevi9ne86AGHL3JGLWPDLC6vjBsoxwveLfheZVLY3DzjvTbzgeMiizX6CTfa41` succeeded at slot `510252274`. The SDK registry has **no private wallet registration for Ackghc…**. It resolves `79ARuP…` to the registered test seller and a distinct derived ring address. The seller's local key decrypted that signature as an inbound **10,000,000-lamport SOL** payment. Thus `79ARuP…` is a different wallet that received the funds, not Ackghc's ring address or a PDA.
