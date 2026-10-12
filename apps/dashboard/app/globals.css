@@ -172,6 +172,7 @@ body{font-size:16px}.card{box-shadow:none}.balance-card:before{display:none}.bad
 .rs-balance-deposit small{flex-basis:100%;text-align:center}
 .rs-app .rs-phantom-balance .rs-balance-meta{padding-top:20px}
 .rs-app .rs-phantom-balance .rs-balance-header{text-align:left}
+.rs-app .rs-phantom-balance .rs-balance-eyebrow{justify-content:flex-end}
 .rs-app .rs-phantom-balance .rs-balance-value{justify-content:flex-start;gap:10px;margin-top:24px}
 .rs-app .rs-phantom-balance .rs-balance-actions{justify-content:flex-start}
 .rs-app .rs-phantom-balance .rs-balance-caption{margin-top:8px}

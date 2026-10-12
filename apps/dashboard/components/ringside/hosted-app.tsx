@@ -73,10 +73,9 @@ function HostedAppContent(){
   const manualDeposit=status?.policy.auto_shield_funds===false||autoFailed;
   return <Card className="rs-balance-card rs-phantom-balance">
    <CardHeader className="rs-balance-header">
-    <div className="rs-balance-eyebrow"><CardDescription>PRIVATE BALANCE · SOLANA DEVNET</CardDescription><button className="rs-icon-button" onClick={()=>setBalanceHidden(value=>!value)} aria-label={balanceHidden?'Show private balance':'Hide private balance'}>{balanceHidden?<EyeOff size={19}/>:<Eye size={19}/>}</button></div>
+    <div className="rs-balance-eyebrow"><button className="rs-icon-button" onClick={()=>setBalanceHidden(value=>!value)} aria-label={balanceHidden?'Show private balance':'Hide private balance'}>{balanceHidden?<EyeOff size={19}/>:<Eye size={19}/>}</button></div>
     <CardTitle className="rs-balance-value"><span className="rs-sol-mark" aria-label="Solana"><img src="/solana-logo.svg" alt=""/></span><span className="rs-balance-number" title={balanceHidden?undefined:`${status?.balances.find(b=>b.asset==='SOL')?.amount||'0'} SOL`}>{balanceHidden?'••••':displaySol(privateSol)}</span><span className="rs-balance-unit">SOL</span></CardTitle>
-    <div className="rs-usd-estimate">{balanceHidden?'••••':usdPrice!==null?`≈ ${usdValue(privateSol,usdPrice)} USD estimate`:usdError?'USD estimate unavailable':'Loading USD estimate…'}{usdError&&<button onClick={()=>void loadUsdPrice()}>Retry</button>}</div>
-    <p className="rs-balance-caption">Available for private payments</p>
+    <div className="rs-usd-estimate">{balanceHidden?'••••':usdPrice!==null?`≈ ${usdValue(privateSol,usdPrice)}`:usdError?'USD value unavailable':'Loading USD value…'}{usdError&&<button onClick={()=>void loadUsdPrice()}>Retry</button>}</div>
    </CardHeader>
    <CardContent>
     <div className="rs-balance-actions" aria-label="Wallet actions">
@@ -86,7 +85,7 @@ function HostedAppContent(){
      <Button className="rs-balance-action" variant="secondary" onClick={()=>void refresh()} disabled={!!busy} aria-label="Sync balance"><RefreshCw size={23}/><span>Sync</span></Button>
     </div>
     {manualDeposit&&<div className="rs-balance-deposit"><Label htmlFor="hosted-deposit-amount">Manual deposit amount</Label><div><Input id="hosted-deposit-amount" value={amount} onChange={event=>setAmount(event.target.value)} inputMode="decimal" aria-label="Deposit amount in SOL"/><span>SOL</span></div><Button disabled={!!busy||!canDeposit} onClick={()=>void action('deposit',{amount})} variant="secondary">Deposit</Button></div>}
-    <div className="rs-balance-meta"><div><span>Public agent balance</span><strong className="rs-public-balance"><span className="rs-sol-mark" aria-label="Solana"><img src="/solana-logo.svg" alt=""/></span>{balanceHidden?'••••':status?.public_sol_balance||'0'} <span>SOL</span></strong><small className="rs-public-usd">{balanceHidden?'••••':usdPrice!==null?`≈ ${usdValue(publicSol,usdPrice)} USD estimate`:usdError?'USD estimate unavailable':'Loading USD estimate…'}</small></div></div>
+    <div className="rs-balance-meta"><div><span>Public agent balance</span><strong className="rs-public-balance"><span className="rs-sol-mark" aria-label="Solana"><img src="/solana-logo.svg" alt=""/></span>{balanceHidden?'••••':status?.public_sol_balance||'0'} <span>SOL</span></strong><small className="rs-public-usd">{balanceHidden?'••••':usdPrice!==null?`≈ ${usdValue(publicSol,usdPrice)}`:usdError?'USD value unavailable':'Loading USD value…'}</small></div></div>
     {status?.sync_error&&<p className="rs-balance-help">{status.sync_error}</p>}{!status?.registered&&<p className="rs-balance-help">Fund the agent first. Registration and deposit need public SOL for network fees.</p>}
     {page==='wallet'&&<p className="rs-usd-disclaimer">USD uses the {usdError?'last available ':''}{usdSource||'available'} SOL market price as a reference. Devnet SOL is test-only and has no cash value.</p>}
    </CardContent>

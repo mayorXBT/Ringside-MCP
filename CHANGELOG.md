@@ -4,6 +4,7 @@
 
 - Redesigned the hosted dashboard's private balance card with a centered balance, square action tiles, and a labeled manual deposit field.
 - Refined the card with left alignment, a two-decimal private SOL display and USD estimate, Solana marks, a Receive action that copies the wallet address, and conditional manual deposit controls.
+- Removed the balance eyebrow, caption, and visible “estimate” suffix from the USD values.
 
 ## 2026-10-12 — Hosted activity chart
 
