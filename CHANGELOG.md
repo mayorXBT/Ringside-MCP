@@ -207,3 +207,5 @@
 - Made ringside.ghoste.trade the canonical public site and MCP URL. Added host-aware OAuth discovery and host-bound new tokens while preserving the legacy connector host. Redirected only old-host site pages and regenerated the social card and video outro URL.
 
 - Production OAuth protocol tests passed on both domains. Reattached the old project domain without a platform redirect, so only site pages 308 to the new domain and existing MCP connectors retain old-host OAuth endpoints.
+
+- Owner confirmed a fresh ChatGPT custom-connector login through `https://ringside.ghoste.trade/mcp` completed successfully after Phantom sign-in.
