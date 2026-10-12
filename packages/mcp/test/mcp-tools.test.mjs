@@ -14,9 +14,15 @@ test('MCP lists core tools with spend and read annotations', async () => {
     await client.connect(transport);
     const { tools } = await client.listTools();
     const byName = new Map(tools.map((tool) => [tool.name, tool]));
-    for (const name of ['create_private_wallet', 'deposit', 'private_transfer', 'withdraw', 'deposit_with_interface_setup']) {
+    for (const name of ['create_private_wallet', 'deposit', 'withdraw', 'deposit_with_interface_setup']) {
       assert.equal(byName.get(name)?.annotations?.destructiveHint, true, name);
     }
+    assert.equal(byName.get('private_transfer')?.annotations?.destructiveHint, false);
+    assert.equal(byName.get('private_transfer')?.annotations?.openWorldHint, true);
+    assert.equal(byName.get('private_transfer')?.annotations?.idempotentHint, false);
+    assert.equal(byName.get('check_recipient')?.annotations?.readOnlyHint, true);
+    assert.ok(byName.get('private_transfer')?.inputSchema?.required?.includes('recipient'));
+    assert.ok(byName.get('private_transfer')?.inputSchema?.required?.includes('amount'));
     for (const name of ['get_private_balance', 'get_private_history', 'sync_balance', 'read_history']) {
       assert.equal(byName.get(name)?.annotations?.readOnlyHint, true, name);
     }

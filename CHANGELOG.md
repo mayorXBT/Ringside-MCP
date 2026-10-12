@@ -213,3 +213,7 @@
 # 2026-10-12 — Landing preview and proof grid
 
 - Gave the dashboard preview a Mac-style dark browser frame and improved the proof grid's layout, seller flow, and official Helius icon.
+
+# 2026-10-12 — Hosted MCP payment clarity
+
+- Clarified devnet payment tool metadata and validation, added recipient preflight, separated core payment availability from the optional swap/escrow engine, and surfaced the saved session cap in the dashboard.

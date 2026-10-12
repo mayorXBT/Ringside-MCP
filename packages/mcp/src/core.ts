@@ -54,7 +54,7 @@ export async function walletInfo() {
   else publicLamports = await client.getBalance(signer.address);
   const policy = loadPolicy();
   const engine = await engineHealth();
-  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), public_lamports: publicLamports.toString(), network: process.env.RINGSIDE_NETWORK === 'localnet' ? 'localnet' : 'devnet', engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only }, ...(hosted ? { auto_shield: hosted.autoShield } : {}) };
+  return { solana_address: signer.address, shielded_address: Buffer.from(identity.shieldedAddress().toBytes()).toString('hex'), registered, public_sol_balance: (Number(publicLamports) / 1e9).toString(), public_lamports: publicLamports.toString(), network: process.env.RINGSIDE_NETWORK === 'localnet' ? 'localnet' : 'devnet', payments_available: true, swap_escrow_engine_available: !('available' in (engine as object)) || (engine as { available?: boolean }).available === true, policy_summary: { kill_switch: policy.kill_switch, read_only: policy.read_only }, ...(hosted ? { auto_shield: hosted.autoShield } : {}) };
 }
 
 export async function sendTransaction(transaction: Parameters<typeof signTransactionWithSigners>[1]) {
@@ -161,6 +161,11 @@ export async function registeredRecipientRingAddress(recipient: string) {
   return resolved && String(resolved.owner) === recipient ? Buffer.from(resolved.address.toBytes()).toString('hex') : null;
 }
 
+export async function checkRecipient(recipient: string) {
+  const ringAddress = await registeredRecipientRingAddress(recipient);
+  return { recipient_wallet: recipient, registered: ringAddress !== null, recipient_ring_address: ringAddress, message: ringAddress ? 'This devnet wallet is registered for private payments.' : 'This devnet wallet is not registered for private payments. No payment was sent.' };
+}
+
 export async function privateTransfer(recipient: string, asset: string, amount: string) {
   return serializeSpend(async () => {
     const { client, identity, signer } = await context();
@@ -178,7 +183,7 @@ export async function privateTransfer(recipient: string, asset: string, amount: 
       const sent = await sendTransaction(transaction);
       await recordSpend('private_transfer', asset, base, recipient, sent.signature);
       emitEvent('spend.confirmed', { tool: 'private_transfer', asset, amount_base_units: base.toString(), recipient, signature: sent.signature });
-      return { amount, amount_base_units: base.toString(), recipient, recipient_wallet: recipient, recipient_ring_address: recipientRingAddress, recipient_explanation: 'This registered wallet owns the derived ring account that received the private payment.', ...sent };
+      return { summary: `Devnet test payment of ${amount} ${asset} to ${recipient} confirmed under the owner policy. Transaction: ${sent.signature}.`, amount, asset, amount_base_units: base.toString(), recipient, recipient_wallet: recipient, recipient_ring_address: recipientRingAddress, recipient_explanation: 'This registered wallet owns the derived ring account that received the private payment.', ...sent };
     } finally { keys.destroy(); }
   });
 }
