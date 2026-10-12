@@ -171,6 +171,26 @@ body{font-size:16px}.card{box-shadow:none}.balance-card:before{display:none}.bad
 .rs-balance-deposit>div span,.rs-balance-deposit small{font-size:11px;color:#77818f}
 .rs-balance-deposit small{flex-basis:100%;text-align:center}
 .rs-app .rs-phantom-balance .rs-balance-meta{padding-top:20px}
+.rs-app .rs-phantom-balance .rs-balance-header{text-align:left}
+.rs-app .rs-phantom-balance .rs-balance-value{justify-content:flex-start;gap:10px;margin-top:24px}
+.rs-app .rs-phantom-balance .rs-balance-actions{justify-content:flex-start}
+.rs-app .rs-phantom-balance .rs-balance-caption{margin-top:8px}
+.rs-app .rs-phantom-balance .rs-usd-estimate{margin-top:8px;font-size:17px;font-weight:550;color:#cbd2dc}
+.rs-app .rs-phantom-balance .rs-balance-meta{grid-template-columns:1fr}
+.rs-app .rs-phantom-balance .rs-balance-meta>div{gap:7px}
+.rs-app .rs-phantom-balance .rs-public-balance{display:flex;align-items:center;gap:7px;font-size:19px;font-variant-numeric:tabular-nums}
+.rs-app .rs-phantom-balance .rs-public-balance>span:last-child{font-size:12px;color:#9ca7b3;font-weight:500}
+.rs-app .rs-phantom-balance .rs-public-usd{font-size:12px}
+.rs-sol-mark{display:inline-flex;width:22px;height:23px;flex:none;overflow:hidden;align-items:center}
+.rs-sol-mark img{display:block;width:135px;height:20px;max-width:none;flex:none}
+.rs-app .rs-phantom-balance .rs-public-balance .rs-sol-mark{width:17px;height:18px}
+.rs-app .rs-phantom-balance .rs-public-balance .rs-sol-mark img{transform:scale(.8);transform-origin:left center}
+.rs-app .rs-phantom-balance .rs-balance-deposit{justify-content:flex-start;gap:10px;margin-bottom:23px}
+.rs-app .rs-phantom-balance .rs-balance-deposit button{height:34px;padding:0 13px;border:1px solid #363f48;border-radius:9px;background:#292f37;color:#f4f5f6;font-size:11px}
+.rs-app .rs-phantom-balance .rs-balance-deposit button:hover{background:#343c46;color:#fff}
+.rs-app .rs-phantom-balance .rs-balance-deposit input{appearance:textfield;-moz-appearance:textfield}
+.rs-app .rs-phantom-balance .rs-balance-deposit input::-webkit-inner-spin-button,.rs-app .rs-phantom-balance .rs-balance-deposit input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+@media(max-width:390px){.rs-app .rs-phantom-balance .rs-balance-value{gap:7px}.rs-app .rs-phantom-balance .rs-balance-deposit{justify-content:flex-start}}
 @media(max-width:390px){.rs-app .rs-phantom-balance .rs-balance-header{padding-top:18px}.rs-app .rs-phantom-balance .rs-balance-value{font-size:clamp(30px,10vw,42px)!important;margin-top:20px}.rs-app .rs-phantom-balance .rs-balance-actions{gap:7px;margin:25px 0 23px}.rs-app .rs-phantom-balance .rs-balance-action{width:calc((100% - 21px)/4);height:76px;padding:8px 2px;font-size:11px;border-radius:17px}.rs-app .rs-phantom-balance .rs-balance-action svg{width:20px;height:20px}}
 @media(prefers-reduced-motion:reduce){.rs-app .rs-phantom-balance .rs-balance-action{transition:none}.rs-app .rs-phantom-balance .rs-balance-action:hover:not(:disabled){transform:none}}
 .rs-app .rs-usd-estimate{display:flex;align-items:center;gap:10px;margin-top:13px;color:#CDD5DE;font-family:var(--font-geist-mono),monospace;font-size:15px;font-variant-numeric:tabular-nums}.rs-app .rs-usd-estimate button{color:#D6DEE8;text-decoration:underline;font-family:var(--font-geist-sans),sans-serif;font-size:11px}.rs-app .rs-public-usd{font-family:var(--font-geist-mono),monospace;font-size:11px;color:#9CA7B3}.rs-app .rs-usd-disclaimer{margin:16px 0 0;padding-top:14px;border-top:1px solid #30363F;color:#8D96A2;font-size:11px;line-height:1.5}
