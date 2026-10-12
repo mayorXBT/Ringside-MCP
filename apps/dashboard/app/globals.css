@@ -174,3 +174,28 @@ body{font-size:16px}.card{box-shadow:none}.balance-card:before{display:none}.bad
 .zero-seller-steps b{font-size:.82em;color:#8b9bff}
 .zero-seller-steps span:last-child{font-size:.82em}
 @media(max-width:700px){.zero-browser-frame{border-radius:18px}.zero-browser-bar{height:48px;padding:0 12px;gap:12px}.zero-browser-address{height:28px;padding:0 10px;font-size:10px}.zero-browser-lights{gap:5px}.zero-browser-lights i{width:8px;height:8px}.zero-helius{grid-column:auto;flex-direction:column;align-items:stretch;gap:24px}.zero-helius-copy{display:block}.zero-helius-copy h3{margin-top:20px}.zero-helius-side{min-width:0}.zero-seller-steps{font-size:1.6rem}}
+/* Registry components adapted to Ringside's quiet light and dark surfaces. */
+.zero-stat-number{color:inherit!important;letter-spacing:inherit!important}
+.zero-steps>div{height:100%;min-width:0}
+.zero-steps>div:first-child .zero-step{border-left:0;padding-left:0}
+.zero-steps>div:not(:first-child) .zero-step{border-left:1px solid var(--border)}
+.rs-status-progress{width:14px!important;height:14px!important;min-width:14px;font-size:0!important}
+.rs-status-progress svg{display:block}
+.rs-status-progress circle{stroke-width:15!important;transition-duration:.22s!important}
+.rs-app .rs-loading{display:grid;gap:14px;padding:32px;min-height:220px;align-content:start}
+.rs-loading-line{height:13px;width:48%;background:#252b33!important}
+.rs-loading-line.wide{height:23px;width:30%}
+.rs-loading-card{height:92px;width:100%;max-width:620px;border-radius:12px;background:#252b33!important}
+.rs-amount-field{position:relative}
+.rs-amount-field input{padding-right:54px;font-variant-numeric:tabular-nums}
+.rs-amount-field span{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#A7B0BC;font:600 12px var(--font-geist-mono),monospace;pointer-events:none}
+.rs-app .rs-commit-button{height:39px;padding:0 18px;border:1px solid #434a55;border-radius:8px;background:#E8EBF0!important;color:#0B0D10!important;font-size:13px;font-weight:650;box-shadow:none!important;transition:transform .2s ease,background-color .2s ease}
+.rs-app .rs-commit-button:hover{transform:translateY(-1px);background:#fff!important}
+.rs-app .rs-commit-button:disabled{cursor:wait;opacity:.72}
+.rs-app [data-sonner-toast]{background:#171B21!important;border:1px solid #303741!important;color:#E9EDF2!important;box-shadow:none!important;border-radius:12px!important}
+@media(max-width:700px){.zero-steps>div .zero-step,.zero-steps>div:first-child .zero-step{padding:20px 0;border-left:0!important;border-bottom:1px solid var(--border)}}
+@media(prefers-reduced-motion:reduce){.rs-app .rs-loading .animate-pulse,.rs-status-progress circle,.rs-app .rs-commit-button{transition:none!important}}
+.rs-commit-sheen{position:absolute;inset:0;background:linear-gradient(105deg,transparent 15%,var(--shimmer-color) 50%,transparent 85%);opacity:0;transform:translateX(-110%);pointer-events:none}
+.rs-commit-button[data-busy="true"] .rs-commit-sheen{animation:rs-commit-sheen .28s ease-out 1}
+@keyframes rs-commit-sheen{from{opacity:0;transform:translateX(-110%)}50%{opacity:.35}to{opacity:0;transform:translateX(110%)}}
+@media(prefers-reduced-motion:reduce){.rs-commit-button[data-busy="true"] .rs-commit-sheen{animation:none!important}.rs-status-progress svg circle{transition:none!important}}

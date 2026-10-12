@@ -6,9 +6,9 @@ Checked 12 October 2026 against [SwiftPieces components](https://swiftpieces.com
 
 SwiftPieces is a **SwiftUI/iOS library**, not a shadcn React registry. Every free component below is documented as an iOS 17+ Swift source file. The documented `npx swiftpieces add <Name>` command requires an `.xcodeproj` and writes Swift files under the app’s `SwiftPieces/` directory. The alternative is copying Swift code into an Xcode target. Neither installs into Ringside’s Next.js/React app. No audited component calls for Framer Motion or Tailwind (v3 or v4); these dependencies are not applicable. The library also offers Pro screens/flows/templates, which require a license; none are selected below. **Do not run the CLI in this repo or translate these into lookalike React components under the guise of an upstream install.**
 
-## Eight strongest visual matches, if a React source is later approved
+## Eight SwiftUI visual references
 
-These are design matches only, not installable candidates for the current app. Each links to the exact documentation and documented free CLI command.
+These were the visual references. No SwiftUI code was installed in the web app. Each links to its original iOS documentation and install command.
 
 | Component | Exact Ringside spot | Documented install | React feasibility |
 |---|---|---|---|
@@ -20,6 +20,21 @@ These are design matches only, not installable candidates for the current app. E
 | [StatusMorph](https://swiftpieces.com/docs/components/feedback/status-morph) | /app payment status: pending, confirmed, or failed state; no perpetual spin. | `npx swiftpieces add StatusMorph` in an Xcode project, or copy Swift source | Incompatible with Next.js |
 | [Toast](https://swiftpieces.com/docs/components/sheets/toast) | /app transaction feedback: brief success/error message; no glass or countdown ring. | `npx swiftpieces add Toast` in an Xcode project, or copy Swift source | Incompatible with Next.js |
 | [CommitButton](https://swiftpieces.com/docs/components/controls/commit-button) | /app owner-signed policy save: idle, signing, success, error states. | `npx swiftpieces add CommitButton` in an Xcode project, or copy Swift source | Incompatible with Next.js |
+
+## React registry implementation map
+
+The web equivalents below were installed with the linked shadcn registry commands. Their generated files were adjusted to Ringside tokens and short, reduced-motion-safe transitions; there is no SwiftUI source in the app.
+
+| SwiftPieces reference | Web equivalent and source | Ringside spot | Registry command |
+|---|---|---|---|
+| TextReveal | [Magic UI Text Animate](https://magicui.design/docs/components/text-animate) | Landing hero headline, one word fade | `pnpm dlx shadcn@latest add -y @magicui/text-animate` |
+| StatusTimeline | [Magic UI Animated List](https://magicui.design/docs/components/animated-list) | Landing How it works steps | `pnpm dlx shadcn@latest add -y @magicui/animated-list` |
+| LiveStat | [Magic UI Number Ticker](https://magicui.design/docs/components/number-ticker) | Landing stat pill | `pnpm dlx shadcn@latest add -y @magicui/number-ticker` |
+| SkeletonLoader | [shadcn Skeleton](https://ui.shadcn.com/docs/components/radix/skeleton) | /app agent loading state | `pnpm dlx shadcn@latest add -y skeleton` (already present) |
+| AmountField | [shadcn Input](https://ui.shadcn.com/docs/components/radix/input) | /app Withdraw amount with SOL suffix | `pnpm dlx shadcn@latest add -y input` (already present) |
+| StatusMorph | [Magic UI Animated Circular Progress Bar](https://magicui.design/docs/components/animated-circular-progress-bar) | /app allowed/stopped status indicator | `pnpm dlx shadcn@latest add -y @magicui/animated-circular-progress-bar` |
+| Toast | [shadcn Sonner](https://ui.shadcn.com/docs/components/radix/sonner) | /app action feedback | `pnpm dlx shadcn@latest add -y sonner` |
+| CommitButton | [Magic UI Shimmer Button](https://magicui.design/docs/components/shimmer-button) | /app Save signed policy button | `pnpm dlx shadcn@latest add -y @magicui/shimmer-button` |
 
 ## Full free component catalog
 
@@ -170,4 +185,4 @@ The [Animations](https://swiftpieces.com/components/animations) and [Haptics](ht
 
 ## Implementation status
 
-Research complete. No landing or `/app` component was installed or swapped because the source provides SwiftUI code only. The existing Ringside app already uses React/Next.js, Tailwind 4, shadcn-style UI components, and Framer Motion; those do not make SwiftUI source compatible. Requested before/after UI screenshots and Lighthouse comparison are therefore not applicable yet.
+SwiftUI research is complete. The eight web equivalents above are installed in the Next.js app; source files remain in `apps/dashboard/components/ui/`. The original SwiftUI components remain reference-only.

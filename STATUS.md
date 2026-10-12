@@ -327,3 +327,10 @@ Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD 
 
 - Reviewed all 16 SwiftPieces category pages and 69 component docs. `DESIGN_COMPONENTS.md` catalogs every free component, its documented Xcode install command, platform/dependency requirements, and eight visual matches to Ringside sections.
 - Implementation is blocked by a platform mismatch: SwiftPieces publishes SwiftUI/iOS 17+ source files, and its `npx swiftpieces add` CLI requires an `.xcodeproj`. Ringside is a Next.js/React web app. The source offers no React/shadcn registry components to install. No UI code was changed or substitute component invented; before/after screenshots and Lighthouse comparison are not applicable to this research-only step.
+
+## Web registry component pass (Oct 12)
+
+- Installed Magic UI `text-animate`, `animated-list`, `number-ticker`, `animated-circular-progress-bar`, and `shimmer-button` through its shadcn registry, plus shadcn `sonner`. The existing shadcn `skeleton` and `input` were reused. `DESIGN_COMPONENTS.md` maps all eight SwiftPieces visual references to these React equivalents and exact spots; no SwiftUI code was installed.
+- Landing: subtle hero word reveal, one-time number ticker in the stat pill, and a short stagger in the How it works steps. Hosted `/app`: loading skeleton, compact allowed/stopped status ring, SOL amount adornment in Withdraw, brief toasts, and a one-shot sheen on Save signed policy. Existing copy and payment hooks stay intact. Animations finish within 150–300ms and have reduced-motion fallbacks.
+- `pnpm --filter ringside-dashboard check` and its production build passed. Chromium checks of `/`, `/app`, and `/demo` at 1280px and 390px had no overflow or console/page errors in normal and reduced-motion modes. A local Lighthouse landing comparison was 81 before and 81 after; this is a lab result, not a production field metric.
+- Before/after screenshots are indexed in `screenshots/web-components/README.md`. Signed-in app images use mock test data because this workspace has no owner session; no real policy, balance, or payment was changed for the design review.

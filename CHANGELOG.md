@@ -221,3 +221,7 @@
 # 2026-10-12 — Landing questions
 
 - Consolidated the privacy answers into the landing page Questions section and removed the duplicate privacy FAQ block.
+
+# 2026-10-12 — Web registry component pass
+
+- Adapted eight SwiftPieces visual references using Magic UI and shadcn React components in the existing landing and hosted dashboard layout. Added desktop/mobile comparison screenshots and reduced-motion-safe transitions.
