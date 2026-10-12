@@ -4,20 +4,20 @@
 
 <p align="center">Give an AI agent a small payment budget. It can pay a seller privately; you set the limits, see what happened, and stop new payments from your wallet.</p>
 
-<p align="center"><a href="https://ringside-dashboard.vercel.app/demo">Try the demo</a> · <a href="https://ringside-dashboard.vercel.app/app">Open the dashboard</a> · <a href="https://ringside-dashboard.vercel.app/docs">Read the docs</a></p>
+<p align="center"><a href="https://ringside.ghoste.trade/demo">Try the demo</a> · <a href="https://ringside.ghoste.trade/app">Open the dashboard</a> · <a href="https://ringside.ghoste.trade/docs">Read the docs</a></p>
 
 Ringside is an MCP server built on Helius Privacy for **Solana devnet**. It works as a hosted connector for ChatGPT and other MCP clients, or as a self-hosted server whose agent key stays on your machine. Use devnet test SOL only.
 
 ## Try it in an AI app
 
-1. Add a custom MCP connector in ChatGPT or a supported Claude client. Paste **`https://ringside-dashboard.vercel.app/mcp`**. [Connector instructions](https://ringside-dashboard.vercel.app/onboard) walk through both apps.
+1. Add a custom MCP connector in ChatGPT or a supported Claude client. Paste **`https://ringside.ghoste.trade/mcp`**. [Connector instructions](https://ringside.ghoste.trade/onboard) walk through both apps.
 2. Connect Phantom and sign in with your owner wallet. Ringside creates a separate agent wallet for hosted use.
-3. [Open the dashboard](https://ringside-dashboard.vercel.app/app), fund the agent wallet with devnet SOL, and wait for auto-shield to register and deposit it. The dashboard can prepare a 0.05 SOL funding transfer for Phantom to sign.
+3. [Open the dashboard](https://ringside.ghoste.trade/app), fund the agent wallet with devnet SOL, and wait for auto-shield to register and deposit it. The dashboard can prepare a 0.05 SOL funding transfer for Phantom to sign.
 4. Ask your agent to check `wallet_info`, then send a small private payment to a **registered** recipient. Review the recipient address and amount when your AI app asks for tool permission.
 
 No local installation or Helius API key is needed for hosted use. Hosted agent keys are encrypted on Ringside's server. Owner policy changes require your wallet signature; the agent cannot raise its own limits. Default limits are **0.05 SOL per payment** and **0.2 SOL per rolling day**.
 
-> Want to see the flow before connecting anything? The [guided demo](https://ringside-dashboard.vercel.app/demo) shows the policy check, private payment, seller verification, and what the public explorer reveals. It labels recorded data when live proof services are unavailable.
+> Want to see the flow before connecting anything? The [guided demo](https://ringside.ghoste.trade/demo) shows the policy check, private payment, seller verification, and what the public explorer reveals. It labels recorded data when live proof services are unavailable.
 
 ## What happens when an agent pays?
 
@@ -58,7 +58,7 @@ pnpm build
 HELIUS_API_KEY=your-devnet-key node packages/mcp/dist/index.js init --owner YOUR_OWNER_WALLET_ADDRESS
 ```
 
-Fund the printed agent address with devnet SOL. Keep the generated keypair outside Git with file mode `600`. [The self-host guide](https://ringside-dashboard.vercel.app/docs#self-host) covers MCP client configuration, local pairing, and owner controls.
+Fund the printed agent address with devnet SOL. Keep the generated keypair outside Git with file mode `600`. [The self-host guide](https://ringside.ghoste.trade/docs#self-host) covers MCP client configuration, local pairing, and owner controls.
 
 ## Current release
 

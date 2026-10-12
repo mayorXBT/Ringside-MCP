@@ -201,3 +201,7 @@
 # 2026-10-12 — README refresh
 
 - Rewrote the README for first-time users and hackathon judges, with a short hosted setup, payment flow, product preview, privacy table, and clear links to evidence and developer guides.
+
+# 2026-10-12 — Canonical domain migration
+
+- Made ringside.ghoste.trade the canonical public site and MCP URL. Added host-aware OAuth discovery and host-bound new tokens while preserving the legacy connector host. Redirected only old-host site pages and regenerated the social card and video outro URL.

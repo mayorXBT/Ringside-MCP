@@ -49,7 +49,7 @@ function HostedAppContent(){
  useEffect(()=>{void refreshClients();const id=setInterval(()=>void refreshClients(),30000);return()=>clearInterval(id)},[refreshClients]);
  async function revokeClient(client:ConnectedClient){setBusy('revoke');try{const response=await fetch('/api/hosted/clients',{method:'DELETE',headers:{'content-type':'application/json'},body:JSON.stringify({client_id:client.client_id})});if(!response.ok)throw new Error('Could not revoke this connection');setSelectedClient(null);toast.success(`${client.name} disconnected`);await refreshClients()}catch(cause){toast.error(friendlyError(cause instanceof Error?cause.message:'Could not revoke connection'))}finally{setBusy('')}}
  async function signOut(){try{const response=await fetch('/api/hosted/logout',{method:'POST'});if(!response.ok)throw new Error('Sign out failed');if(wallet.connected)await wallet.disconnect().catch(()=>{});router.push('/app');router.refresh()}catch{toast.error('Could not sign out. Retry.')}}
- async function copyMcp(client:'Claude'|'ChatGPT'){await navigator.clipboard.writeText(`${window.location.origin}/mcp`);toast.success(`Ringside MCP URL copied for ${client}`)}
+ async function copyMcp(client:'Claude'|'ChatGPT'){await navigator.clipboard.writeText('https://ringside.ghoste.trade/mcp');toast.success(`Ringside MCP URL copied for ${client}`)}
  function copyAddress(){if(!status)return;void navigator.clipboard.writeText(status.solana_address);toast.success('Agent address copied')}
  function dismissNotice(){localStorage.setItem('ringside-engine-notice-dismissed','1');setHideEngineNotice(true)}
  const hasFunds=publicSol>=0.005,hasDeposit=privateSol>0,connected=clients.length>0,autoStage=status?.auto_shield?.stage||'awaiting_funds',autoFailed=autoStage==='error';

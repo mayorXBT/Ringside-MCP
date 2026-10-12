@@ -1,6 +1,6 @@
 # Ringside — DESIGN.md
 
-> Build spec for a coding agent. It covers **(A)** a marketing landing page and **(B)** the owner dashboard app (`apps/dashboard` in `mayorXBT/Ringside-MCP`, deployed at https://ringside-dashboard.vercel.app/).
+> Build spec for a coding agent. It covers **(A)** a marketing landing page and **(B)** the owner dashboard app (`apps/dashboard` in `mayorXBT/Ringside-MCP`, deployed at https://ringside.ghoste.trade/).
 > Status: v1, Oct 9 2026. Hackathon deadline: Colosseum World's Fair, **Oct 12 PT**. Badge everywhere: **DEVNET BETA**.
 > Values marked **[measured]** were pulled from the reference product's live CSS on Oct 9 2026. Values marked **[inferred]** are judgment calls or observations, not extracted tokens.
 
@@ -443,7 +443,7 @@ Replace the textarea with a **structured editor**. Keep "Advanced (JSON)" as a c
 **First run** (no token in localStorage) shows a centered **onboarding stepper** (`<OnboardingStepper>`, max-w 560) instead of the dashboard:
 1. **Run your agent.** "Start Ringside MCP on the machine your agent runs on." A copyable code block: `node packages/mcp/dist/index.js init --owner <your wallet>`. A "Already done" link skips ahead.
 2. **Get a pairing token.** Copyable `ringside-mcp pair` (or `node packages/mcp/dist/index.js pair`). "It prints a token. Keep it secret: it grants read access."
-3. **Connect.** Fields: Control API URL (default `http://127.0.0.1:7420`, collapsed under "Advanced" unless edited) and Pairing token (password input with a show toggle). Button "Pair agent". It runs `GET /v1/status`. Success shows a check, "Paired with 4Hk2…9xQa", then auto-advance. 401 shows "That token didn't work. Run `pair` again and paste the new one." Network failure shows a troubleshooting accordion: agent running? `RINGSIDE_DASHBOARD_ORIGINS` includes `https://ringside-dashboard.vercel.app`? Using Chrome (HTTPS → localhost)?
+3. **Connect.** Fields: Control API URL (default `http://127.0.0.1:7420`, collapsed under "Advanced" unless edited) and Pairing token (password input with a show toggle). Button "Pair agent". It runs `GET /v1/status`. Success shows a check, "Paired with 4Hk2…9xQa", then auto-advance. 401 shows "That token didn't work. Run `pair` again and paste the new one." Network failure shows a troubleshooting accordion: agent running? `RINGSIDE_DASHBOARD_ORIGINS` includes `https://ringside.ghoste.trade`? Using Chrome (HTTPS → localhost)?
 4. **Connect owner wallet.** "Connect the wallet you passed to `--owner`." Phantom button. If the address ≠ `owner_pubkey`, show a warning: "This isn't the owner wallet (expected 7xQ…a2). You can still view." Provide "Skip, view only".
 - Stepper visuals: numbered circles (accent when active, success check when done), 1px connector line, step content slides in (§9).
 

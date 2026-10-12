@@ -9,6 +9,7 @@ const pair=nacl.sign.keyPair(),owner=bs58.encode(pair.publicKey),verifier=random
 const json=async(response)=>{const body=await response.json();assert.ok(response.ok,`${response.status}: ${JSON.stringify(body)}`);return body};
 const post=(path,body,headers={})=>fetch(base+path,{method:'POST',headers:{'content-type':'application/json',...headers},body:JSON.stringify(body)});
 const redirect='http://localhost:9876/callback';
+if(base.startsWith('https://')){const auth=await json(await fetch(base+'/.well-known/oauth-authorization-server'));const resource=await json(await fetch(base+'/.well-known/oauth-protected-resource/mcp'));assert.equal(auth.issuer,base);assert.equal(resource.resource,base+'/mcp')}
 const client=await json(await post('/oauth/register',{client_name:'Ringside hosted smoke test',redirect_uris:[redirect]}));
 const query=new URLSearchParams({response_type:'code',client_id:client.client_id,redirect_uri:redirect,code_challenge:challenge,code_challenge_method:'S256',state:'smoke-test'});
 const authorization=await fetch(`${base}/oauth/authorize?${query}`,{redirect:'manual'});assert.equal(authorization.status,302);
@@ -18,12 +19,14 @@ const resumed=await fetch(flowDetails.authorize_url,{redirect:'manual'});assert.
 const tampered=flow.slice(0,-1)+(flow.endsWith('A')?'B':'A');assert.equal((await fetch(`${base}/api/hosted/flow?id=${encodeURIComponent(tampered)}`)).status,400);
 const pendingHandoff=await json(await fetch(`${base}/api/hosted/handoff?flow=${encodeURIComponent(flow)}`));assert.equal(pendingHandoff.status,'pending');
 const signedChallenge=await json(await post('/api/hosted/challenge',{flow_id:flow}));
+if(base.startsWith('https://'))assert.match(signedChallenge.message,new RegExp('^'+base.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
 const signature=Buffer.from(nacl.sign.detached(Buffer.from(signedChallenge.message),pair.secretKey)).toString('base64');
 const loginResponse=await post('/api/hosted/login',{owner,signature,challenge_id:signedChallenge.challenge_id});const login=await json(loginResponse);
 const cookie=loginResponse.headers.get('set-cookie')?.split(';')[0];assert.ok(cookie);
 const handoff=await json(await fetch(`${base}/api/hosted/handoff?flow=${encodeURIComponent(flow)}`));assert.equal(handoff.status,'ready');assert.equal(handoff.redirect,login.redirect);
 const code=new URL(login.redirect).searchParams.get('code');assert.ok(code);
 const token=await json(await fetch(base+'/oauth/token',{method:'POST',body:new URLSearchParams({grant_type:'authorization_code',client_id:client.client_id,redirect_uri:redirect,code,code_verifier:verifier})}));assert.ok(token.access_token);
+if(base.startsWith('https://')){const other=base.includes('ringside.ghoste.trade')?'https://ringside-dashboard.vercel.app':'https://ringside.ghoste.trade';const foreign=await fetch(other+'/mcp',{method:'POST',headers:{authorization:`Bearer ${token.access_token}`,accept:'application/json, text/event-stream','content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:99,method:'initialize',params:{protocolVersion:'2025-06-18',capabilities:{},clientInfo:{name:'cross-host-check',version:'1'}}})});assert.equal(foreign.status,401)}
 const rpc=async(id,name,args)=>json(await post('/mcp',{jsonrpc:'2.0',id,method:name,params:args},{authorization:`Bearer ${token.access_token}`,accept:'application/json, text/event-stream'}));
 const initialized=await rpc(1,'initialize',{protocolVersion:'2025-06-18',capabilities:{},clientInfo:{name:'hosted-smoke',version:'1'}});assert.equal(initialized.result.serverInfo.name,'ringside-mcp');
 const tools=await rpc(2,'tools/list',{});assert.equal(tools.result.tools.length,25);

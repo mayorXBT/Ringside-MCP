@@ -2,6 +2,12 @@
 
 Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Canonical domain migration (Oct 12)
+
+- Vercel verified `ringside.ghoste.trade` on project `ringside-dashboard`; it resolved over HTTPS. `NEXT_PUBLIC_SITE_URL` and `APP_URL` are set to that origin for production and preview. New public links, metadata, sitemap, robots, landing, docs, onboarding, dashboard copy controls, and social assets use `https://ringside.ghoste.trade`.
+- OAuth discovery and MCP 401 challenges use the request host: new connectors discover the new issuer, while existing `ringside-dashboard.vercel.app/mcp` connectors retain old-host OAuth endpoints. New authorization codes, refresh tokens, access tokens, and handoff flows are host-bound; existing legacy tokens without an issuer remain usable during transition. Only old-host site pages receive 308 redirects. Historical old-domain deployment links below remain as evidence of the URL used at that time.
+- Final live route, OAuth smoke-test, and ChatGPT account-side verification results will be recorded below after deployment.
+
 ## README for first-time users and judges (Oct 12)
 
 - Replaced the old update-heavy README with a short product explanation, hosted setup steps, a payment flow, dashboard preview, privacy table, and links to detailed evidence. Technical runbooks, signatures, and open acceptance checks remain in this status file and `scripts/demo.md`.

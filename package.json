@@ -1,6 +1,7 @@
 {
   "name": "ringside-workspace",
   "private": true,
+  "homepage": "https://ringside.ghoste.trade",
   "packageManager": "pnpm@11.18.0",
   "engines": {
     "node": ">=24"

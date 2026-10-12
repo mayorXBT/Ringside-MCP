@@ -2,11 +2,12 @@
   "name": "ringside-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ringside.ghoste.trade",
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/prepare-zolana-wasm.cjs && pnpm --filter @ringside/verify build && pnpm --filter ringside-mcp build && next build",
     "check": "tsc --noEmit",
-    "test": "node --test lib/hosted/auto-shield-plan.test.mjs"
+    "test": "node --test lib/hosted/*.test.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

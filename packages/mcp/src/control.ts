@@ -9,7 +9,7 @@ import { loadPolicy, ringsideHome, solBudget, validatePolicy } from './policy.js
 import { emitEvent, eventBus } from './events.js';
 import { redact } from './log.js';
 
-const corsOrigins = () => (process.env.RINGSIDE_DASHBOARD_ORIGINS || 'http://localhost:3000').split(',').map((item) => item.trim());
+const corsOrigins = () => (process.env.RINGSIDE_DASHBOARD_ORIGINS || 'https://ringside.ghoste.trade,https://ringside-dashboard.vercel.app,http://localhost:3000').split(',').map((item) => item.trim());
 const tokenPath = () => join(ringsideHome(), 'pairing-token');
 const configPath = () => join(ringsideHome(), 'config.json');
 const json = (response: ServerResponse, status: number, body: unknown) => { response.writeHead(status, { 'content-type': 'application/json' }).end(JSON.stringify(body)); };
