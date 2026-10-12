@@ -183,3 +183,7 @@
 - Restyled hosted `/app` after the supplied dashboard references with Ringside branding, shadcn components, and a dark 220px desktop sidebar plus mobile Sheet.
 - Added Activity chart, real OAuth client cards and revocation, textured balance card, signed policy form, masked activity table, and a withdrawal Dialog.
 - Added last-used client tracking, session sign-out, and read-only transaction time enrichment. Added 1280px/390px visual fixture screenshots.
+
+# 2026-10-12 — Wallet USD reference
+
+- Added a SOL/USD market quote to the hosted Wallet page. Private and public SOL balances now display approximate USD references, with a clear notice that devnet SOL has no cash value. The quote endpoint uses CoinGecko with Coinbase fallback and a five-minute cache.

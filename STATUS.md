@@ -2,6 +2,11 @@
 
 Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Hosted Wallet USD reference (Oct 12)
+
+- `/app/wallet` now shows approximate USD references for private and public SOL balances using a server-side SOL market quote. The private estimate follows the balance hide toggle. The page explicitly states that devnet SOL is test-only and has no cash value. CoinGecko is primary, Coinbase is fallback, and successful quotes are cached for five minutes. If pricing is unavailable, SOL balances remain visible with a Retry control.
+- The local production quote endpoint returned a live SOL/USD quote. Visual checks of mocked wallet data at 1280px and 390px showed both estimates with no horizontal overflow. No wallet transaction or policy logic changed.
+
 ## Current live state (Oct 12)
 
 - **Hosted signup is enabled on Solana devnet.** Production `/api/hosted/readiness` returned `{"available":true,"network":"devnet"}` on Oct 12. The public `/app` returned HTTP 200 and unauthenticated `/mcp` returned the expected HTTP 401 OAuth challenge. Hosted agent keys are encrypted server-side; owners sign in with Phantom. Self-hosting remains available for local key custody.
