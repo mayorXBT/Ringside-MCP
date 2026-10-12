@@ -197,3 +197,7 @@
 
 - Removed the footer disclaimer, extra privacy-note cards and paragraph, and Developer setup section from the landing page.
 - Updated the desktop and mobile dashboard preview to the current dark hosted app using labeled example-data captures.
+
+# 2026-10-12 — README refresh
+
+- Rewrote the README for first-time users and hackathon judges, with a short hosted setup, payment flow, product preview, privacy table, and clear links to evidence and developer guides.

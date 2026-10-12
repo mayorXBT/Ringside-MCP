@@ -2,6 +2,11 @@
 
 Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## README for first-time users and judges (Oct 12)
+
+- Replaced the old update-heavy README with a short product explanation, hosted setup steps, a payment flow, dashboard preview, privacy table, and links to detailed evidence. Technical runbooks, signatures, and open acceptance checks remain in this status file and `scripts/demo.md`.
+- Kept the distinctions between tested devnet paths and roadmap items explicit; no product logic changed.
+
 ## Landing page cleanup (Oct 12)
 
 - Removed the requested footer disclaimer, the three extra privacy-note cards and trailing privacy paragraph, and the landing's Developer setup section. The privacy table, FAQ, and self-host documentation remain accessible.
