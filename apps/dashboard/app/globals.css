@@ -191,6 +191,21 @@ body{font-size:16px}.card{box-shadow:none}.balance-card:before{display:none}.bad
 .rs-app .rs-phantom-balance .rs-balance-deposit input{appearance:textfield;-moz-appearance:textfield}
 .rs-app .rs-phantom-balance .rs-balance-deposit input::-webkit-inner-spin-button,.rs-app .rs-phantom-balance .rs-balance-deposit input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 @media(max-width:390px){.rs-app .rs-phantom-balance .rs-balance-value{gap:7px}.rs-app .rs-phantom-balance .rs-balance-deposit{justify-content:flex-start}}
+.rs-app .rs-phantom-balance .rs-balance-header{position:relative;padding-top:27px}
+.rs-balance-visibility{position:absolute;top:23px;right:23px;z-index:1}
+.rs-balance-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.72fr);gap:30px;align-items:center;min-width:0}
+.rs-app .rs-phantom-balance .rs-balance-value{margin-top:18px}
+.rs-sol-chart{min-width:0;min-height:158px;padding:16px 16px 12px;border:1px solid #292e37;border-radius:18px;background:#181c22}
+.rs-sol-chart-top,.rs-sol-chart-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rs-sol-chart-top{font-family:var(--font-geist-mono),monospace;font-size:11px;color:#aab3c0}
+.rs-sol-chart-top small{margin-left:5px;color:#737f8d;font-size:10px}
+.rs-sol-chart-top strong{font-size:14px;color:#f2f4f7;font-weight:650}
+.rs-sol-chart svg{display:block;width:100%;height:94px;margin:8px 0 2px}
+.rs-sol-chart-foot{font-size:10px;color:#77818f}
+.rs-sol-chart-foot .up{color:#4ade80}.rs-sol-chart-foot .down{color:#f87171}
+.rs-sol-chart-empty{display:flex;align-items:center;justify-content:center;gap:8px;min-height:109px;color:#929ca9;font-size:12px}
+.rs-sol-chart-empty button{color:#d7deea;text-decoration:underline}
+@media(max-width:760px){.rs-balance-main{grid-template-columns:1fr;gap:22px}.rs-sol-chart{min-height:154px}.rs-balance-visibility{top:19px;right:19px}}
 @media(max-width:390px){.rs-app .rs-phantom-balance .rs-balance-header{padding-top:18px}.rs-app .rs-phantom-balance .rs-balance-value{font-size:clamp(30px,10vw,42px)!important;margin-top:20px}.rs-app .rs-phantom-balance .rs-balance-actions{gap:7px;margin:25px 0 23px}.rs-app .rs-phantom-balance .rs-balance-action{width:calc((100% - 21px)/4);height:76px;padding:8px 2px;font-size:11px;border-radius:17px}.rs-app .rs-phantom-balance .rs-balance-action svg{width:20px;height:20px}}
 @media(prefers-reduced-motion:reduce){.rs-app .rs-phantom-balance .rs-balance-action{transition:none}.rs-app .rs-phantom-balance .rs-balance-action:hover:not(:disabled){transform:none}}
 .rs-app .rs-usd-estimate{display:flex;align-items:center;gap:10px;margin-top:13px;color:#CDD5DE;font-family:var(--font-geist-mono),monospace;font-size:15px;font-variant-numeric:tabular-nums}.rs-app .rs-usd-estimate button{color:#D6DEE8;text-decoration:underline;font-family:var(--font-geist-sans),sans-serif;font-size:11px}.rs-app .rs-public-usd{font-family:var(--font-geist-mono),monospace;font-size:11px;color:#9CA7B3}.rs-app .rs-usd-disclaimer{margin:16px 0 0;padding-top:14px;border-top:1px solid #30363F;color:#8D96A2;font-size:11px;line-height:1.5}
