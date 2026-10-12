@@ -1,6 +1,14 @@
 # Ringside MCP build status
 
-Updated Oct 11, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
+
+## Hosted `/app` dark restyle (Oct 12)
+
+- Restyled only the hosted `/app` workspace using shadcn Sidebar, Cards, Table, Alert, and Dialog. Landing pages retain their light theme. Desktop sidebar is 220px; mobile navigation uses the shadcn Sheet. The header keeps the signed kill switch visible. Overview now shows a seven-day payments/deposits count chart, real connected OAuth clients, and the private/public balances in one textured card. Wallet, Agents, Policy, and Activity have dedicated views.
+- The Agents view reads active OAuth clients from the hosted database, records last use on authenticated MCP calls, and can revoke a client's access and refresh tokens. The owner chip can disconnect Phantom or sign out of the hosted session. No agent key or secret is returned to the browser. The final setup checklist step is based on real active OAuth tokens rather than a placeholder.
+- Activity uses recorded spend times and devnet block times where available; a missing block time displays an em dash. Private payment amounts remain masked; deposit and withdrawal amounts are public. The seven-day chart counts dated transactions only, so older history without a time may not appear in the chart.
+- Visual fixture screenshots in `screenshots/` use mocked wallet/client data and are labelled as such; they are **not live-payment evidence**. Browser checks across Overview, Wallet, Agents, Policy, and Activity at 1280px and 390px reported no horizontal overflow. Dashboard TypeScript and production build passed. Live owner-wallet signing and a production OAuth revoke were not exercised in this visual pass.
+- Next step: verify the deployed `/app` with the owner account, including OAuth client listing, revocation, signed policy, funding, and mobile navigation.
 
 ## Hosted auto-shield live acceptance (Oct 11)
 

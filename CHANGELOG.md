@@ -177,3 +177,9 @@
 # 2026-10-11 — ChatGPT connector accepted
 
 - Recorded the owner’s real ChatGPT plugin-settings result: the hosted Ring-Side MCP connector is primary and connected through OAuth. Tool invocation and payment acceptance remain separate checks.
+
+# 2026-10-12 — Dark hosted workspace
+
+- Restyled hosted `/app` after the supplied dashboard references with Ringside branding, shadcn components, and a dark 220px desktop sidebar plus mobile Sheet.
+- Added Activity chart, real OAuth client cards and revocation, textured balance card, signed policy form, masked activity table, and a withdrawal Dialog.
+- Added last-used client tracking, session sign-out, and read-only transaction time enrichment. Added 1280px/390px visual fixture screenshots.

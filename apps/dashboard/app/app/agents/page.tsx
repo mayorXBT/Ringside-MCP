@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function AgentsPage(){return <div className="stack"><h1 className="app-title">Agents</h1><section className="card"><h2 className="card-title">Connect an agent</h2><p className="muted-text">Use the self-host MCP setup guide to connect Claude, ChatGPT, or another MCP client to your local Ringside server.</p><Link className="ui-button secondary" href="/onboard">Open connection guide</Link></section></div>}
