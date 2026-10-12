@@ -217,3 +217,7 @@
 # 2026-10-12 — Hosted MCP payment clarity
 
 - Clarified devnet payment tool metadata and validation, added recipient preflight, separated core payment availability from the optional swap/escrow engine, and surfaced the saved session cap in the dashboard.
+
+# 2026-10-12 — Landing questions
+
+- Consolidated the privacy answers into the landing page Questions section and removed the duplicate privacy FAQ block.
