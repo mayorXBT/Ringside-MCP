@@ -334,3 +334,9 @@ Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD 
 - Landing: subtle hero word reveal, one-time number ticker in the stat pill, and a short stagger in the How it works steps. Hosted `/app`: loading skeleton, compact allowed/stopped status ring, SOL amount adornment in Withdraw, brief toasts, and a one-shot sheen on Save signed policy. Existing copy and payment hooks stay intact. Animations finish within 150–300ms and have reduced-motion fallbacks.
 - `pnpm --filter ringside-dashboard check` and its production build passed. Chromium checks of `/`, `/app`, and `/demo` at 1280px and 390px had no overflow or console/page errors in normal and reduced-motion modes. A local Lighthouse landing comparison was 81 before and 81 after; this is a lab result, not a production field metric.
 - Before/after screenshots are indexed in `screenshots/web-components/README.md`. Signed-in app images use mock test data because this workspace has no owner session; no real policy, balance, or payment was changed for the design review.
+
+## Hosted overview activity chart fix (Oct 12)
+
+- Fixed the seven-day chart's local-date grouping. In timezones ahead of UTC, the old code labeled a bar “Today” while using yesterday's UTC date as its key, leaving today's activity out.
+- The hosted status API now includes recorded, confirmed payments that have not appeared in the private indexer history yet. It deduplicates by transaction signature once history catches up, and the existing 15-second status poll updates the chart.
+- Dashboard type check, seven hosted tests, and production build passed. An authenticated production owner session was unavailable here, so the live chart with that owner's activity has not been visually confirmed.

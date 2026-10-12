@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-12 — Hosted activity chart
+
+- Corrected seven-day activity buckets to use the viewer's local date and surfaced confirmed hosted payments while private history indexing catches up.
+- Added coverage for a payment after midnight in a UTC+1 timezone and for mixed payment/deposit activity.
+
 ## 2026-10-11 — Auto-shield live acceptance
 
 - Verified two fresh hosted agents on devnet, including auto registration/deposit, exact 0.005 SOL reserve, synced private balance, hosted MCP private payment, kill-switch rejection, toggle off, and one transaction from concurrent auto-shield requests. Captured signatures in `STATUS.md`.
