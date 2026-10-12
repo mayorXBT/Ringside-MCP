@@ -2,13 +2,21 @@
 
 Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD build. The repository is on `main`, and completed stages have been committed and pushed to `mayorXBT/Ringside-MCP`.
 
+## Current live state (Oct 12)
+
+- **Hosted signup is enabled on Solana devnet.** Production `/api/hosted/readiness` returned `{"available":true,"network":"devnet"}` on Oct 12. The public `/app` returned HTTP 200 and unauthenticated `/mcp` returned the expected HTTP 401 OAuth challenge. Hosted agent keys are encrypted server-side; owners sign in with Phantom. Self-hosting remains available for local key custody.
+- **ChatGPT custom connector OAuth is verified.** The owner supplied a real ChatGPT settings screenshot showing Ringside as the primary connected account after Phantom sign-in. Desktop callback and PKCE exchange were tested on production. The mobile Chrome → Phantom → original connector tab handoff was verified in production browser testing, including the exact callback and PKCE exchange; the owner reports the connector login flow working. An agent-originated ChatGPT payment has not been independently captured in the ChatGPT UI.
+- **Auto-shield is live.** A fresh hosted devnet agent received 0.05 SOL, registered, deposited above a 0.005 SOL fee reserve, synced a private balance, and then made a real 0.01 SOL private transfer through the hosted OAuth MCP endpoint. Signed kill-switch and auto-shield toggle tests passed; signatures are in the live acceptance section below.
+- **The dark hosted `/app` is live.** Overview, Wallet, Agents, Policy, and Activity use the dark shadcn workspace. The owner can view balances, funding, setup, connected clients, activity, and signed controls. The visual fixture screenshots are mocked and do not prove a production account's current balance. The public landing remains light.
+- **Roadmap:** Ringside swap and escrow tools remain Tier C previews returning `ENGINE_UNAVAILABLE`; do not lock funds with them. Claude account-side payment, ChatGPT UI-originated payment evidence, production OAuth client revocation, USDC flow, and escrow bounty demo remain open acceptance items. Earlier sections below are chronological records; their old signup/prover blockers were superseded by these devnet results.
+
 ## Hosted `/app` dark restyle (Oct 12)
 
 - Restyled only the hosted `/app` workspace using shadcn Sidebar, Cards, Table, Alert, and Dialog. Landing pages retain their light theme. Desktop sidebar is 220px; mobile navigation uses the shadcn Sheet. The header keeps the signed kill switch visible. Overview now shows a seven-day payments/deposits count chart, real connected OAuth clients, and the private/public balances in one textured card. Wallet, Agents, Policy, and Activity have dedicated views.
 - The Agents view reads active OAuth clients from the hosted database, records last use on authenticated MCP calls, and can revoke a client's access and refresh tokens. The owner chip can disconnect Phantom or sign out of the hosted session. No agent key or secret is returned to the browser. The final setup checklist step is based on real active OAuth tokens rather than a placeholder.
 - Activity uses recorded spend times and devnet block times where available; a missing block time displays an em dash. Private payment amounts remain masked; deposit and withdrawal amounts are public. The seven-day chart counts dated transactions only, so older history without a time may not appear in the chart.
 - Visual fixture screenshots in `screenshots/` use mocked wallet/client data and are labelled as such; they are **not live-payment evidence**. Browser checks across Overview, Wallet, Agents, Policy, and Activity at 1280px and 390px reported no horizontal overflow. Dashboard TypeScript and production build passed. Live owner-wallet signing and a production OAuth revoke were not exercised in this visual pass.
-- Next step: verify the deployed `/app` with the owner account, including OAuth client listing, revocation, signed policy, funding, and mobile navigation.
+- Next step: verify production OAuth client revocation and capture a ChatGPT or Claude UI-originated payment from the connected account.
 
 ## Hosted auto-shield live acceptance (Oct 11)
 
