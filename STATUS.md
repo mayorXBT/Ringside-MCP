@@ -340,3 +340,8 @@ Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD 
 - Fixed the seven-day chart's local-date grouping. In timezones ahead of UTC, the old code labeled a bar “Today” while using yesterday's UTC date as its key, leaving today's activity out.
 - The hosted status API now includes recorded, confirmed payments that have not appeared in the private indexer history yet. It deduplicates by transaction signature once history catches up, and the existing 15-second status poll updates the chart.
 - Dashboard type check, seven hosted tests, and production build passed. An authenticated production owner session was unavailable here, so the live chart with that owner's activity has not been visually confirmed.
+
+## Hosted balance card redesign (Oct 12)
+
+- Restyled the Overview and Wallet private balance card around a centered balance and four equal action tiles inspired by Phantom's clear wallet hierarchy. Manual deposit amount now has its own labeled field beneath the actions; existing Fund, Deposit, Send, Sync, visibility, USD estimate, and address-copy behavior are unchanged.
+- The dashboard type check and production build pass. Authenticated desktop and mobile visual review still requires an owner session.

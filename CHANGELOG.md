@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-12 — Balance card visual refresh
+
+- Redesigned the hosted dashboard's private balance card with a centered balance, square action tiles, and a labeled manual deposit field.
+
 ## 2026-10-12 — Hosted activity chart
 
 - Corrected seven-day activity buckets to use the viewer's local date and surfaced confirmed hosted payments while private history indexing catches up.
