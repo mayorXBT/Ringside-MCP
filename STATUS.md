@@ -322,3 +322,8 @@ Updated Oct 12, 2026 (Africa/Lagos). This is the handoff for continuing the PRD 
 ## Landing privacy FAQ consolidation (Oct 12)
 
 - Removed the separate “What’s private” FAQ section and folded its deposit, withdrawal, transfer visibility, and fallback answers into the main Questions accordion. The privacy comparison table remains in its own section. Navigation now points to the consolidated Questions section. Dashboard type check and production build passed.
+
+## SwiftPieces component audit (Oct 12)
+
+- Reviewed all 16 SwiftPieces category pages and 69 component docs. `DESIGN_COMPONENTS.md` catalogs every free component, its documented Xcode install command, platform/dependency requirements, and eight visual matches to Ringside sections.
+- Implementation is blocked by a platform mismatch: SwiftPieces publishes SwiftUI/iOS 17+ source files, and its `npx swiftpieces add` CLI requires an `.xcodeproj`. Ringside is a Next.js/React web app. The source offers no React/shadcn registry components to install. No UI code was changed or substitute component invented; before/after screenshots and Lighthouse comparison are not applicable to this research-only step.
